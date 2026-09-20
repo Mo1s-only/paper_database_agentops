@@ -14,8 +14,8 @@ class FakeClient:
             return "YES"
         if "Summarize the following" in prompt:
             return "A constrained explanation was accepted; it is not hidden CoT."
-        expected = prompt.split("OBSERVED ANSWER:\n", 1)[1]
-        return "Observed evidence supports the result.\nFINAL: " + expected
+        assert "OBSERVED ANSWER:" not in prompt
+        return "Arithmetic supports the result.\nFINAL: " + ("4" if "2+2" in prompt else "unknown")
 
 
 def main():

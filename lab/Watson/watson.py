@@ -72,6 +72,9 @@ def normalize_request(raw: dict[str, Any]) -> str:
 
 
 def normalize_response(raw: dict[str, Any]) -> tuple[str, str]:
+    choices_for_tools = raw.get("choices") or []
+    if any((c.get("message") or {}).get("tool_calls") or (c.get("message") or {}).get("function_call") for c in choices_for_tools if isinstance(c, dict)) or any(isinstance(c, dict) and c.get("type") == "tool_use" for c in (raw.get("content") or []) if isinstance(raw.get("content"), list)):
+        return "", "tool_or_unknown"
     if isinstance(raw.get("text_content"), str) and raw["text_content"].strip():
         return raw["text_content"], "text"
     choices = raw.get("choices")
@@ -134,17 +137,17 @@ class OpenAICompatibleClient:
         return text_from_message(data.get("choices", [{}])[0].get("message", {}))
 
 
-def reconstruction_prompt(prompt: str, expected: str) -> str:
-    return ("Reconstruct a concise, evidence-grounded reasoning path that could connect the "
-        "observed input to the observed final answer. Do not claim hidden internal state. "
-        "End with the exact marker `FINAL: ` followed by the observed answer verbatim.\n\n"
-        f"INPUT:\n{prompt}\n\nOBSERVED ANSWER:\n{expected}")
+def reconstruction_prompt(prompt: str) -> str:
+    # RepCoT samples from the input alone; the target is used only for rejection.
+    return ("Solve the task independently and provide a concise explanation grounded in the input. "
+        "End with the exact marker `FINAL: ` followed by your answer.\n\n"
+        f"INPUT:\n{prompt}")
 
 
 def matches_expected(candidate: str, expected: str) -> bool:
     marker = "FINAL:"
-    final = candidate.rsplit(marker, 1)[-1].strip() if marker in candidate else candidate.strip()
-    return final == expected.strip()
+    final = candidate.rsplit(marker, 1)[-1].strip() if marker in candidate else ""
+    return bool(final) and final == expected.strip()
 
 
 def judge_prompt(reasoning: str, influential: list[tuple[str, str]]) -> str:
@@ -157,31 +160,46 @@ def judge_prompt(reasoning: str, influential: list[tuple[str, str]]) -> str:
 def reconstruct(call: Call, client: Client, model: str, samples: int, temperature: float, top_p: float) -> dict[str, Any]:
     if call.completion_kind != "text" or not call.prompt or not call.output:
         return {"call_id": call.id, "status": "skipped", "reason": "requires text request and text completion"}
+    if samples < 1:
+        raise ValueError("samples must be positive")
+    started = time.perf_counter()
     components = split_components(call.prompt)
     # PromptExp-compatible fallback: output reproducibility under leave-one-component-out ablation.
     ablations = []
     for name, _ in components:
         reduced = "\n\n".join(text for n, text in components if n != name)
-        candidate = client.complete(reconstruction_prompt(reduced, call.output), model, temperature, top_p)
+        candidate = client.complete(reconstruction_prompt(reduced), model, temperature, top_p)
         ablations.append({"component": name, "target_match_without_component": matches_expected(candidate, call.output)})
     influential = [pair for pair, ablation in zip(components, ablations) if not ablation["target_match_without_component"]]
     accepted, attempts = [], 0
-    started = time.time()
+    matched, judged, history = 0, 0, []
     while len(accepted) < samples and attempts < samples * 4:
         attempts += 1
-        candidate = client.complete(reconstruction_prompt(call.prompt, call.output), model, temperature, top_p)
-        if not matches_expected(candidate, call.output):
+        candidate = client.complete(reconstruction_prompt(call.prompt), model, temperature, top_p)
+        is_match = matches_expected(candidate, call.output)
+        record = {"candidate": candidate, "output_match": is_match, "verdict": None}
+        history.append(record)
+        if not is_match:
             continue
+        matched += 1
+        judged += 1
         verdict = client.complete(judge_prompt(candidate, influential or components[:1]), model, 0.0, 1.0).strip().upper()
+        record["verdict"] = verdict
         if verdict == "YES":
             accepted.append(candidate)
     summary_prompt = "Summarize the following accepted, observed-output-constrained explanations. " \
         "State uncertainty and do not claim access to hidden chain-of-thought.\n\n" + "\n\n---\n".join(accepted)
     summary = client.complete(summary_prompt, model, 0.0, 1.0) if accepted else "No verified candidate was accepted."
-    return {"call_id": call.id, "status": "complete", "mirror": {"model": model, "temperature": temperature, "top_p": top_p},
-        "verification": {"method": "match_ablation", "components": ablations, "judge": "llm_yes_no"},
-        "attempts": attempts, "accepted": len(accepted), "accepted_reasonings": accepted,
-        "meta_reasoning": summary, "elapsed_seconds": round(time.time() - started, 3)}
+    return {"call_id": call.id, "status": "complete" if len(accepted) == samples else "insufficient_candidates", "mirror": {"model": model, "temperature": temperature, "top_p": top_p, "mirror_level": "approximate",
+            "reason": "message roles flattened; full decoding configuration not replayed",
+            "primary_model": call.model},
+        "verification": {"method": "match_ablation", "components": ablations, "judge": "llm_yes_no", "output_matching": "exact_text",
+            "limitations": "single-sample binary ablation; not token-probability PromptExp"},
+        "requested_samples": samples, "attempts": attempts, "matched": matched,
+        "output_match_rate": matched / attempts, "judge_acceptance_rate": len(accepted) / judged if judged else None,
+        "api_requests": len(components) + attempts + judged + bool(accepted),
+        "candidate_history": history, "accepted": len(accepted), "accepted_reasonings": accepted,
+        "meta_reasoning": summary, "elapsed_seconds": round(time.perf_counter() - started, 3)}
 
 
 def write_jsonl(path: Path, rows: list[Call]) -> None:

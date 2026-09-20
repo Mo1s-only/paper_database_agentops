@@ -14,15 +14,15 @@
 
 ```powershell
 cd C:\Users\mobao\Desktop\论文方向
-python Watsom\test_watson.py
+python Watson\test_watson.py
 ```
 
 ## 从 AgentSight 会话导出
 
 ```powershell
-python Watsom\watson.py export `
+python Watson\watson.py export `
   --db agentsight\test\out\session.db `
-  --output Watsom\out\calls.jsonl
+  --output Watson\out\calls.jsonl
 ```
 
 已有测试样例包含工具调用，且当前数据库缺少配对 request；它只用于证明 response 证据提取正确。请在完成 request-response 配对后，为真实 RepCoT 选择输出为纯文本的调用。
@@ -33,9 +33,9 @@ python Watsom\watson.py export `
 
 ```powershell
 $env:WATSON_API_KEY = '...'
-python Watsom\watson.py reconstruct `
-  --input Watsom\out\calls.jsonl `
-  --output Watsom\out\report.json `
+python Watson\watson.py reconstruct `
+  --input Watson\out\calls.jsonl `
+  --output Watson\out\report.json `
   --base-url https://your-openai-compatible-endpoint/v1 `
   --model your-primary-model --samples 10 --temperature 0 --top-p 1
 ```
@@ -47,3 +47,17 @@ python Watsom\watson.py reconstruct `
 - `calls.jsonl`：脱敏前的本地证据 manifest，**不得提交或分享**。
 - `report.json`：重建、验证和汇总的全部可追溯记录。
 - `test_watson.py`：用假客户端进行端到端、不依赖网络的回归测试。
+
+## 2026-09-20 实验更新
+
+在 Watson 目录执行 `python run_offline_experiment.py`，运行 k=1/3/5/10 × 四种确定性故障场景，共 16 组离线实验。结果见 `out/offline_experiment/report.md` 与 `results.json`。
+
+已修正 RepCoT 与消融提示中的目标答案泄漏。生成阶段只给原输入，生成后才匹配目标输出。当前是近似实现：严格文本匹配替代原文语义等价判定、单次离散消融替代 token 概率归因、消息角色展平且没有完整解码配置重放，故所有结果标为 approximate。当前 judge 尚未实现原文 top/bottom-n 验证。
+
+本轮数据审计：3 条调用均缺失 request，真实实验可用样本为 0。没有发起真实模型请求；离线通过仅证明控制流按预期工作。
+
+## 真实 DeepSeek demo（单次预算低于 ¥0.50）
+
+在 Watson 目录运行 `python run_real_demo.py`，根据隐藏提示输入名称为 Watson 的 API 密钥。程序调用 `deepseek-v4-flash`（官方当前路由到 V4.1-Flash），运行两个真实文本决策任务与 Watson 旁路流程。最多 24 次请求，每次 256 输出 tokens；按当前高峰价格预留总上限 ¥0.313728，预算阈值 ¥0.40，无自动重试。
+
+结果逐次保存在 `out/real_demo/<UTC时间戳>/report.md`。详细步骤、模型、费用假设与限制见 `实验说明.md`。真实 demo 应使用这个带预算保护的入口；旧的通用 reconstruct 命令没有相同费用约束。
