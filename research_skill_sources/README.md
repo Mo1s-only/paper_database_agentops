@@ -12,10 +12,17 @@ Sources evaluated on 2026-09-20:
 | 4 | `https://github.com/Slazee/research-paper-writing-skills` | Practical ML/CV/NLP paper-section checklists, paragraph flow, and adversarial reviewer perspective. | Adapted for AI/AgentOps-style chapter writing. |
 | 5 | `https://github.com/pinshuai/literature-review-skill` | Useful systematic-review process and citation verification ideas, but includes environment-specific tooling assumptions. | Used selectively for search logging and PRISMA-style review discipline. |
 
+User-recommended additions:
+
+| Repository | Usefulness for this thesis workspace | Decision |
+|---|---|---|
+| `https://github.com/blader/humanizer` | Strong final prose-polish workflow for removing generic AI-sounding patterns while preserving factual content. | Added as a final writing pass only after evidence and citations are stable. |
+| `https://github.com/gusinov/grill-me` | Useful interview method for extracting implicit assumptions, decisions, and thesis constraints into durable notes. | Added for topic framing, experiment planning, advisor-meeting prep, and defense-question practice. |
+| `https://github.com/Slazee/research-paper-writing-skills` | Already evaluated above; especially useful for section-specific AI/ML paper structure and skeptical reviewer self-review. | Promoted to a first-class writing workflow reference. |
+
 Local policy:
 
 - Keep this directory as reference material only.
 - Do not commit cloned source repositories into the thesis repository.
 - Put durable, thesis-specific workflows under `research_skills/`.
 - If a source repository is re-cloned or updated, re-evaluate before changing the curated local skill.
-

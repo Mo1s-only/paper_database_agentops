@@ -56,3 +56,14 @@ When comparing directions, score each candidate from 1 to 5:
 
 Recommend the highest overall direction only after naming its biggest risk.
 
+## Grill-Style Pressure Test
+
+When the user asks to "grill me", "stress-test", "pressure-test", or think through a thesis decision, switch to `discovery-grill.md`.
+
+Use it especially for:
+
+- choosing between thesis contributions;
+- preparing for advisor meetings;
+- deciding whether an experiment is feasible;
+- converting vague interests into research questions;
+- practicing defense answers.

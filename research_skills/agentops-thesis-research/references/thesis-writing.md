@@ -42,6 +42,20 @@ For each section, run:
 4. Terminology check: ensure the same concept is named consistently.
 5. Reader check: identify what a skeptical thesis reviewer would question.
 
+## Research Paper Writing Skills Priority
+
+For AI/ML-style thesis chapters, use these rules before sentence-level polish:
+
+- Clarify the paper or chapter story before editing prose.
+- Build a mini-outline with 3 to 7 paragraph roles.
+- Keep one paragraph to one message.
+- Put the paragraph message in the first sentence when possible.
+- Maintain sentence flow through cause, contrast, consequence, or refinement.
+- Check Abstract and Introduction claims against actual evidence.
+- Run a skeptical reviewer pass covering contribution, clarity, experiment strength, evaluation completeness, and method soundness.
+
+Only after this pass should `writing-polish.md` be used.
+
 ## Output Contract
 
 When drafting or revising, provide:
@@ -51,4 +65,6 @@ When drafting or revising, provide:
 - claim-evidence notes;
 - unresolved inputs;
 - next writing gate.
+
+For final polish, explicitly say whether the section is ready for a Humanizer-style pass or still needs evidence/structure work first.
 

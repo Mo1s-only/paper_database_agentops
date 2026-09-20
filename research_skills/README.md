@@ -10,8 +10,8 @@ It is tailored for this repository as the user's graduation-thesis workspace. It
 - traceable literature review;
 - AgentOps topic framing;
 - claim-led thesis writing;
+- user-recommended Research Paper Writing Skills, Humanizer, and grill-me inspired workflows;
 - citation and consistency gates;
 - Git-safe collaboration.
 
 For future conversations in this folder, the assistant should load the skill entrypoint first for research-related tasks, then read only the relevant reference file.
-

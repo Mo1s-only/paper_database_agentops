@@ -25,10 +25,18 @@ Read only the reference needed for the current request:
 | Read, summarize, compare, or critique a paper | `references/paper-reading.md` |
 | Build a literature review, related work, source map, or research gap table | `references/literature-review.md` |
 | Frame the thesis topic, research question, contribution, or experiment plan | `references/topic-and-experiment-framing.md` |
+| Grill, stress-test, or interview the user about a thesis decision, plan, or defense answer | `references/discovery-grill.md` |
 | Draft or revise thesis chapters, abstracts, introductions, methods, related work, or conclusions | `references/thesis-writing.md` |
+| Polish thesis prose after claims and citations are stable | `references/writing-polish.md` |
 | Audit claims, citations, figures, consistency, or readiness | `references/quality-gates.md` |
 
 For broad requests like "help me advance the thesis", start with `topic-and-experiment-framing.md`, then use the other references only as needed.
+
+User-prioritized workflows:
+
+- Use the local adaptation of Research Paper Writing Skills for chapter structure, paragraph flow, and reviewer-facing self-review.
+- Use Humanizer only after the technical meaning is stable; it must not add facts, weaken evidence, or hide AI assistance.
+- Use grill-me when the user needs to externalize thinking, pressure-test a decision, or prepare answers through one-question-at-a-time interviewing.
 
 ## Default Workflow
 
@@ -49,4 +57,3 @@ For broad requests like "help me advance the thesis", start with `topic-and-expe
 - For major synthesis artifacts, prefer Markdown tables that can later become thesis text.
 - For experimental code or external repositories, keep provenance clear: upstream URL, commit if known, local changes, and what evidence the code supports.
 - When using cloned GitHub research-skill sources, treat them as inspiration only. The authoritative local workflow is this skill.
-
