@@ -21,6 +21,8 @@ target/
 .pytest_cache/
 Watson/out/
 agentsight/agentsight-bin
+research_skill_sources/*
+!research_skill_sources/README.md
 
 # OS metadata
 .DS_Store
