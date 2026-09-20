@@ -1,0 +1,5 @@
+.env
+out/
+out-diag/
+workspace/*
+!workspace/.gitkeep

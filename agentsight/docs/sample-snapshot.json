@@ -1,0 +1,421 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-08-22T03:55:00Z",
+  "summary": {
+    "source": "demo",
+    "view_events": 24,
+    "llm_calls": 6,
+    "token_usage_rows": 2,
+    "audit_events": 12,
+    "sessions": 2,
+    "input_tokens": 5840,
+    "output_tokens": 1760,
+    "total_tokens": 7600,
+    "start_timestamp_ms": 1787370180000,
+    "end_timestamp_ms": 1787370900000
+  },
+  "token_summary": [
+    {
+      "group": "codex / gpt-5",
+      "input_tokens": 4200,
+      "output_tokens": 1200,
+      "cache_read_tokens": 1800,
+      "total_tokens": 5400,
+      "calls": 4
+    },
+    {
+      "group": "claude / sonnet",
+      "input_tokens": 1640,
+      "output_tokens": 560,
+      "cache_read_tokens": 320,
+      "total_tokens": 2200,
+      "calls": 2
+    }
+  ],
+  "sessions": [
+    {
+      "id": "session-codex-demo",
+      "agent_type": "codex",
+      "start_timestamp_ms": 1787370300000,
+      "end_timestamp_ms": null,
+      "status": "running",
+      "model": "gpt-5",
+      "input_tokens": 4200,
+      "output_tokens": 1200,
+      "total_tokens": 5400,
+      "attributes": {
+        "session_id": "codex-demo-2026-08-21",
+        "display_id": "codex:demo-worktree",
+        "cwd": "/workspace/agentsight",
+        "prompt_preview": "Make the AgentSight demo show the complete agent workflow",
+        "last_message_at": "2026-08-22T03:55:00Z",
+        "usage": {
+          "input_tokens": 4200,
+          "output_tokens": 1200,
+          "cache_read_tokens": 1800,
+          "total_tokens": 5400
+        },
+        "plan": [
+          { "step": "Inspect the demo data path", "status": "completed" },
+          { "step": "Wire snapshot and live overview data", "status": "completed" },
+          { "step": "Run browser regression coverage", "status": "in_progress" },
+          { "step": "Ship the demo fix", "status": "pending" }
+        ],
+        "subscription": {
+          "provider": "codex",
+          "observed_at": "2026-08-22T03:55:00Z",
+          "plan_type": "pro",
+          "primary": {
+            "used_percent": 37,
+            "window_minutes": 300,
+            "resets_at": 1787385600
+          },
+          "secondary": {
+            "used_percent": 18,
+            "window_minutes": 10080,
+            "resets_at": 1787976000
+          }
+        }
+      }
+    },
+    {
+      "id": "session-claude-demo",
+      "agent_type": "claude",
+      "start_timestamp_ms": 1787370180000,
+      "end_timestamp_ms": 1787370480000,
+      "status": "stopped",
+      "model": "claude-sonnet",
+      "input_tokens": 1640,
+      "output_tokens": 560,
+      "total_tokens": 2200,
+      "attributes": {
+        "session_id": "claude-demo-review",
+        "display_id": "claude:review",
+        "cwd": "/workspace/agentsight",
+        "prompt_preview": "Review the observability UI for missing evidence",
+        "last_message_at": "2026-08-22T03:48:00Z",
+        "usage": {
+          "input_tokens": 1640,
+          "output_tokens": 560,
+          "cache_read_tokens": 320,
+          "total_tokens": 2200
+        },
+        "plan": [
+          { "step": "Review session overview", "status": "completed" },
+          { "step": "Report missing demo evidence", "status": "completed" }
+        ],
+        "subscription": {
+          "provider": "claude",
+          "observed_at": "2026-08-22T03:48:00Z",
+          "plan_type": "max",
+          "primary": {
+            "used_percent": 22,
+            "window_minutes": 300,
+            "resets_at": 1787385600
+          }
+        }
+      }
+    }
+  ],
+  "tool_calls": [
+    {
+      "id": "tool-codex-read",
+      "session_id": "codex-demo-2026-08-21",
+      "timestamp_ms": 1787370360000,
+      "tool_name": "read_file",
+      "status": "success",
+      "input": { "path": "ext/web/page.tsx" },
+      "related_pid": 4242
+    },
+    {
+      "id": "tool-codex-search",
+      "session_id": "codex-demo-2026-08-21",
+      "timestamp_ms": 1787370450000,
+      "tool_name": "search",
+      "status": "success",
+      "input": { "query": "sample-snapshot" },
+      "related_pid": 4242
+    },
+    {
+      "id": "tool-codex-edit",
+      "session_id": "codex-demo-2026-08-21",
+      "timestamp_ms": 1787370630000,
+      "tool_name": "apply_patch",
+      "status": "success",
+      "input": { "path": "frontend/scripts/prepare-sample.mjs" },
+      "related_pid": 4242
+    },
+    {
+      "id": "tool-codex-test",
+      "session_id": "codex-demo-2026-08-21",
+      "timestamp_ms": 1787370810000,
+      "tool_name": "exec",
+      "status": "success",
+      "input": { "command": "npm run test:e2e" },
+      "output": { "exit_code": 0 },
+      "related_pid": 4242
+    },
+    {
+      "id": "tool-codex-retry",
+      "session_id": "codex-demo-2026-08-21",
+      "timestamp_ms": 1787370840000,
+      "tool_name": "exec",
+      "status": "failed",
+      "input": { "command": "git diff --check" },
+      "output": { "exit_code": 1, "stderr": "trailing whitespace detected" },
+      "related_pid": 4242
+    },
+    {
+      "id": "tool-claude-review",
+      "session_id": "claude-demo-review",
+      "timestamp_ms": 1787370420000,
+      "tool_name": "read_file",
+      "status": "success",
+      "input": { "path": "ext/web/components/NodeOverview.tsx" },
+      "related_pid": 5100
+    }
+  ],
+  "process_nodes": [
+    {
+      "id": "process-codex-root",
+      "pid": 4242,
+      "ppid": 1,
+      "root_pid": 4242,
+      "start_timestamp_ms": 1787370300000,
+      "end_timestamp_ms": null,
+      "comm": "codex",
+      "command": "codex --workspace /workspace/agentsight",
+      "argv": ["codex", "--workspace", "/workspace/agentsight"],
+      "cwd": "/workspace/agentsight",
+      "status": "running"
+    },
+    {
+      "id": "process-codex-git",
+      "pid": 4250,
+      "ppid": 4242,
+      "root_pid": 4242,
+      "start_timestamp_ms": 1787370440000,
+      "end_timestamp_ms": 1787370460000,
+      "comm": "git",
+      "command": "git status --short",
+      "cwd": "/workspace/agentsight",
+      "exit_code": 0,
+      "status": "success"
+    },
+    {
+      "id": "process-codex-node",
+      "pid": 4251,
+      "ppid": 4242,
+      "root_pid": 4242,
+      "start_timestamp_ms": 1787370760000,
+      "end_timestamp_ms": null,
+      "comm": "node",
+      "command": "playwright test e2e/demo.spec.ts",
+      "cwd": "/workspace/agentsight/frontend",
+      "status": "running"
+    },
+    {
+      "id": "process-codex-browser",
+      "pid": 4252,
+      "ppid": 4251,
+      "root_pid": 4242,
+      "start_timestamp_ms": 1787370770000,
+      "end_timestamp_ms": null,
+      "comm": "chromium",
+      "command": "chromium --headless",
+      "cwd": "/workspace/agentsight/frontend",
+      "status": "running"
+    },
+    {
+      "id": "process-claude-root",
+      "pid": 5100,
+      "ppid": 1,
+      "root_pid": 5100,
+      "start_timestamp_ms": 1787370180000,
+      "end_timestamp_ms": 1787370480000,
+      "comm": "claude",
+      "command": "claude review",
+      "cwd": "/workspace/agentsight",
+      "exit_code": 0,
+      "status": "success"
+    }
+  ],
+  "resource_samples": [
+    { "timestamp_ms": 1787370360000, "pid": 4242, "comm": "codex", "cpu_percent": 6.4, "rss_mb": 218 },
+    { "timestamp_ms": 1787370600000, "pid": 4242, "comm": "codex", "cpu_percent": 11.8, "rss_mb": 246 },
+    { "timestamp_ms": 1787370840000, "pid": 4242, "comm": "codex", "cpu_percent": 18.6, "rss_mb": 284 },
+    { "timestamp_ms": 1787370420000, "pid": 5100, "comm": "claude", "cpu_percent": 4.2, "rss_mb": 132 }
+  ],
+  "network_targets": [
+    {
+      "pid": 4242,
+      "comm": "codex",
+      "host": "api.openai.com",
+      "path": "/v1/responses",
+      "count": 4,
+      "error_count": 0,
+      "first_timestamp_ms": 1787370330000,
+      "last_timestamp_ms": 1787370860000
+    },
+    {
+      "pid": 4242,
+      "comm": "codex",
+      "host": "github.com",
+      "path": "/eunomia-bpf/agentsight",
+      "count": 7,
+      "error_count": 0,
+      "first_timestamp_ms": 1787370400000,
+      "last_timestamp_ms": 1787370820000
+    },
+    {
+      "pid": 5100,
+      "comm": "claude",
+      "host": "api.anthropic.com",
+      "path": "/v1/messages",
+      "count": 2,
+      "error_count": 0,
+      "first_timestamp_ms": 1787370210000,
+      "last_timestamp_ms": 1787370460000
+    }
+  ],
+  "audit_events": [
+    {
+      "id": "audit-codex-prompt-1",
+      "timestamp_ms": 1787370320000,
+      "audit_type": "llm",
+      "pid": 4242,
+      "comm": "codex",
+      "subject": "gpt-5",
+      "action": "request",
+      "status": "success",
+      "summary": "Make the AgentSight demo show the complete agent workflow",
+      "details": { "text_content": "Make the AgentSight demo show the complete agent workflow: overview, conversation, processes, tools, network activity, resources, plans, and subscriptions." }
+    },
+    {
+      "id": "audit-codex-response-1",
+      "timestamp_ms": 1787370340000,
+      "audit_type": "llm",
+      "pid": 4242,
+      "comm": "codex",
+      "subject": "gpt-5",
+      "action": "response",
+      "status": "success",
+      "summary": "Inspecting the demo fixture and live overview path",
+      "details": { "text_content": "I found that the recorded demo only loaded the snapshot while the live UI also consumes an overview. I will make the demo exercise the same UI model." }
+    },
+    {
+      "id": "audit-codex-file-read",
+      "timestamp_ms": 1787370360000,
+      "audit_type": "file",
+      "pid": 4242,
+      "comm": "codex",
+      "action": "read",
+      "target": "/workspace/agentsight/ext/web/page.tsx",
+      "status": "success",
+      "summary": "read ext/web/page.tsx"
+    },
+    {
+      "id": "audit-codex-network",
+      "timestamp_ms": 1787370450000,
+      "audit_type": "network",
+      "pid": 4242,
+      "comm": "codex",
+      "action": "connect",
+      "target": "github.com:443",
+      "status": "success",
+      "summary": "connect github.com:443"
+    },
+    {
+      "id": "audit-codex-prompt-2",
+      "timestamp_ms": 1787370580000,
+      "audit_type": "llm",
+      "pid": 4242,
+      "comm": "codex",
+      "subject": "gpt-5",
+      "action": "request",
+      "status": "success",
+      "summary": "Keep the demo representative of a real coding session",
+      "details": { "text_content": "Keep the demo representative of a real coding session and make every existing view contain useful data." }
+    },
+    {
+      "id": "audit-codex-response-2",
+      "timestamp_ms": 1787370610000,
+      "audit_type": "llm",
+      "pid": 4242,
+      "comm": "codex",
+      "subject": "gpt-5",
+      "action": "response",
+      "status": "success",
+      "summary": "Adding coherent data across all views",
+      "details": { "text_content": "The fixture now uses one coherent session identity across token usage, process tree, tool calls, network targets, resource samples, plan state, and subscription state." }
+    },
+    {
+      "id": "audit-codex-file-write",
+      "timestamp_ms": 1787370640000,
+      "audit_type": "file",
+      "pid": 4242,
+      "comm": "codex",
+      "action": "write",
+      "target": "/workspace/agentsight/docs/sample-overview.json",
+      "status": "success",
+      "summary": "write docs/sample-overview.json"
+    },
+    {
+      "id": "audit-codex-exec",
+      "timestamp_ms": 1787370800000,
+      "audit_type": "process",
+      "pid": 4242,
+      "comm": "codex",
+      "action": "exec",
+      "target": "npm run test:e2e",
+      "status": "success",
+      "summary": "npm run test:e2e"
+    },
+    {
+      "id": "audit-codex-failure",
+      "timestamp_ms": 1787370840000,
+      "audit_type": "process",
+      "pid": 4242,
+      "comm": "codex",
+      "action": "exec",
+      "target": "git diff --check",
+      "status": "failed",
+      "summary": "git diff --check reported trailing whitespace"
+    },
+    {
+      "id": "audit-codex-recovery",
+      "timestamp_ms": 1787370870000,
+      "audit_type": "file",
+      "pid": 4242,
+      "comm": "codex",
+      "action": "write",
+      "target": "/workspace/agentsight/ext/web/page.tsx",
+      "status": "success",
+      "summary": "removed trailing whitespace and reran checks"
+    },
+    {
+      "id": "audit-claude-prompt",
+      "timestamp_ms": 1787370220000,
+      "audit_type": "llm",
+      "pid": 5100,
+      "comm": "claude",
+      "subject": "claude-sonnet",
+      "action": "request",
+      "status": "success",
+      "summary": "Review the observability UI for missing evidence",
+      "details": { "text_content": "Review the AgentSight demo and identify observability views that are empty or misleading." }
+    },
+    {
+      "id": "audit-claude-response",
+      "timestamp_ms": 1787370460000,
+      "audit_type": "llm",
+      "pid": 5100,
+      "comm": "claude",
+      "subject": "claude-sonnet",
+      "action": "response",
+      "status": "success",
+      "summary": "The live overview path is missing from recorded demo mode",
+      "details": { "text_content": "The snapshot has historical evidence, but the demo does not populate the live overview model, leaving running state, CPU, RSS and live process information unavailable." }
+    }
+  ]
+}

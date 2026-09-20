@@ -1,0 +1,27 @@
+# Local assistant state and machine-specific configuration
+.workbuddy-ai/
+**/.claude/settings.local.json
+**/.claude/scheduled_tasks.lock
+
+# Credentials (templates are allowed)
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+
+# Dependencies, caches and generated output
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+target/
+.pytest_cache/
+Watson/out/
+agentsight/agentsight-bin
+
+# OS metadata
+.DS_Store
+Thumbs.db

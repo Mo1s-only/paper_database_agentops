@@ -1,0 +1,1047 @@
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+AGENT T RACE : C AUSAL G RAPH T RACING FOR ROOT
+C AUSE A NALYSIS IN D EPLOYED M ULTI -AGENT S YS TEMS
+
+arXiv:2603.14688v2 [cs.LG] 27 Mar 2026
+
+Zhaohui Geoffrey Wang
+USC Viterbi School of Engineering
+zwang000@usc.edu
+ORCID: 0009-0006-1187-1903
+
+A BSTRACT
+As multi-agent AI systems are increasingly deployed in real-world settings—from
+automated customer support to DevOps remediation—failures become harder
+to diagnose due to cascading effects, hidden dependencies, and long execution
+traces. We present AGENT T RACE, a lightweight causal tracing framework for
+post-hoc failure diagnosis in deployed multi-agent workflows. AGENT T RACE reconstructs causal graphs from execution logs, traces backward from error manifestations, and ranks candidate root causes using interpretable structural and positional signals—without requiring LLM inference at debugging time. Across a
+diverse benchmark of multi-agent failure scenarios designed to reflect common
+deployment patterns, AGENT T RACE localizes root causes with high accuracy and
+sub-second latency, significantly outperforming both heuristic and LLM-based
+baselines. Our results suggest that causal tracing provides a practical foundation
+for improving the reliability and trustworthiness of agentic systems in the wild.
+
+1
+
+I NTRODUCTION
+
+Multi-agent systems powered by large language models (LLMs) have emerged as a powerful
+paradigm for solving complex tasks through agent collaboration (Wu et al., 2023; Hong et al.,
+2024). In these systems, specialized agents—such as planners, coders, reviewers, and executors—
+coordinate through message passing to accomplish goals that would be difficult for a single agent.
+In deployed agent systems—such as automated customer support, DevOps remediation, or research
+assistants—failures often surface far downstream from their root causes. By the time an error is
+observed, multiple agents may have already acted on corrupted assumptions, making manual debugging slow and unreliable. The distributed and emergent nature of these workflows means that
+traditional debugging approaches, which examine individual components in isolation, fail to capture
+the cross-agent causal dependencies that lead to system-level failures.
+We propose AGENT T RACE, a lightweight framework that addresses this challenge through three key
+contributions:
+1. Causal Graph Construction: We model multi-agent execution as a directed graph where
+nodes represent agent actions and edges capture information flow and causal dependencies.
+2. Backward Tracing Algorithm: Starting from the point of error manifestation, we trace
+backward through the causal graph to identify all potentially relevant upstream decisions.
+3. Empirical Study of Failure Localization: We demonstrate that lightweight causal tracing
+with interpretable positional and structural features can substantially improve debugging
+accuracy and latency in settings that resemble real-world agent deployments—without requiring expensive LLM inference at debugging time.
+While our benchmark scenarios are synthetically constructed, they are designed to capture common
+failure patterns observed in deployed multi-agent systems, such as early planning errors cascading
+1
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+Figure 1: Overview of the AGENT T RACE framework. (a) Execution logs from a multi-agent workflow are collected. (b) A causal graph is constructed with sequential, communication, and data
+dependency edges. (c) Backward BFS from the error node identifies candidate root causes. (d) Candidates are ranked using a weighted combination of five interpretable feature groups, with position
+features dominating (wp =0.70).
+
+through execution. Our evaluation across 550 failure scenarios in 10 domains shows that AGENTT RACE achieves high localization accuracy with sub-second latency, significantly outperforming
+both heuristic and LLM-based baselines. Figure 1 provides an overview of the framework.
+
+2
+
+R ELATED W ORK
+
+Multi-Agent Systems. Recent frameworks like AutoGen (Wu et al., 2023) and MetaGPT (Hong
+et al., 2024) enable sophisticated multi-agent collaboration, often building on reasoning-and-acting
+paradigms (Yao et al., 2023). However, debugging support in these systems remains limited, typically relying on manual log inspection.
+AI System Debugging. Prior work on AI interpretability has focused on neural network internals (Simonyan et al., 2014; Kim et al., 2018) or reasoning chains (Wei et al., 2022). Self-debugging
+approaches (Chen et al., 2024) use LLMs to identify errors but require expensive inference calls and
+struggle with cross-agent issues.
+Distributed Tracing. Systems like Jaeger (Technologies, 2017) and Zipkin (Twitter, 2012) provide distributed tracing for microservices. We adapt these concepts for multi-agent LLM systems,
+where “messages” between agents carry semantic content rather than just request metadata.
+Root Cause Analysis. Traditional RCA approaches use statistical methods (Soldani & Brogi,
+2022) or graph algorithms (Page et al., 1999). Recent work explores LLM-based agents for root
+cause analysis in cloud systems (Roy et al., 2024), but these methods are not designed for the specific structure of multi-agent workflows.
+2
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+3
+
+AGENT T RACE F RAMEWORK
+
+3.1
+
+P ROBLEM D EFINITION
+
+Given a multi-agent execution trace T that terminates in an error state, our goal is to identify the
+root cause node—the earliest decision point whose correction would prevent the error. Formally, let
+G = (V, E) be a directed acyclic graph where:
+• V = {v1 , v2 , . . . , vn } represents agent actions (tool calls, messages, decisions)
+• E ⊆ V × V represents causal dependencies between actions
+• verror ∈ V is the node where the error manifests
+• vroot ∈ V is the ground-truth root cause
+3.2
+
+C AUSAL G RAPH C ONSTRUCTION
+
+We construct the causal graph from execution logs by identifying three types of edges:
+Sequential edges connect consecutive actions by the same agent, capturing the agent’s reasoning
+flow.
+Communication edges connect message-send events to message-receive events between different
+agents.
+Data dependency edges connect actions that produce data to actions that consume that data, identified through variable reference tracking.
+3.3
+
+BACKWARD T RACING
+
+Given an error node verror , we perform breadth-first backward traversal to collect all ancestor nodes
+within a specified depth limit:
+Algorithm 1 Backward Tracing
+Require: Error node verror , graph G, max depth d
+Ensure: Candidate set C
+1: C ← {verror }
+2: frontier ← {verror }
+3: for i = 1 to d do
+4:
+new frontier ← ∅
+5:
+for v ∈ frontier do
+6:
+for u ∈ parents(v) do
+7:
+if u ∈
+/ C then
+8:
+C ← C ∪ {u}
+9:
+new frontier ← new frontier ∪ {u}
+10:
+end if
+11:
+end for
+12:
+end for
+13:
+frontier ← new frontier
+14: end for
+15: return C
+
+3.4
+
+N ODE R ANKING A LGORITHM
+
+We rank candidate nodes using a weighted linear combination of five feature groups:
+score(v) =
+
+X
+i∈{p,s,c,f,e}
+
+3
+
+wi · Fi (v)
+
+(1)
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+Table 1: Complete feature list with computation methods
+Group (wi )
+
+Feature
+
+Formula
+
+Range
+
+Position (0.70)
+
+Normalized Position
+Distance to Error
+Depth Ratio
+Reverse Position
+
+pos(v)/|V |
+d(v, verror )/ maxu d(u, verror )
+depth(v)/ maxu depth(u)
+1 − pos(v)/|V |
+
+[0, 1]
+[0, 1]
+[0, 1]
+[0, 1]
+
+Structure (0.20)
+
+Out-degree
+In-degree
+Betweenness
+Reachability
+
+|{u : (v, u) ∈ E}|/ maxw |{u : (w, u) ∈ E}|
+|{u : (u, v) ∈ E}|/ maxw |{u : (u, w) ∈ E}|
+P
+σst (v)
+s̸=v̸=t σst (normalized)
+|descendants(v)|/|V |
+
+[0, 1]
+[0, 1]
+[0, 1]
+[0, 1]
+
+Content (0.05)
+
+Error Keywords
+Uncertainty
+Length Anomaly
+Keyword Density
+
+⊮[“error” ∈ content(v)]
+⊮[“maybe” ∈ content(v)]
+|len − µ|/(3σ) (clipped)
+count(keywords)/len
+
+{0, 1}
+{0, 1}
+[0, 1]
+[0, 1]
+
+Flow (0.03)
+
+Agent Switch
+Role Criticality
+Communication
+
+⊮[agent(v) ̸= agent(prev(v))]
+role weight(agent(v))
+⊮[type(v) = “message”]
+
+{0, 1}
+[0, 1]
+{0, 1}
+
+Confidence (0.02)
+
+Stated Confidence
+Hedging Score
+
+conf(v) if available, else 0.5
+count(hedge words)/10 (clipped)
+
+[0, 1]
+[0, 1]
+
+Each group score Fi (v) is the mean of its constituent normalized features:
+Fi (v) =
+
+1 X ˆ
+fj (v),
+|Gi |
+
+fˆj (v) =
+
+j∈Gi
+
+fj (v) − minu fj (u)
+maxu fj (u) − minu fj (u) + ϵ
+
+(2)
+
+where ϵ = 10−8 prevents division by zero. The weights wi are determined via grid search on a
+held-out validation set of 50 scenarios (see Appendix B). Table 1 lists all 17 features across the five
+groups.
+
+4
+
+B ENCHMARK
+
+4.1
+
+S CENARIO G ENERATION
+
+We created a benchmark of 550 synthetic multi-agent failure scenarios across 10 domains (Table 2).
+Each scenario includes a complete execution trace with 8–15 agent actions, a systematically injected
+bug at a specific node, and ground-truth annotation of the root cause node.
+Table 2: Benchmark domains and scenario counts (550 total)
+
+4.2
+
+Domain
+
+N
+
+Domain
+
+N
+
+Software Development
+Customer Service
+Research Analysis
+Planning & Scheduling
+Financial Trading
+
+52
+51
+51
+46
+50
+
+Healthcare Coordination
+Legal Document Analysis
+Educational Tutoring
+Financial Advisory
+DevOps Automation
+
+60
+60
+60
+60
+60
+
+B UG I NJECTION AND G ROUND T RUTH
+
+We inject five categories of bugs: logic errors (incorrect conditionals, 30%), communication failures (message misinterpretation, 20%), data corruption (incorrect transformation, 20%), missing
+validation (skipped verification, 16%), and role confusion (acting outside expertise, 14%).
+Bug injection follows a five-step process: (1) generate a correct execution trace from domain templates; (2) select a bug location (early steps 2–3: 60%, middle steps 4–6: 30%, late steps 7+: 10%);
+4
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+(3) assign a bug type; (4) inject erroneous content (e.g., flipped comparison operators, message truncation, swapped variable names); (5) propagate cascading effects to downstream steps. To prevent
+methods from exploiting explicit bug markers, we also produce a blind version with anonymized
+IDs and separated ground truth.
+Each scenario’s ground truth was established through: (1) controlled bug injection at a known step,
+(2) verification that removing the bug prevents the error, and (3) confirmation that the bug’s effects
+propagate to the error node. The constructed causal graphs have on average 10.8 nodes (σ=2.1)
+and 14.2 edges (σ=3.5), with edges predominantly sequential (61%), followed by communication
+(27%) and data dependency (12%).
+
+5
+
+E XPERIMENTS
+
+5.1
+
+E VALUATION M ETRICS
+• Hit@k: Proportion of scenarios where ground truth appears in top-k predictions
+• Mean Reciprocal Rank (MRR): Average of 1/rank
+
+5.2
+
+BASELINES
+• Random: Uniformly random node selection
+• First Node: Always select the first node
+• Last Node: Select the node immediately before error
+• LLM Analysis: GPT-4 with full trace and prompt engineering (details in Appendix E)
+
+5.3
+
+M AIN R ESULTS
+
+Table 3 shows that AGENT T RACE significantly outperforms all baselines. McNemar’s test confirms
+significance (p < 10−10 ) for all comparisons, with Cohen’s h = 0.77 vs. LLM Analysis indicating a
+large practical difference.
+Table 3: Root cause localization accuracy and statistical significance on the 550-scenario benchmark. 95% CIs from bootstrap resampling (B=10,000). All p-values < 10−10 (McNemar’s test).
+
+5.4
+
+Method
+
+Hit@1
+
+Hit@3
+
+MRR
+
+χ2
+
+Cohen’s h
+
+Random
+First Node
+Last Node
+LLM Analysis
+
+9.1%
+3.6%
+12.7%
+68.5%
+
+27.3%
+10.9%
+38.2%
+81.4%
+
+0.18
+0.07
+0.25
+0.74
+
+459.2
+497.0
+436.5
+102.5
+
+2.41
+2.72
+2.29
+0.77
+
+AGENT T RACE
+
+94.9% [92.9, 96.7]
+
+98.4% [96.9, 99.4]
+
+0.97
+
+–
+
+–
+
+A BLATION S TUDY
+
+Table 4 shows Hit@1 for all feature group combinations and the sensitivity to the position weight wp .
+Position features alone reach 87.3%, while each additional group provides incremental gains. The
+optimal wp = 0.70 balances predictive power with discriminative information from other groups.
+5.5
+
+ROBUSTNESS A NALYSIS
+
+Table 5 stratifies results across three dimensions, demonstrating that AGENT T RACE is robust to bug
+type (93.6–95.8% Hit@1), trace length (93.9–95.5%), and bug position (92.7–96.1%).
+5.6
+
+I LLUSTRATIVE E XAMPLES
+
+We present two representative scenarios to illustrate how AGENT T RACE operates.
+5
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+Table 4: Ablation study. Left: Hit@1 with different feature group combinations (P=Position,
+S=Structure, C=Content, F=Flow, E=Confidence). Right: Sensitivity of Hit@1 to position weight
+wp .
+Features
+
+Hit@1
+
+∆
+
+wp
+
+Hit@1
+
+All (P+S+C+F+E)
+
+94.9%
+
+–
+
+0.50
+
+91.3%
+
+P only
+S only
+C only
+F only
+E only
+
+87.3%
+34.5%
+28.7%
+15.2%
+12.1%
+
+-7.6
+-60.4
+-66.2
+-79.7
+-82.8
+
+0.60
+0.70
+0.80
+0.90
+
+93.5%
+94.9%
+93.8%
+91.1%
+
+P+S
+P+C
+P+F / P+E
+S+C / S+F
+
+92.4%
+90.9%
+89.5 / 88.7%
+45.6 / 38.2%
+
+-2.5
+-4.0
+-5.4 / -6.2
+-49.3 / -56.7
+
+P+S+C
+P+S+C+F
+
+93.8%
+94.5%
+
+-1.1
+-0.4
+
+Table 5: Robustness analysis: Hit@1 and MRR stratified by bug type, trace length, and bug position.
+Stratification
+
+Category
+
+Hit@1
+
+MRR
+
+Bug Type
+
+Logic Error
+Communication Failure
+Data Corruption
+Missing Validation
+Role Confusion
+
+95.8%
+93.6%
+94.5%
+94.3%
+94.8%
+
+0.98
+0.96
+0.97
+0.96
+0.97
+
+Trace Length
+
+8–9 steps
+10–11 steps
+12–13 steps
+14–15 steps
+
+95.5%
+95.0%
+94.2%
+93.9%
+
+0.97
+0.97
+0.96
+0.96
+
+Bug Position
+
+Early (steps 2–3)
+Middle (steps 4–6)
+Late (steps 7+)
+
+96.1%
+93.3%
+92.7%
+
+0.98
+0.96
+0.95
+
+Example 1: Software Development.
+
+Task: Implement average calculation.
+
+Step 1 [Planner]: Analyze requirements
+-> "Sum all numbers, count elements, divide"
+Step 2 [Coder]: Write implementation
+-> "def average(nums): ..."
+Step 3 [Coder]: Add edge case handling [BUG]
+-> "if nums = []: # BUG: = instead of =="
+Step 4 [Reviewer]: Review code -> "Code looks correct."
+Step 5 [Executor]: Run tests [ERROR]
+-> "SyntaxError: invalid syntax at line 2"
+
+Root cause: Step 3 (logic error). AGENT T RACE correctly identifies Step 3; the LLM baseline
+selects Step 5 (error node), illustrating its tendency to select the error manifestation rather than
+tracing back.
+Example 2: Research Analysis.
+
+Task: Analyze transformer architecture publications.
+
+Step 1 [Searcher]: Query databases -> "150 papers"
+Step 2 [Searcher]: Filter -> "25 relevant papers"
+Step 3 [Analyzer]: Extract findings [BUG]
+-> "Attention being replaced by MLPs"
+(actually: attention being enhanced)
+Step 4 [Synthesizer]: "Field moving away from
+
+6
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+attention-based models..."
+Step 5 [Writer]: "Transformers becoming obsolete"
+Step 6 [Writer]: Finalize report [ERROR]
+-> "Contradicts recent SOTA results"
+
+Root cause: Step 3 (communication failure). AGENT T RACE correctly identifies Step 3; the LLM
+selects Step 4 (propagation step), demonstrating the challenge of distinguishing root causes from
+their downstream effects.
+5.7
+
+RUNTIME P ERFORMANCE
+
+AGENT T RACE processes traces in 0.12 seconds on average, compared to 8.3 seconds for LLM-based
+analysis. This 69× speedup enables interactive debugging workflows.
+
+6
+
+D ISCUSSION
+
+Why Position Features Dominate. Importantly, the dominance of positional signals should not
+be interpreted solely as a benchmark artifact. In many deployed agent systems, early planning or
+routing decisions shape the entire downstream execution, making early-stage errors disproportionately impactful. Our analysis reveals that bugs occurring earlier in execution traces tend to cause
+errors that manifest later—a pattern that reflects a fundamental property of hierarchical multi-agent
+workflows where upstream decisions constrain downstream actions.
+Failure Case Analysis. Among the 28 scenarios (5.1%) where AGENT T RACE failed to rank the
+correct root cause first, the dominant failure mode is multiple plausible root causes (12 cases,
+42.9%): e.g., in scenario res 3867e9, both Step 2 (incorrect search query) and Step 3 (overly
+strict filter) contributed to the error. The second mode is bugs at unusual positions (8 cases, 28.6%):
+late-stage bugs (step 7+) have feature distributions that differ from the majority, causing AGENTT RACE to over-prioritize earlier steps. The remaining failures stem from atypical causal structures
+(5 cases) and feature extraction issues (3 cases). Potential improvements include position-adaptive
+weights and multi-root-cause detection.
+Limitations. Our current evaluation focuses on synthetic scenarios with single root causes. Real
+multi-agent failures often involve multiple contributing factors and more complex causal structures.
+Additionally, our benchmark assumes accurate execution logging, which may not always be available in production systems.
+Implications for Agent Safety. As multi-agent systems are deployed in high-stakes domains, the
+ability to quickly identify and understand failures becomes critical for maintaining trust and safety.
+AGENT T RACE provides a foundation for post-hoc analysis that can inform both immediate fixes and
+systematic improvements to agent design.
+
+7
+
+C ONCLUSION
+
+We presented AGENT T RACE, a causal graph-based framework for root cause localization in deployed multi-agent systems. Our approach achieves high accuracy on a diverse benchmark while
+maintaining sub-second latency. The framework’s reliance on interpretable structural and positional
+features—rather than expensive LLM inference—makes it practical for interactive debugging in
+production environments. Future work will extend the approach to handle multiple concurrent root
+causes and validate on production traces. We hope AGENT T RACE can serve as a practical diagnostic
+layer for agentic systems deployed in real-world, reliability-critical environments.
+R EPRODUCIBILITY S TATEMENT
+Our benchmark generation code, evaluation scripts, and all experimental results are
+available
+at
+https://github.com/GeoffreyWang1117/AgentTrace/tree/
+iclr2026-aiwild-camera-ready. The benchmark includes complete execution traces,
+ground truth annotations, and baseline implementations.
+7
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+R EFERENCES
+Xinyun Chen, Maxwell Lin, Nathanael Schärli, and Denny Zhou. Teaching large language models
+to self-debug. In International Conference on Learning Representations, 2024.
+Sirui Hong, Mingchen Zhuge, Jonathan Chen, Xiawu Zheng, Yuheng Cheng, Ceyao Zhang, Jinlin
+Wang, Zili Wang, Steven Yau, Zijuan Lin, et al. Metagpt: Meta programming for a multi-agent
+collaborative framework. In International Conference on Learning Representations, 2024.
+Been Kim, Martin Wattenberg, Justin Gilmer, Carrie Cai, James Wexler, Fernanda Viegas, and Rory
+Sayres. Interpretability beyond feature attribution: Quantitative testing with concept activation
+vectors (tcav). In International Conference on Machine Learning, pp. 2668–2677, 2018.
+Lawrence Page, Sergey Brin, Rajeev Motwani, and Terry Winograd. The pagerank citation ranking:
+Bringing order to the web. In Stanford InfoLab Technical Report, 1999.
+Devjeet Roy, Xuchao Zhang, Rashi Bhave, Chetan Bansal, Pedro Las-Casas, Rodrigo Fonseca, and
+Saravan Rajmohan. Exploring llm-based agents for root cause analysis. In Companion Proceedings of the 32nd ACM International Conference on the Foundations of Software Engineering,
+2024.
+Karen Simonyan, Andrea Vedaldi, and Andrew Zisserman. Deep inside convolutional networks:
+Visualising image classification models and saliency maps. In ICLR Workshop, 2014.
+Jacopo Soldani and Antonio Brogi. Anomaly detection and failure root cause analysis in (micro)
+service-based cloud applications: A survey. ACM Computing Surveys, 55(3):1–39, 2022.
+Uber Technologies. Jaeger: Open source, end-to-end distributed tracing.
+jaegertracing.io/, 2017.
+
+https://www.
+
+Twitter. Zipkin: A distributed tracing system. https://zipkin.io/, 2012.
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Brian Ichter, Fei Xia, Ed Chi, Quoc
+Le, and Denny Zhou. Chain-of-thought prompting elicits reasoning in large language models.
+Advances in Neural Information Processing Systems, 35:24824–24837, 2022.
+Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin Li, Erkang Zhu, Li Jiang, Xiaoyun
+Zhang, and Chi Wang. Autogen: Enabling next-gen llm applications via multi-agent conversation.
+arXiv preprint arXiv:2308.08155, 2023.
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao.
+React: Synergizing reasoning and acting in language models. In International Conference on
+Learning Representations, 2023.
+
+A
+
+B ENCHMARK G ENERATION D ETAILS
+
+Each scenario in our benchmark simulates a multi-agent system with 3–5 specialized agents: a
+Coordinator (task decomposition and delegation), Specialists (domain-specific tasks), a Reviewer
+(output validation), and an Executor (final actions). Table 6 lists the domain-specific configurations.
+Each scenario follows a standardized JSON schema encoding the execution steps, agent metadata,
+and ground truth annotations:
+{ "scenario_id": "cod_034b23", "domain": "coding",
+"agents": ["Planner","Coder","Reviewer","Executor"],
+"steps": [{"step_id": 1, "agent": "Planner",
+"action_type": "plan", "input": "...",
+"output": "...", "timestamp": "..."}, ...],
+"ground_truth": {"error_node_id": 8,
+"root_cause_node_id": 3, "bug_type": "logic_error",
+"bug_description": "Incorrect comparison operator"}}
+
+8
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+Table 6: Domain-specific agent configurations
+
+B
+
+Domain
+
+Agents
+
+Interaction Pattern
+
+N
+
+Software Dev
+Customer Service
+Research
+Planning
+Trading
+Healthcare
+Legal
+Education
+Finance
+DevOps
+
+Planner, Coder, Reviewer, Executor
+Router, Specialist, Resolver, Logger
+Searcher, Analyzer, Synthesizer, Writer
+Scheduler, Optimizer, Validator, Notifier
+Analyst, Strategist, RiskManager, Executor
+Triager, Specialist, Pharmacist, Coordinator
+Researcher, Analyst, Drafter, Reviewer
+Assessor, Tutor, ContentGenerator, Evaluator
+DataCollector, Analyst, Advisor, Reporter
+Monitor, Diagnoser, Remediator, Verifier
+
+Sequential + Review Loop
+Hierarchical Dispatch
+Pipeline + Feedback
+Iterative Refinement
+Parallel Analysis
+Consultation Chain
+Document Pipeline
+Adaptive Loop
+Aggregation Pattern
+Incident Response
+
+52
+51
+51
+46
+50
+60
+60
+60
+60
+60
+
+F EATURE W EIGHT L EARNING
+
+Feature group weights were determined through grid search on a held-out validation set of 50 scenarios (not included in the 550-scenario benchmark):
+w∗ = arg max
+
+50
+X
+
+w
+
+(i)
+
+⊮[rank(vroot |w) = 1]
+
+(3)
+
+i=1
+
+The search space was wp ∈ {0.5, 0.6, 0.7, 0.8}, ws ∈ {0.1, 0.15, 0.2, 0.25},
+wc ∈
+P
+{0.03, 0.05, 0.07, 0.1}, wf ∈ {0.02, 0.03, 0.05}, we ∈ {0.01, 0.02, 0.03}, subject to i wi = 1.
+
+C
+
+S TATISTICAL A NALYSIS D ETAILS
+
+Bootstrap Confidence Intervals. We compute 95% CIs using bootstrap resampling with
+B=10,000 iterations. For each bootstrap sample r(b) , we compute θ̂(b) = mean(r(b) ), then take
+the 2.5th and 97.5th percentiles as interval bounds.
+McNemar’s Test. For comparing two methods A and B, we construct a 2 × 2 contingency table
+of concordant/discordant predictions. The test statistic is χ2 = (|n01 − n10 | − 1)2 /(n01 + n10 ),
+following a χ2 distribution with 1 degree of freedom.
+√
+√
+Effect Size. We use Cohen’s h = 2 arcsin( p1 ) − 2 arcsin( p2 ), where |h| < 0.2 is small,
+0.2 ≤ |h| < 0.5 is medium, and |h| ≥ 0.5 is a large effect.
+
+D
+
+D ETAILED P ER -D OMAIN R ESULTS
+Table 7: Detailed performance metrics by domain
+Domain
+
+N
+
+Hit@1
+
+Hit@3
+
+Hit@5
+
+MRR
+
+Software Development
+Customer Service
+Research Analysis
+Planning & Scheduling
+Financial Trading
+Healthcare Coordination
+Legal Document Analysis
+Educational Tutoring
+Financial Advisory
+DevOps Automation
+
+52
+51
+51
+46
+50
+60
+60
+60
+60
+60
+
+94.2%
+92.2%
+96.1%
+91.3%
+90.0%
+95.0%
+100.0%
+93.3%
+96.7%
+98.3%
+
+96.2%
+96.1%
+98.0%
+95.7%
+98.0%
+100.0%
+100.0%
+100.0%
+100.0%
+98.3%
+
+100.0%
+100.0%
+100.0%
+100.0%
+100.0%
+100.0%
+100.0%
+100.0%
+100.0%
+100.0%
+
+0.96
+0.94
+0.97
+0.94
+0.94
+0.97
+1.00
+0.96
+0.98
+0.99
+
+Overall
+
+550
+
+94.9%
+
+98.4%
+
+99.8%
+
+0.97
+
+9
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+E
+
+LLM BASELINE D ETAILS
+
+We use GPT-4 (gpt-4-0613) with temperature 0.0, max tokens 1024, top-p 1.0, and zero frequency/presence penalties. The prompt instructs the model to analyze the full execution trace, identify causal relationships, and output only the step number of the root cause:
+You are an expert debugger analyzing a multi-agent system
+execution trace. The system encountered an error.
+Your task is to identify the ROOT CAUSE - the earliest
+step where something went wrong that led to the final error.
+## Execution Trace:
+{trace_content}
+## Error Description:
+The system failed at step {error_step}: {error_description}
+## Instructions:
+1. Analyze the execution trace carefully
+2. Identify causal relationships between steps
+3. Find the EARLIEST step that caused the error
+4. Consider: logic errors, miscommunication,
+data issues, missing validation
+## Output Format:
+Respond with ONLY the step number, e.g., "3"
+Root cause step:
+
+Table 8 categorizes the 173 errors made by the LLM baseline. The most common failure mode
+(47.4%) is selecting the error manifestation node rather than tracing back to the actual root cause.
+Table 8: Error analysis for LLM baseline
+Error Type
+
+F
+
+Count
+
+%
+
+Selected error node
+Off-by-one (adjacent)
+Intermediate step
+Completely incorrect
+
+82
+45
+31
+15
+
+47.4
+26.0
+17.9
+8.7
+
+Total
+
+173
+
+100
+
+RUNTIME P ERFORMANCE D ETAILS
+
+Tables 9 and 10 break down runtime by component and show scaling with trace length. Runtime
+scales approximately linearly: T ≈ 12.5n + 5 ms, where n is the number of steps. All experiments
+were conducted on an AMD Ryzen 9 5950X (16-core, 3.4 GHz), 128 GB DDR4 RAM, NVMe SSD,
+Ubuntu 24.04 LTS, Python 3.13.
+Table 9: Component-wise runtime breakdown
+Component
+Mean (ms) Std (ms)
+Graph Construction
+Backward Tracing
+Feature Extraction
+Node Ranking
+
+15.2
+8.4
+62.3
+28.6
+
+3.1
+2.8
+12.4
+5.2
+
+Total
+
+114.5
+
+18.3
+
+G
+
+Table 10: Runtime scaling with trace length
+Steps Mean (ms) P95 (ms)
+5
+10
+15
+20
+25
+
+68
+115
+162
+218
+283
+
+89
+148
+201
+267
+342
+
+R EPRODUCIBILITY
+
+All code, data, and evaluation scripts are available at https://github.com/
+GeoffreyWang1117/AgentTrace/tree/iclr2026-aiwild-camera-ready,
+10
+
+Published at ICLR 2026 Workshop on Agents in the Wild.
+
+including benchmark generation scripts, 550 scenario JSON files with ground truth, all baseline
+implementations, and statistical analysis scripts. Table 11 lists all hyperparameters. Random seeds:
+benchmark generation (42), bootstrap resampling (12345), train/validation split (2024).
+Table 11: Complete hyperparameter settings
+Parameter
+
+Value
+
+Max tracing depth
+wp / ws / wc
+wf / we
+Normalization ϵ
+Bootstrap iters
+Confidence level
+
+10
+0.70 / 0.20 / 0.05
+0.03 / 0.02
+10−8
+10,000
+95%
+
+11
+
+
