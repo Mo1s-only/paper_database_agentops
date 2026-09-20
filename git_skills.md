@@ -8,7 +8,11 @@
 - 内容：AgentOps 论文 PDF、精读笔记、选题调研和实验代码。
 - 以下命令适用于 PowerShell；路径中含空格或中文时使用引号。
 
-## 首次 clone
+## 工作目录约定
+
+日常 Git 操作统一在本机目录 `C:\Users\Administrator\Desktop\论文方向` 下执行。这个目录已经绑定远程仓库，一般不需要额外保留 clone 验证目录。
+
+如更换电脑或本地目录丢失，才重新 clone：
 
 ```powershell
 git clone git@github.com:Mo1s-only/paper_database_agentops.git
@@ -16,6 +20,8 @@ cd paper_database_agentops
 git remote -v
 git status --short --branch
 ```
+
+临时 clone 只用于排查问题，确认后应删除临时目录，避免后续在错误目录中操作。
 
 如果出现 `Permission denied (publickey)`，先执行 `ssh -T git@github.com` 检查当前 GitHub SSH 身份，将本机 SSH 公钥添加到有仓库权限的 GitHub 账户；不要上传私钥。GitHub 认证成功时 SSH 测试也可能返回退出码 1，按返回消息判断。
 
