@@ -24,5 +24,5 @@ Local policy:
 
 - Keep this directory as reference material only.
 - Do not commit cloned source repositories into the thesis repository.
-- Put durable, thesis-specific workflows under `research_skills/`.
+- Put durable, thesis-specific workflows under `skills/research_skills/`.
 - If a source repository is re-cloned or updated, re-evaluate before changing the curated local skill.

@@ -19,10 +19,10 @@ venv/
 node_modules/
 target/
 .pytest_cache/
-Watson/out/
-agentsight/agentsight-bin
-research_skill_sources/*
-!research_skill_sources/README.md
+lab/Watson/out/
+lab/agentsight/agentsight-bin
+skills/research_skill_sources/*
+!skills/research_skill_sources/README.md
 
 # OS metadata
 .DS_Store

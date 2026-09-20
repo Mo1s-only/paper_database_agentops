@@ -63,5 +63,4 @@ At the end:
 1. Reconcile the note for contradictions.
 2. Update the summary and open flags.
 3. Propose one next research action.
-4. Ask whether any reusable insight should be promoted into `research_skills/`, a thesis plan, or a persistent note.
-
+4. Ask whether any reusable insight should be promoted into `skills/research_skills/`, a thesis plan, or a persistent note.

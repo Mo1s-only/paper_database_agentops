@@ -2,7 +2,7 @@
 
 The active local skill is:
 
-- `research_skills/agentops-thesis-research/SKILL.md`
+- `skills/research_skills/agentops-thesis-research/SKILL.md`
 
 It is tailored for this repository as the user's graduation-thesis workspace. It combines the best ideas from the evaluated GitHub skills into a smaller, thesis-specific workflow:
 
