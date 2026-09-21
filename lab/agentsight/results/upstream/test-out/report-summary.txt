@@ -1,0 +1,13 @@
+Warning: No agentsight-*.db session database found in the current directory; using local agent sessions.
+agent_native_session session · 677s · 7 API calls · 369428 tokens
+
+Timeline
+  first LLM call: +0ms
+  first tool call: +32.5s
+  LLM latency: avg 11.6s, max 13.0s (7 completed)
+  prompt length: avg 118 chars, max 143 chars (7 captured)
+
+  deepseek-v4-pro — 7 calls, 369428 tokens (in: 154347, out: 1582)
+
+12 tool calls: Read(6), Write(6)
+tool duration: not captured

@@ -1,0 +1,33 @@
+Audit events
+timestamp_ms    type       pid      comm             status     target                       summary
+1789366691133   process    348      claude           success    -                            exit code 0 (11867ms)
+1789366691133   file       348      Bun Pool 5       observed   /root/.claude/projects/-m... file /root/.claude/projects/-mnt-c-Users-mobao-Desktop-agentsight-test-workspace/edd0ebe2-c816-4bbd-9247-e87c9c3ddb56.jsonl
+1789366691100   llm        348      HTTP Client      orphan_response -                            LLM response
+1789366690005   llm        348      HTTP Client      orphan_response -                            LLM response
+1789366688022   llm        348      HTTP Client      orphan_response -                            LLM response
+1789366684878   file       348      Bun Pool 5       observed   /root/.claude/projects/-m... file /root/.claude/projects/-mnt-c-Users-mobao-Desktop-agentsight-test-workspace/edd0ebe2-c816-4bbd-9247-e87c9c3ddb56.jsonl
+1789366684773   process    367      git              success    -                            exit code 0 (5112ms)
+1789366680259   llm        -        claude           observed   -                            Create a file named hello.txt in the current directory containing exactly the line: AgentSight test. Then read it back and report its contents.
+1789366679733   process    375      claude.exe       failure    -                            exit code 1 (41ms)
+1789366679723   process    368      git              success    -                            exit code 0 (61ms)
+1789366679709   process    373      claude.exe       failure    -                            exit code 2 (21ms)
+1789366679691   process    375      claude.exe       observed   /usr/local/lib/node_modul... exec /usr/local/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe
+1789366679689   process    372      claude.exe       success    -                            exit code 0 (2ms)
+1789366679688   process    373      claude.exe       observed   /usr/local/lib/node_modul... exec /usr/local/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe
+1789366679687   process    372      claude.exe       observed   /usr/local/lib/node_modul... exec /usr/local/lib/node_modules/@anthropic-ai/claude-code/bin/claude.exe
+1789366679675   process    369      git              success    -                            exit code 0 (13ms)
+1789366679662   process    369      git              observed   /usr/bin/git                 exec /usr/bin/git
+1789366679661   process    367      git              observed   /usr/bin/git                 exec /usr/bin/git
+1789366679661   process    368      git              observed   /usr/bin/git                 exec /usr/bin/git
+1789366679646   process    360      git              success    -                            exit code 0 (32ms)
+1789366679614   process    360      git              observed   /usr/bin/git                 exec /usr/bin/git
+1789366679601   process    359      git              failure    -                            exit code 1 (18ms)
+1789366679583   process    359      git              observed   /usr/bin/git                 exec /usr/bin/git
+1789366679580   process    358      git              failure    -                            exit code 1 (21ms)
+1789366679558   process    358      git              observed   /usr/bin/git                 exec /usr/bin/git
+1789366679375   process    351      reg.exe          failure    -                            exit code 1 (73ms)
+1789366679365   process    352      reg.exe          failure    -                            exit code 1 (60ms)
+1789366679305   process    352      reg.exe          observed   /mnt/c/Windows/System32/r... exec /mnt/c/Windows/System32/reg.exe
+1789366679302   process    351      reg.exe          observed   /mnt/c/Windows/System32/r... exec /mnt/c/Windows/System32/reg.exe
+1789366679276   file       348      claude           observed   /sys/kernel/debug/tracing... file /sys/kernel/debug/tracing/trace_marker
+1789366679266   process    348      claude           observed   /usr/local/bin/claude        exec /usr/local/bin/claude

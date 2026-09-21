@@ -1,0 +1,1757 @@
+{
+  "experiment_type": "synthetic_offline_control_flow",
+  "real_model_requests": 0,
+  "audit": {
+    "exists": true,
+    "total": 3,
+    "with_prompt": 0,
+    "text_eligible": 0,
+    "missing_request": 3,
+    "database_unchanged": true
+  },
+  "runs": [
+    {
+      "mode": "accept",
+      "k": 1,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 1,
+      "attempts": 1,
+      "matched": 1,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 5,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 1,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "accept",
+      "k": 3,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 3,
+      "attempts": 3,
+      "matched": 3,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 9,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 3,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "accept",
+      "k": 5,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 5,
+      "attempts": 5,
+      "matched": 5,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 13,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 5,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "accept",
+      "k": 10,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 10,
+      "attempts": 10,
+      "matched": 10,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 23,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 10,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "wrong",
+      "k": 1,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": false
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 1,
+      "attempts": 4,
+      "matched": 0,
+      "output_match_rate": 0.0,
+      "judge_acceptance_rate": null,
+      "api_requests": 6,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "wrong",
+      "k": 3,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": false
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 3,
+      "attempts": 12,
+      "matched": 0,
+      "output_match_rate": 0.0,
+      "judge_acceptance_rate": null,
+      "api_requests": 14,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "wrong",
+      "k": 5,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": false
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 5,
+      "attempts": 20,
+      "matched": 0,
+      "output_match_rate": 0.0,
+      "judge_acceptance_rate": null,
+      "api_requests": 22,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "wrong",
+      "k": 10,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": false
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 10,
+      "attempts": 40,
+      "matched": 0,
+      "output_match_rate": 0.0,
+      "judge_acceptance_rate": null,
+      "api_requests": 42,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "judge_reject",
+      "k": 1,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 1,
+      "attempts": 4,
+      "matched": 4,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 0.0,
+      "api_requests": 10,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "judge_reject",
+      "k": 3,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 3,
+      "attempts": 12,
+      "matched": 12,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 0.0,
+      "api_requests": 26,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "judge_reject",
+      "k": 5,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 5,
+      "attempts": 20,
+      "matched": 20,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 0.0,
+      "api_requests": 42,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "judge_reject",
+      "k": 10,
+      "call_id": "synthetic",
+      "status": "insufficient_candidates",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 10,
+      "attempts": 40,
+      "matched": 40,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 0.0,
+      "api_requests": 82,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "NO"
+        }
+      ],
+      "accepted": 0,
+      "accepted_reasonings": [],
+      "meta_reasoning": "No verified candidate was accepted.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "alternating",
+      "k": 1,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 1,
+      "attempts": 1,
+      "matched": 1,
+      "output_match_rate": 1.0,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 5,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 1,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "alternating",
+      "k": 3,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 3,
+      "attempts": 5,
+      "matched": 3,
+      "output_match_rate": 0.6,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 11,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 3,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "alternating",
+      "k": 5,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 5,
+      "attempts": 9,
+      "matched": 5,
+      "output_match_rate": 0.5555555555555556,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 17,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 5,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    },
+    {
+      "mode": "alternating",
+      "k": 10,
+      "call_id": "synthetic",
+      "status": "complete",
+      "mirror": {
+        "model": "fixture",
+        "temperature": 0,
+        "top_p": 1,
+        "mirror_level": "approximate",
+        "reason": "message roles flattened; full decoding configuration not replayed",
+        "primary_model": "fixture"
+      },
+      "verification": {
+        "method": "match_ablation",
+        "components": [
+          {
+            "component": "component_0",
+            "target_match_without_component": true
+          },
+          {
+            "component": "component_1",
+            "target_match_without_component": false
+          }
+        ],
+        "judge": "llm_yes_no",
+        "output_matching": "exact_text",
+        "limitations": "single-sample binary ablation; not token-probability PromptExp"
+      },
+      "requested_samples": 10,
+      "attempts": 19,
+      "matched": 10,
+      "output_match_rate": 0.5263157894736842,
+      "judge_acceptance_rate": 1.0,
+      "api_requests": 32,
+      "candidate_history": [
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        },
+        {
+          "candidate": "Synthetic wrong candidate.\nFINAL: other",
+          "output_match": false,
+          "verdict": null
+        },
+        {
+          "candidate": "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+          "output_match": true,
+          "verdict": "YES"
+        }
+      ],
+      "accepted": 10,
+      "accepted_reasonings": [
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739",
+        "Synthetic matching candidate.\nFINAL: TARGET_SENTINEL_739"
+      ],
+      "meta_reasoning": "Synthetic fixture summary; not evidence about model reasoning.",
+      "elapsed_seconds": 0.0
+    }
+  ]
+}

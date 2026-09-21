@@ -1,0 +1,9 @@
+  audit_events          30   <- has data
+  llm_calls              3   <- has data
+  network_targets        2   <- has data
+  process_nodes         12   <- has data
+  resource_samples      15   <- has data
+  token_usage            3   <- has data
+  tool_calls             2   <- has data
+
+7 tables, 67 rows total in /mnt/c/Users/mobao/Desktop/agentsight/test/out/session.db

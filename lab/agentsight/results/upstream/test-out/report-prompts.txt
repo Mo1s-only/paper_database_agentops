@@ -1,0 +1,6 @@
+LLM prompts
+timestamp_ms    comm             model                          tokens prompt
+1789366691100   HTTP Client      deepseek-v4-pro                 19529 null
+1789366690005   HTTP Client      deepseek-v4-pro                 19458 null
+1789366688022   HTTP Client      deepseek-v4-pro                 19314 null
+1789366680259   claude           deepseek-v4-pro                 58301 Create a file named hello.txt in the current directory containing exactly the line: AgentSigh...

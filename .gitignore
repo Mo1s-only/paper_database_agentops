@@ -21,6 +21,14 @@ target/
 .pytest_cache/
 lab/Watson/out/
 lab/agentsight/agentsight-bin
+# Experimental captures, local databases and assistant state
+lab/**/results/**/local-claude-state/
+lab/**/results/**/*.db
+lab/**/results/**/*.db-*
+lab/**/results/**/*.jsonl
+lab/**/results/**/*.log
+lab/**/results/**/.env
+lab/**/results/**/__pycache__/
 skills/research_skill_sources/*
 !skills/research_skill_sources/README.md
 

@@ -1,0 +1,3 @@
+Token usage grouped by model
+group                                   input       output    cache_new   cache_read        total    calls sessions
+deepseek-v4-pro                         45058          456            0        71088       116602        4        1

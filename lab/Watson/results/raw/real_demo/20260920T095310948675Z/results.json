@@ -1,0 +1,129 @@
+{
+  "experiment": "real_deepseek_watson_demo",
+  "key_label": "Watson",
+  "requested_model": "deepseek-v4-flash",
+  "date_utc": "20260920T095310948675Z",
+  "endpoint": "https://api.deepseek.com/chat/completions",
+  "budget_cny": 0.4,
+  "maximum_reserved_cny": 0.313728,
+  "price_source": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+  "model_notice": "Legacy v4-flash alias is served by V4.1-Flash according to current official documentation.",
+  "input_peak_cny_per_million": 2.0,
+  "output_peak_cny_per_million": 8.0,
+  "status": "finished",
+  "tasks": [
+    {
+      "id": "stock_decision",
+      "ground_truth": "REORDER",
+      "primary_answer": "REORDER",
+      "primary_correct": true,
+      "watson": {
+        "call_id": "stock_decision",
+        "status": "complete",
+        "mirror": {
+          "model": "deepseek-v4-flash",
+          "temperature": 0,
+          "top_p": 1,
+          "mirror_level": "approximate",
+          "reason": "message roles flattened; full decoding configuration not replayed",
+          "primary_model": "deepseek-v4-flash"
+        },
+        "verification": {
+          "method": "match_ablation",
+          "components": [
+            {
+              "component": "component_0",
+              "target_match_without_component": false
+            },
+            {
+              "component": "component_1",
+              "target_match_without_component": false
+            }
+          ],
+          "judge": "llm_yes_no",
+          "output_matching": "exact_text",
+          "limitations": "single-sample binary ablation; not token-probability PromptExp"
+        },
+        "requested_samples": 1,
+        "attempts": 1,
+        "matched": 1,
+        "output_match_rate": 1.0,
+        "judge_acceptance_rate": 1.0,
+        "api_requests": 5,
+        "candidate_history": [
+          {
+            "candidate": "Available stock = 12 - 5 = 7, which is below 10, so the decision is REORDER.\n\nFINAL: REORDER",
+            "output_match": true,
+            "verdict": "YES"
+          }
+        ],
+        "accepted": 1,
+        "accepted_reasonings": [
+          "Available stock = 12 - 5 = 7, which is below 10, so the decision is REORDER.\n\nFINAL: REORDER"
+        ],
+        "meta_reasoning": "The explanation states that after subtracting 5 from 12, the available stock is 7. Since 7 is below the threshold of 10, the resulting decision is to reorder.\n\nFinal answer: **REORDER**\n\nUncertainty note: This is a summary of the provided explanation only; no hidden reasoning or chain-of-thought is claimed.",
+        "elapsed_seconds": 39.969
+      }
+    },
+    {
+      "id": "service_decision",
+      "ground_truth": "RESTART",
+      "primary_answer": "RESTART",
+      "primary_correct": true,
+      "watson": {
+        "call_id": "service_decision",
+        "status": "complete",
+        "mirror": {
+          "model": "deepseek-v4-flash",
+          "temperature": 0,
+          "top_p": 1,
+          "mirror_level": "approximate",
+          "reason": "message roles flattened; full decoding configuration not replayed",
+          "primary_model": "deepseek-v4-flash"
+        },
+        "verification": {
+          "method": "match_ablation",
+          "components": [
+            {
+              "component": "component_0",
+              "target_match_without_component": false
+            },
+            {
+              "component": "component_1",
+              "target_match_without_component": true
+            }
+          ],
+          "judge": "llm_yes_no",
+          "output_matching": "exact_text",
+          "limitations": "single-sample binary ablation; not token-probability PromptExp"
+        },
+        "requested_samples": 1,
+        "attempts": 1,
+        "matched": 1,
+        "output_match_rate": 1.0,
+        "judge_acceptance_rate": 1.0,
+        "api_requests": 5,
+        "candidate_history": [
+          {
+            "candidate": "Health is failing and maintenance mode is off, so the rule says return RESTART. The old log is ignored because the current observation takes precedence.\n\nFINAL: RESTART",
+            "output_match": true,
+            "verdict": "YES"
+          }
+        ],
+        "accepted": 1,
+        "accepted_reasonings": [
+          "Health is failing and maintenance mode is off, so the rule says return RESTART. The old log is ignored because the current observation takes precedence.\n\nFINAL: RESTART"
+        ],
+        "meta_reasoning": "The accepted explanation concludes that the system should return **RESTART**.\n\nReasoning summary:\n- Health is failing.\n- Maintenance mode is off.\n- Under the stated rule, this condition requires **RESTART**.\n- The older log is treated as irrelevant because the current observation takes precedence.\n\nUncertainty note: This is a summary of the provided accepted explanation only. It does not claim access to hidden chain-of-thought or any internal reasoning beyond what was explicitly stated.\n\n**FINAL: RESTART**",
+        "elapsed_seconds": 26.791
+      }
+    }
+  ],
+  "api_requests": 12,
+  "reserved_cny": 0.156864,
+  "usage_peak_cost_upper_cny": 0.004602,
+  "all_requests_have_usage": true,
+  "returned_models": [
+    "deepseek-flash"
+  ]
+}
