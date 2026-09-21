@@ -2,8 +2,6 @@
 
 本文档说明一次 AgentSight 端到端实验会产生哪些输出文件、每个文件如何解释，以及如何重复运行实验。实验脚本位于 `lab/agentsight/source/thesis_adapter/test/`，结果默认写入该脚本目录下的 `out/`；本仓库整理后的历史结果位于 `lab/agentsight/results/upstream/`。
 
-每次实验结果必须同时记录**版本号和时间**。版本号表示实验协议或代码版本，时间统一使用 UTC，格式为 `YYYYMMDDTHHMMSSZ`。不要用一个没有版本和时间的 `out/` 覆盖上一轮结果。
-
 ## 一 实验产生的证据链
 
 ```text
@@ -164,51 +162,166 @@ passed 13, failed 0
 
 后续故障归因实验应在此输出基础上构造可重复失败，并为每次失败记录责任 Agent、责任步骤、根因类型和证据时间区间。
 
-## 六 版本与时间记录规范
+## 七 本次样例结果的逐文件解读
 
-每次运行开始前先确定版本号，例如：
+下面用当前 `test-out` 样例说明“看到一条记录时应该如何解释”。这些数值属于本次样例，不应在后续运行中直接当作固定预期；后续运行要以当轮的版本、时间和 `run-info.txt` 为准。
 
-```text
-实验版本：v0.1
-运行时间：20260921T120000Z
-```
+### 1. `claude-run.log`
 
-建议把完整结果归档为：
+这是 Claude Code 自身输出的 JSON 日志，不是 AgentSight 生成的。当前样例中可以看到模型为 `deepseek-v4-pro`，任务返回内容为：
 
 ```text
-results/runs/v0.1_20260921T120000Z/
+Created hello.txt and read it back.
+Its contents are exactly:
+AgentSight test
 ```
 
-并在该目录放置 `run-info.txt`，内容至少包括：
+它证明 Claude Code 报告自己完成了任务，但不能单独证明文件确实存在。文件是否真的写入，要继续检查 `raw-stream.log`、`report-audit.txt` 和实验 workspace 中的 `hello.txt`。
+
+### 2. `record.log`
+
+这是 AgentSight 监控程序的运行日志。当前样例中的关键行是：
 
 ```text
-experiment=agentsight-observation
-version=v0.1
-started_at_utc=20260921T120000Z
-finished_at_utc=20260921T120016Z
-agent=Claude Code 2.1.270
-model=deepseek-v4-pro
-scenario=hello-file-write-read
-script=lab/agentsight/source/thesis_adapter/test/run-test.sh
+BoringSSL byte-pattern detected
+Recorded 16s to session.db
+4 API calls · 116.6k tokens · 12 execs · 2 files · 2 network endpoints
 ```
 
-报告文件名也应包含版本和时间，例如：
+这表示静态链接 SSL 已通过 BoringSSL 字节模式定位，监控运行约 16 秒，并统计到 4 次 API 调用、约 116.6k Token、12 个 exec、2 个文件和 2 个网络端点。
+
+### 3. `raw-stream.log`
+
+这是最原始的事件流。例如：
+
+```json
+{"comm":"claude","data":{"event":"EXEC","filename":"/usr/local/bin/claude","pid":348}}
+```
+
+这里的 `EXEC` 表示进程启动，`pid=348` 是 Claude 主进程。其他常见事件包括 `EXIT` 和 `FILE_OPEN`。这个文件适合回答“哪个 PID 执行了什么命令”“哪个进程打开了什么文件”“某个进程为何退出”等问题。
+
+### 4. `db-rows.txt`
+
+当前样例的摘要为：
 
 ```text
-AgentSight实验报告_v0.1_20260921T120000Z.docx
+audit_events          30
+llm_calls              3
+network_targets        2
+process_nodes         12
+resource_samples      15
+token_usage            3
+tool_calls             2
+7 tables, 67 rows total
 ```
 
-如果只保留快速检查目录，也至少要在目录旁保留 `run-info.txt`，并在实验报告中引用同一个版本号和 UTC 时间。当前历史目录 `upstream/test-out/` 是旧版固定目录，后续重跑应迁移到 `runs/v版本_时间/`，不要继续覆盖它。
+它是快速健康检查，不是原始数据。只要关键表为 0，就应先排查探针或写库问题，再解释其他报告。
 
-## 七 建议的结果归档方式
+### 5. `report-audit.txt`
+
+例如：
+
+```text
+process 348 claude success exit code 0
+llm HTTP Client orphan_response
+```
+
+第一行说明 Claude 主进程正常退出。第二行表示 AgentSight 捕获到了 LLM 响应，但没有把响应和完整请求配对。`orphan_response` 是后续 Watson 重建输入输出时的重要限制，不能当作完整 request-response 样本。
+
+### 6. `report-list.txt`
+
+当前样例显示：
+
+```text
+No session databases found in .../workspace
+```
+
+这只表示 workspace 中没有额外的 `agentsight-*.db` 文件。主数据库仍然是 `session.db`，不能因为这行提示就判断实验没有数据库。
+
+### 7. `report-prompts.txt`
+
+当前样例中不同来源的调用大致如下：
+
+```text
+HTTP Client    deepseek-v4-pro   19529
+HTTP Client    deepseek-v4-pro   19458
+HTTP Client    deepseek-v4-pro   19314
+claude         deepseek-v4-pro   58301
+```
+
+它可以帮助判断请求来自 Claude 主进程还是 HTTP Client 网络线程，以及每轮上下文规模。前三条的 prompt 为 `null`，表示元数据或响应被捕获，但请求文本没有成功还原；最后一条出现 `Create a file named hello.txt ...`，表示首个任务 Prompt 被捕获。
+
+### 8. `report-summary.txt`
+
+该文件可能显示：
+
+```text
+agent_native_session session
+7 API calls
+369428 tokens
+12 tool calls
+```
+
+它和 `record.log` 的 4 次 API 调用、116.6k Token 不一致并不一定是错误。`record.log` 统计 eBPF/TLS 采集会话，`report-summary.txt` 可能统计 Agent 原生会话文件。分析本次 AgentSight 捕获结果时，应以 `session.db`、`db-rows.txt` 和 `record.log` 为主，把 `report-summary.txt` 作为补充视图。
+
+### 9. `report-token.txt`
+
+当前样例可读为：
+
+```text
+input       45058
+output        456
+cache_read  71088
+total      116602
+calls            4
+```
+
+它表示输入 Token 45,058、输出 Token 456、缓存读取 Token 71,088，总 Token 116,602，共 4 次调用。该文件适合做上下文成本分析，不等同于最终服务商账单。
+
+### 10. `session.db`
+
+这是主结果数据库。当前样例包含 `audit_events`、`llm_calls`、`network_targets`、`process_nodes`、`resource_samples`、`token_usage` 和 `tool_calls` 七张表。后续归因实验最重要的关联字段是：
+
+```text
+process_nodes → tool_calls → audit_events → llm_calls → token_usage
+```
+
+它们可以组合回答：哪个 Agent 在什么时间调用了什么工具，工具或模型调用是否成功，最终产生了什么文件或任务结果。
+
+### 11. `session.db-shm` 与 `session.db-wal`
+
+这两个文件是 SQLite 辅助文件：`-shm` 用于共享内存和锁协调，`-wal` 用于预写日志。它们不能单独解释；归档或复制正在运行的实验时，应和同目录的 `session.db` 一起保存。
+
+## 八 本次样例的整体结论
+
+当前样例已经形成：
+
+```text
+Claude Code 运行
+    ↓
+进程树和执行命令
+    ↓
+工具调用
+    ↓
+文件读写副作用
+    ↓
+模型请求和响应
+    ↓
+Token 与网络端点
+    ↓
+SQLite 结构化落库
+```
+
+它验证的是 Agent 观测链路，还没有验证故障归因和诊断定位。后续应构造工具错误、错误信息传播、模型调用成功但任务失败、子进程异常退出等失败样本，再利用 `process_nodes`、`tool_calls`、`llm_calls`、`audit_events` 和 `network_targets` 建立责任 Agent、责任步骤和根因证据链。
+
+## 六 建议的结果归档方式
 
 每次成功运行后，建议按 UTC 时间保存完整目录：
 
 ```text
 results/
 └── runs/
-    └── v0.1_20260921T120000Z/
-        ├── run-info.txt
+    └── 20260921T120000Z/
         ├── record.log
         ├── raw-stream.log
         ├── claude-run.log
@@ -221,4 +334,4 @@ results/
         └── workspace/
 ```
 
-归档前先脱敏 `session.db`、日志、Prompt、路径、模型调用记录和任何 API 认证信息。`session.db-shm` 与 `session.db-wal` 如果存在，也应和对应的 `session.db` 一起归档。后续每一轮实验都应新建版本+时间目录，不覆盖已有结果。
+归档前先脱敏 `session.db`、日志、Prompt、路径、模型调用记录和任何 API 认证信息。`session.db-shm` 与 `session.db-wal` 如果存在，也应和对应的 `session.db` 一起归档。
