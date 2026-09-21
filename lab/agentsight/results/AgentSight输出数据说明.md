@@ -2,6 +2,8 @@
 
 本文档说明一次 AgentSight 端到端实验会产生哪些输出文件、每个文件如何解释，以及如何重复运行实验。实验脚本位于 `lab/agentsight/source/thesis_adapter/test/`，结果默认写入该脚本目录下的 `out/`；本仓库整理后的历史结果位于 `lab/agentsight/results/upstream/`。
 
+每次实验结果必须同时记录**版本号和时间**。版本号表示实验协议或代码版本，时间统一使用 UTC，格式为 `YYYYMMDDTHHMMSSZ`。不要用一个没有版本和时间的 `out/` 覆盖上一轮结果。
+
 ## 一 实验产生的证据链
 
 ```text
@@ -162,14 +164,51 @@ passed 13, failed 0
 
 后续故障归因实验应在此输出基础上构造可重复失败，并为每次失败记录责任 Agent、责任步骤、根因类型和证据时间区间。
 
-## 六 建议的结果归档方式
+## 六 版本与时间记录规范
+
+每次运行开始前先确定版本号，例如：
+
+```text
+实验版本：v0.1
+运行时间：20260921T120000Z
+```
+
+建议把完整结果归档为：
+
+```text
+results/runs/v0.1_20260921T120000Z/
+```
+
+并在该目录放置 `run-info.txt`，内容至少包括：
+
+```text
+experiment=agentsight-observation
+version=v0.1
+started_at_utc=20260921T120000Z
+finished_at_utc=20260921T120016Z
+agent=Claude Code 2.1.270
+model=deepseek-v4-pro
+scenario=hello-file-write-read
+script=lab/agentsight/source/thesis_adapter/test/run-test.sh
+```
+
+报告文件名也应包含版本和时间，例如：
+
+```text
+AgentSight实验报告_v0.1_20260921T120000Z.docx
+```
+
+如果只保留快速检查目录，也至少要在目录旁保留 `run-info.txt`，并在实验报告中引用同一个版本号和 UTC 时间。当前历史目录 `upstream/test-out/` 是旧版固定目录，后续重跑应迁移到 `runs/v版本_时间/`，不要继续覆盖它。
+
+## 七 建议的结果归档方式
 
 每次成功运行后，建议按 UTC 时间保存完整目录：
 
 ```text
 results/
 └── runs/
-    └── 20260921T120000Z/
+    └── v0.1_20260921T120000Z/
+        ├── run-info.txt
         ├── record.log
         ├── raw-stream.log
         ├── claude-run.log
@@ -182,4 +221,4 @@ results/
         └── workspace/
 ```
 
-归档前先脱敏 `session.db`、日志、Prompt、路径、模型调用记录和任何 API 认证信息。`session.db-shm` 与 `session.db-wal` 如果存在，也应和对应的 `session.db` 一起归档。
+归档前先脱敏 `session.db`、日志、Prompt、路径、模型调用记录和任何 API 认证信息。`session.db-shm` 与 `session.db-wal` 如果存在，也应和对应的 `session.db` 一起归档。后续每一轮实验都应新建版本+时间目录，不覆盖已有结果。
