@@ -15,7 +15,7 @@ Do not run a Humanizer-style polish while any of these remain unresolved:
 - unresolved contradiction;
 - unknown thesis requirement.
 
-If any precondition fails, return to `thesis-writing.md` or `quality-gates.md`.
+If any precondition fails, return to `thesis-writing.md` or `../quality/quality-gates.md`.
 
 ## Humanizer-Style Pass
 

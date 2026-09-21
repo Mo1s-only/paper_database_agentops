@@ -1,6 +1,6 @@
 ---
 name: agentops-thesis-research
-description: Use for all research work in this thesis repository: paper reading, literature review, AgentOps topic framing, experiment planning, thesis writing, citation checks, and research-quality review. Do not use for unrelated coding tasks unless they affect the thesis evidence base.
+description: "Use for all research work in this thesis repository: paper reading, literature review, AgentOps topic framing, experiment planning, thesis writing, citation checks, and research-quality review. Do not use for unrelated coding tasks unless they affect the thesis evidence base."
 ---
 
 # AgentOps Thesis Research
@@ -20,17 +20,17 @@ This repository is the working base for a graduation thesis on AgentOps, multi-a
 
 Read only the reference needed for the current request:
 
-| Request type | Reference |
-|---|---|
-| Read, summarize, compare, or critique a paper | `references/paper-reading.md` |
-| Build a literature review, related work, source map, or research gap table | `references/literature-review.md` |
-| Frame the thesis topic, research question, contribution, or experiment plan | `references/topic-and-experiment-framing.md` |
-| Grill, stress-test, or interview the user about a thesis decision, plan, or defense answer | `references/discovery-grill.md` |
-| Draft or revise thesis chapters, abstracts, introductions, methods, related work, or conclusions | `references/thesis-writing.md` |
-| Polish thesis prose after claims and citations are stable | `references/writing-polish.md` |
-| Audit claims, citations, figures, consistency, or readiness | `references/quality-gates.md` |
+| Category | Request type | Reference |
+|---|---|---|
+| Literature | Read, summarize, compare, or critique a paper | `references/literature/paper-reading.md` |
+| Literature | Build a literature review, related work, source map, or research gap table | `references/literature/literature-review.md` |
+| Planning | Frame the thesis topic, research question, contribution, or experiment plan | `references/planning/topic-and-experiment-framing.md` |
+| Planning | Grill, stress-test, or interview the user about a thesis decision, plan, or defense answer | `references/planning/discovery-grill.md` |
+| Writing | Draft or revise thesis chapters, abstracts, introductions, methods, related work, or conclusions | `references/writing/thesis-writing.md` |
+| Writing | Polish thesis prose after claims and citations are stable | `references/writing/writing-polish.md` |
+| Quality | Audit claims, citations, figures, consistency, or readiness | `references/quality/quality-gates.md` |
 
-For broad requests like "help me advance the thesis", start with `topic-and-experiment-framing.md`, then use the other references only as needed.
+For broad requests like "help me advance the thesis", start with `references/planning/topic-and-experiment-framing.md`, then use the other references only as needed.
 
 User-prioritized workflows:
 
