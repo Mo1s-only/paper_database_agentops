@@ -1,0 +1,116 @@
+{
+  "schema_version": "agentops-real-pilot-plan-v0.1",
+  "execution": "DRY_RUN_ONLY",
+  "network_calls_made": 0,
+  "planned_api_calls": 6,
+  "upper_bound_usd_per_call": 0.13,
+  "planned_cost_upper_bound_usd": 0.78,
+  "hard_stop_usd": 1.0,
+  "hard_stop_total_usd": 1.0,
+  "selected_case": null,
+  "cases": [
+    {
+      "case_id": "inventory-silent-tool",
+      "task_family": "inventory",
+      "fault_type": "silent_tool_error",
+      "agents": [
+        "agent_a",
+        "agent_b"
+      ],
+      "planned_api_calls": 2,
+      "responsible_agent": "agent_b",
+      "responsible_step": "agent_b.bash_tool_call",
+      "responsible_edge": {
+        "from": "agent_b.bash_tool_call",
+        "to": "agent_b.tool_result"
+      },
+      "expected": {
+        "item": "alpha",
+        "available": 1
+      },
+      "observed_fault": {
+        "status": "ok",
+        "available": 0
+      },
+      "artifacts": [
+        "route.json",
+        "decision.json",
+        "session.db",
+        "raw-stream.log",
+        "trace.jsonl",
+        "ground_truth.json",
+        "analysis.json",
+        "cost.json"
+      ]
+    },
+    {
+      "case_id": "service-error-propagation",
+      "task_family": "service_restart",
+      "fault_type": "error_propagation",
+      "agents": [
+        "agent_a",
+        "agent_b"
+      ],
+      "planned_api_calls": 2,
+      "responsible_agent": "agent_b",
+      "responsible_step": "agent_b.bash_tool_call",
+      "responsible_edge": {
+        "from": "agent_b.bash_tool_call",
+        "to": "agent_b.tool_result"
+      },
+      "expected": {
+        "service": "api",
+        "state": "running"
+      },
+      "observed_fault": {
+        "status": "error",
+        "error_code": "TIMEOUT"
+      },
+      "artifacts": [
+        "service-task.json",
+        "service-decision.json",
+        "session.db",
+        "raw-stream.log",
+        "trace.jsonl",
+        "ground_truth.json",
+        "analysis.json",
+        "cost.json"
+      ]
+    },
+    {
+      "case_id": "retrieval-routing-error",
+      "task_family": "document_retrieval",
+      "fault_type": "routing_role_error",
+      "agents": [
+        "orchestrator",
+        "agent_c"
+      ],
+      "planned_api_calls": 2,
+      "responsible_agent": "orchestrator",
+      "responsible_step": "orchestrator.route",
+      "responsible_edge": {
+        "from": "task.start",
+        "to": "orchestrator.route"
+      },
+      "expected": {
+        "required_role": "retrieval_specialist",
+        "query": "alpha policy"
+      },
+      "observed_fault": {
+        "assigned_role": "generalist",
+        "assigned_agent": "agent_c"
+      },
+      "artifacts": [
+        "route.json",
+        "retrieval-decision.json",
+        "session.db",
+        "raw-stream.log",
+        "trace.jsonl",
+        "ground_truth.json",
+        "analysis.json",
+        "cost.json"
+      ]
+    }
+  ],
+  "execution_rule": "Do not execute this manifest automatically; run one case only after budget approval and preflight."
+}

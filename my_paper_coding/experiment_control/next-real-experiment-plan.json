@@ -1,0 +1,17 @@
+{
+  "version": "v0.1",
+  "date": "2026-09-28",
+  "purpose": "真实 AgentSight 三类故障的最小验证批次",
+  "planned_api_calls": 0,
+  "upper_bound_usd_per_call": 0.13,
+  "hard_stop_total_usd": 1.0,
+  "execution_policy": "Do not execute automatically. Set planned_api_calls only after explicit approval of the batch.",
+  "stages": [
+    {"name": "preflight", "api_calls": 0, "action": "run local schema and budget checks"},
+    {"name": "one_case_per_fault", "api_calls": "3-6", "action": "only after approval; capture one real run for each fault"},
+    {"name": "expand_to_30_50", "api_calls": "30-50+", "action": "only if pilot labels and counterfactual replay pass"}
+  ],
+  "faults": ["silent_tool_error", "error_propagation", "routing_role_error"],
+  "tasks": ["inventory", "service_restart", "document_retrieval"],
+  "artifacts_per_run": ["session.db", "raw-stream.log", "trace.jsonl", "ground_truth.json", "analysis.json", "cost.json"]
+}

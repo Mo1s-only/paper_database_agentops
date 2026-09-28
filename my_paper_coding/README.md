@@ -6,12 +6,15 @@
 
 ```text
 my_paper_coding/
-  experiments/
-  scripts/
-  notebooks/
-  results/
+  p0_pairing/        # AgentSight 请求—响应配对 pilot
+  failure_pilot/     # 带独立责任真值的受控失败 pilot
   README.md
 ```
+
+当前研究代码：
+
+- `p0_pairing/`：唯一 marker 的请求—响应配对分析；原始调用结果在被忽略的 `results/` 下保存。
+- `failure_pilot/`：确定性两 Agent 故障、统一轨迹、责任真值和离线归因评分；不依赖网络或模型 API。
 
 提交实验结果前，说明：
 

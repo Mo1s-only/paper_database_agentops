@@ -1,0 +1,119 @@
+{
+  "files_scanned": 12,
+  "priced_runs": 11,
+  "total_cost_usd": 0.944059,
+  "max_single_run_usd": 0.123159,
+  "entries": [
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\agentsight-attach-20260928\\claude-run.log",
+      "session_id": "234dcade-adc9-4e62-ac41-4ba01e6f4b63",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.095757,
+      "input_tokens": 16318,
+      "output_tokens": 239,
+      "cache_read_tokens": 16384,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\agentsight-two-agent-20260928\\claude-agent-a.log",
+      "session_id": "309ef5d9-6ac2-4011-aefb-6c71bd697128",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.09542199999999999,
+      "input_tokens": 16426,
+      "output_tokens": 204,
+      "cache_read_tokens": 16384,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\agentsight-two-agent-20260928\\claude-agent-b.log",
+      "session_id": "64e896c6-c849-4128-a6db-0e51c757afb2",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.12258900000000002,
+      "input_tokens": 16683,
+      "output_tokens": 566,
+      "cache_read_tokens": 50048,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-pilot-inventory-20260928\\claude-agent-a.log",
+      "session_id": "ead4e1c7-c052-4fc5-8b0a-1631c9fde25d",
+      "model": null,
+      "cost_usd": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 0,
+      "is_error": true
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-pilot-inventory-20260928-r2\\claude-agent-a.log",
+      "session_id": "8bd64318-2535-4446-83a0-59f687b3120b",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.09568700000000001,
+      "input_tokens": 16419,
+      "output_tokens": 216,
+      "cache_read_tokens": 16384,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-pilot-inventory-20260928-r2\\claude-agent-b.log",
+      "session_id": "fb22598a-43b7-42b0-8d98-090e12442ec0",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.12315900000000002,
+      "input_tokens": 16757,
+      "output_tokens": 574,
+      "cache_read_tokens": 50048,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T031958Z_p0_pairing_pilot_01\\claude.json",
+      "session_id": "4fdfb910-ae51-4770-a4f1-40be627ed54e",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08254000000000002,
+      "input_tokens": 16213,
+      "output_tokens": 59,
+      "cache_read_tokens": 0,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T032023Z_p0_pairing_pilot_02\\claude.json",
+      "session_id": "54e54bf0-414a-4869-912d-c00ee11bf854",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08262,
+      "input_tokens": 16214,
+      "output_tokens": 62,
+      "cache_read_tokens": 0,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T032046Z_p0_pairing_pilot_03\\claude.json",
+      "session_id": "7880b990-eea9-455b-acb0-a85c7781c6e1",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08197,
+      "input_tokens": 16214,
+      "output_tokens": 36,
+      "cache_read_tokens": 0,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T032109Z_p0_pairing_pilot_04\\claude.json",
+      "session_id": "28d77709-3d68-4650-a0ae-18ad0b292d00",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08197,
+      "input_tokens": 16214,
+      "output_tokens": 36,
+      "cache_read_tokens": 0,
+      "is_error": false
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T_p0_pairing_pilot_01\\claude.json",
+      "session_id": "d800b563-bcd7-4304-8b39-6627c1982ef6",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.082345,
+      "input_tokens": 16214,
+      "output_tokens": 51,
+      "cache_read_tokens": 0,
+      "is_error": false
+    }
+  ],
+  "source_policy": "local logs only; no API calls"
+}

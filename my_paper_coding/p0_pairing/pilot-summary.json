@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "pilot_runs": 5,
+  "agent_success_runs": 5,
+  "gate_pass_runs": 5,
+  "marker_pair_candidates": 5,
+  "marker_pair_matches": 5,
+  "marker_pair_precision": 1.0,
+  "marker_pair_recall": 1.0,
+  "response_latency_ms": {
+    "n": 5,
+    "mean": 1892,
+    "min": 1262,
+    "max": 2457
+  },
+  "reports": [
+    {
+      "schema_version": 1,
+      "run_dir": "/mnt/c/Users/mobao/Desktop/论文方向/my_paper_coding/p0_pairing/results/20260928T031958Z_p0_pairing_pilot_01",
+      "marker": "P0_20260928T031958Z_100",
+      "agent_success": true,
+      "agent_exit_code": "0",
+      "json_lines": 52,
+      "non_json_lines": 9,
+      "malformed_json_objects": 0,
+      "source_counts": {
+        "http_parser": 4,
+        "ssl": 47,
+        "sse_processor": 1
+      },
+      "message_type_counts": {
+        "request": 2,
+        "response": 2,
+        "None": 48
+      },
+      "marker_request_hits": 1,
+      "marker_response_hits": 1,
+      "marker_pair_candidates": 1,
+      "marker_pair_matches": 1,
+      "marker_pair_precision": 1.0,
+      "marker_pair_recall": 1.0,
+      "response_latency_ms": 2073,
+      "gate_pass": true,
+      "interpretation": "Marker-specific pairing evidence only; this is not a general request-response recall estimate.",
+      "report_path": "my_paper_coding\\p0_pairing\\results\\20260928T031958Z_p0_pairing_pilot_01"
+    },
+    {
+      "schema_version": 1,
+      "run_dir": "/mnt/c/Users/mobao/Desktop/论文方向/my_paper_coding/p0_pairing/results/20260928T032023Z_p0_pairing_pilot_02",
+      "marker": "P0_20260928T032023Z_11366",
+      "agent_success": true,
+      "agent_exit_code": "0",
+      "json_lines": 62,
+      "non_json_lines": 9,
+      "malformed_json_objects": 0,
+      "source_counts": {
+        "http_parser": 4,
+        "ssl": 57,
+        "sse_processor": 1
+      },
+      "message_type_counts": {
+        "request": 2,
+        "response": 2,
+        "None": 58
+      },
+      "marker_request_hits": 1,
+      "marker_response_hits": 1,
+      "marker_pair_candidates": 1,
+      "marker_pair_matches": 1,
+      "marker_pair_precision": 1.0,
+      "marker_pair_recall": 1.0,
+      "response_latency_ms": 1877,
+      "gate_pass": true,
+      "interpretation": "Marker-specific pairing evidence only; this is not a general request-response recall estimate.",
+      "report_path": "my_paper_coding\\p0_pairing\\results\\20260928T032023Z_p0_pairing_pilot_02"
+    },
+    {
+      "schema_version": 1,
+      "run_dir": "/mnt/c/Users/mobao/Desktop/论文方向/my_paper_coding/p0_pairing/results/20260928T032046Z_p0_pairing_pilot_03",
+      "marker": "P0_20260928T032046Z_20352",
+      "agent_success": true,
+      "agent_exit_code": "0",
+      "json_lines": 36,
+      "non_json_lines": 9,
+      "malformed_json_objects": 0,
+      "source_counts": {
+        "http_parser": 4,
+        "ssl": 31,
+        "sse_processor": 1
+      },
+      "message_type_counts": {
+        "request": 2,
+        "response": 2,
+        "None": 32
+      },
+      "marker_request_hits": 1,
+      "marker_response_hits": 1,
+      "marker_pair_candidates": 1,
+      "marker_pair_matches": 1,
+      "marker_pair_precision": 1.0,
+      "marker_pair_recall": 1.0,
+      "response_latency_ms": 1791,
+      "gate_pass": true,
+      "interpretation": "Marker-specific pairing evidence only; this is not a general request-response recall estimate.",
+      "report_path": "my_paper_coding\\p0_pairing\\results\\20260928T032046Z_p0_pairing_pilot_03"
+    },
+    {
+      "schema_version": 1,
+      "run_dir": "/mnt/c/Users/mobao/Desktop/论文方向/my_paper_coding/p0_pairing/results/20260928T032109Z_p0_pairing_pilot_04",
+      "marker": "P0_20260928T032109Z_11879",
+      "agent_success": true,
+      "agent_exit_code": "0",
+      "json_lines": 36,
+      "non_json_lines": 9,
+      "malformed_json_objects": 0,
+      "source_counts": {
+        "http_parser": 4,
+        "ssl": 31,
+        "sse_processor": 1
+      },
+      "message_type_counts": {
+        "request": 2,
+        "response": 2,
+        "None": 32
+      },
+      "marker_request_hits": 1,
+      "marker_response_hits": 1,
+      "marker_pair_candidates": 1,
+      "marker_pair_matches": 1,
+      "marker_pair_precision": 1.0,
+      "marker_pair_recall": 1.0,
+      "response_latency_ms": 1262,
+      "gate_pass": true,
+      "interpretation": "Marker-specific pairing evidence only; this is not a general request-response recall estimate.",
+      "report_path": "my_paper_coding\\p0_pairing\\results\\20260928T032109Z_p0_pairing_pilot_04"
+    },
+    {
+      "schema_version": 1,
+      "run_dir": "my_paper_coding\\p0_pairing\\results\\20260928T_p0_pairing_pilot_01",
+      "marker": "P0_20260928T031605Z_8415",
+      "agent_success": true,
+      "agent_exit_code": "0",
+      "json_lines": 44,
+      "non_json_lines": 9,
+      "malformed_json_objects": 0,
+      "source_counts": {
+        "http_parser": 4,
+        "ssl": 39,
+        "sse_processor": 1
+      },
+      "message_type_counts": {
+        "request": 2,
+        "response": 2,
+        "None": 40
+      },
+      "marker_request_hits": 1,
+      "marker_response_hits": 1,
+      "marker_pair_candidates": 1,
+      "marker_pair_matches": 1,
+      "marker_pair_precision": 1.0,
+      "marker_pair_recall": 1.0,
+      "response_latency_ms": 2457,
+      "gate_pass": true,
+      "interpretation": "Marker-specific pairing evidence only; this is not a general request-response recall estimate.",
+      "report_path": "my_paper_coding\\p0_pairing\\results\\20260928T_p0_pairing_pilot_01"
+    }
+  ],
+  "interpretation": "Controlled marker-pairing pilot only. These values do not estimate general request-response recall across unmarked or concurrent calls."
+}

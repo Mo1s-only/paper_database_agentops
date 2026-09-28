@@ -23,6 +23,7 @@ lab/Watson/out/
 lab/agentsight/agentsight-bin
 # Experimental captures, local databases and assistant state
 lab/**/results/**/local-claude-state/
+lab/agentsight/results/runs/
 lab/**/results/**/*.db
 lab/**/results/**/*.db-*
 lab/**/results/**/*.jsonl
