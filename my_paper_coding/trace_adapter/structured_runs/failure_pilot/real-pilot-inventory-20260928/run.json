@@ -1,0 +1,120 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "real-pilot-inventory-20260928",
+  "run_kind": "run",
+  "experiment_family": "failure_pilot",
+  "source_root": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928",
+  "indexed_at": "2026-09-29T09:26:43.862538Z",
+  "framework": "Claude Code CLI",
+  "signals": {
+    "models": [
+      "deepseek-v4-pro"
+    ],
+    "session_ids": [
+      "ead4e1c7-c052-4fc5-8b0a-1631c9fde25d"
+    ],
+    "costs": []
+  },
+  "evidence_categories": [
+    "app_log",
+    "raw_observation",
+    "validator"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/claude-agent-a.log",
+      "path_from_run": "claude-agent-a.log",
+      "category": "app_log",
+      "format": "text",
+      "bytes": 1305,
+      "sha256": "f2f5890b765abff9af7fc0081a713b5ec1e0081c77a388f24236a167950f21f0",
+      "parse_status": "inventory_only",
+      "signals": {
+        "model": "deepseek-v4-pro",
+        "session_id": "ead4e1c7-c052-4fc5-8b0a-1631c9fde25d"
+      }
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/claude-agent-b.log",
+      "path_from_run": "claude-agent-b.log",
+      "category": "app_log",
+      "format": "text",
+      "bytes": 82,
+      "sha256": "0960c0fc119a7187d30b749316b0d99fae1262fa7466a590e6e9460e4a77402c",
+      "parse_status": "inventory_only",
+      "signals": {
+        "model": "deepseek-v4-pro"
+      }
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/ground_truth.json",
+      "path_from_run": "ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 449,
+      "sha256": "f097b6a797547e2661ef8da6d6d7dcb976291de63a030d9e5cfa63d96cbc88aa",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/raw-stream.log",
+      "path_from_run": "raw-stream.log",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 333227,
+      "sha256": "d9231409a13cfa2e9403311d75eac4fd6ba812f809370483b2718ced7bbf4e30",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/record.log",
+      "path_from_run": "record.log",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 1366,
+      "sha256": "7035dcbea21c79ca81ef47148bcb34b29e1182b4fa344a539e802673a9e3036e",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/session.db",
+      "path_from_run": "session.db",
+      "category": "raw_observation",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 155648,
+      "sha256": "91ca2b89c34bd83b0d492e002d6f38084de717c388fd8738e719de41e2abb726",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/session.db-shm",
+      "path_from_run": "session.db-shm",
+      "category": "raw_observation",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 32768,
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/session.db-wal",
+      "path_from_run": "session.db-wal",
+      "category": "raw_observation",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": true,
+    "application_log": true,
+    "task_context": false,
+    "independent_validator": true,
+    "derived_outputs": false
+  },
+  "warnings": [
+    "missing_derived_outputs"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

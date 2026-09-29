@@ -1,0 +1,64 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "error_propagation-r03",
+  "run_kind": "run",
+  "experiment_family": "failure_pilot",
+  "source_root": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r03",
+  "indexed_at": "2026-09-29T09:26:43.702102Z",
+  "framework": "unknown_or_synthetic",
+  "signals": {
+    "models": [],
+    "session_ids": [],
+    "costs": []
+  },
+  "evidence_categories": [
+    "derived",
+    "validator"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r03/analysis.json",
+      "path_from_run": "analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 506,
+      "sha256": "fa374e1b2f46d8315ae16395241f99699732cbab1660cefa83de249705057def",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r03/ground_truth.json",
+      "path_from_run": "ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 395,
+      "sha256": "c346c7bfd027b8551275dfc56b61269468ad87418568ad39017852d542f86b70",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r03/trace.jsonl",
+      "path_from_run": "trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 2142,
+      "sha256": "6dc07b81f7d3e7000b334db77576062f57b080536b214c93bf2dc5e91fdc4eff",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": false,
+    "application_log": false,
+    "task_context": false,
+    "independent_validator": true,
+    "derived_outputs": true
+  },
+  "warnings": [
+    "missing_raw_observation",
+    "missing_app_log"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

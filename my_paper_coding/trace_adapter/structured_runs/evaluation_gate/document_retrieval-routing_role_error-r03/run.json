@@ -1,0 +1,64 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "document_retrieval-routing_role_error-r03",
+  "run_kind": "run",
+  "experiment_family": "evaluation_gate",
+  "source_root": "my_paper_coding/evaluation_gate/results/gate-20260928/document_retrieval-routing_role_error-r03",
+  "indexed_at": "2026-09-29T09:26:43.466361Z",
+  "framework": "unknown_or_synthetic",
+  "signals": {
+    "models": [],
+    "session_ids": [],
+    "costs": []
+  },
+  "evidence_categories": [
+    "derived",
+    "validator"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/evaluation_gate/results/gate-20260928/document_retrieval-routing_role_error-r03/analysis.json",
+      "path_from_run": "analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 599,
+      "sha256": "773aaad258e127962a9e082c92fdc823331ad554f914cd927061936f9459110e",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/evaluation_gate/results/gate-20260928/document_retrieval-routing_role_error-r03/ground_truth.json",
+      "path_from_run": "ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 435,
+      "sha256": "2798ca3e79c30e2ee18b37dfe314a49ec3bec0d09f898a727ce71e9cd59132ad",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/evaluation_gate/results/gate-20260928/document_retrieval-routing_role_error-r03/trace.jsonl",
+      "path_from_run": "trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 1871,
+      "sha256": "80281a1ba9f21f3d28f7a9e67dfb15e9029964cd25735c34dc9ecd616e160307",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": false,
+    "application_log": false,
+    "task_context": false,
+    "independent_validator": true,
+    "derived_outputs": true
+  },
+  "warnings": [
+    "missing_raw_observation",
+    "missing_app_log"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

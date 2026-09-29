@@ -1,0 +1,289 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "fault-matrix-20260928",
+  "run_kind": "batch",
+  "experiment_family": "failure_pilot",
+  "source_root": "my_paper_coding/failure_pilot/results/fault-matrix-20260928",
+  "indexed_at": "2026-09-29T09:26:43.674311Z",
+  "framework": "unknown_or_synthetic",
+  "signals": {
+    "models": [],
+    "session_ids": [],
+    "costs": []
+  },
+  "evidence_categories": [
+    "derived",
+    "validator"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r01/analysis.json",
+      "path_from_run": "error_propagation-r01/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 506,
+      "sha256": "5203050a104b884d6d30355d64b5beaa2cbf90536212b1ffdbe0d56f2353d72e",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r01/ground_truth.json",
+      "path_from_run": "error_propagation-r01/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 395,
+      "sha256": "42333f4748a2564f37f75ca6cbc90a59e8007bd2d55c7bb174ddb2aff9d6aa21",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r01/trace.jsonl",
+      "path_from_run": "error_propagation-r01/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 2142,
+      "sha256": "9f8d4714b4ec6e7663ce92dc4f3ed4210161b0fe9f3d4f9e70d9472f7922dbe0",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r02/analysis.json",
+      "path_from_run": "error_propagation-r02/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 506,
+      "sha256": "857b21a42340777d604368b9b1800e201abf4fbacfeeca6479c83b21d1347e4b",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r02/ground_truth.json",
+      "path_from_run": "error_propagation-r02/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 395,
+      "sha256": "868206a90186851c96f6063168a8532c9907b4de4b53d286cb45153a8a0058d0",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r02/trace.jsonl",
+      "path_from_run": "error_propagation-r02/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 2142,
+      "sha256": "8dad78e123eaf884d525678a59920d87171e1b0748c2cea343472e4fa52c8b78",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r03/analysis.json",
+      "path_from_run": "error_propagation-r03/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 506,
+      "sha256": "fa374e1b2f46d8315ae16395241f99699732cbab1660cefa83de249705057def",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r03/ground_truth.json",
+      "path_from_run": "error_propagation-r03/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 395,
+      "sha256": "c346c7bfd027b8551275dfc56b61269468ad87418568ad39017852d542f86b70",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/error_propagation-r03/trace.jsonl",
+      "path_from_run": "error_propagation-r03/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 2142,
+      "sha256": "6dc07b81f7d3e7000b334db77576062f57b080536b214c93bf2dc5e91fdc4eff",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/matrix-summary.json",
+      "path_from_run": "matrix-summary.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 558,
+      "sha256": "4e174472ab9e2f4bc7310607d1dce43be5727f552629a54ff48fc35dd9e5c2a4",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r01/analysis.json",
+      "path_from_run": "routing_role_error-r01/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 514,
+      "sha256": "9f289891f1048915028f33abcfea95c77e5aab06d4ec4083598550f71a11f5ec",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r01/ground_truth.json",
+      "path_from_run": "routing_role_error-r01/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 403,
+      "sha256": "b88559d154f215ef8890ab20559c26382f1efaf73a86b1f1b0f75ca946c96db5",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r01/trace.jsonl",
+      "path_from_run": "routing_role_error-r01/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 1795,
+      "sha256": "4f4c48fba87c3dc0f5fab2bfcc1b5e0e8a58a6487a466bf9ec6d9b8a147a345a",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r02/analysis.json",
+      "path_from_run": "routing_role_error-r02/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 514,
+      "sha256": "74197e9fe3fd05c9e73c00729d78989a6adb15702591dec6726f1fc1d9663cf3",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r02/ground_truth.json",
+      "path_from_run": "routing_role_error-r02/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 403,
+      "sha256": "e1827193a078844a8b86039eee5ac912f3598145ca4101548a3742e5c10dce3b",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r02/trace.jsonl",
+      "path_from_run": "routing_role_error-r02/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 1795,
+      "sha256": "320fd52291a3491b2125b25c794d75698139fa7d1335ec27dbf29dd3139a2777",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r03/analysis.json",
+      "path_from_run": "routing_role_error-r03/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 514,
+      "sha256": "6b674771a1cb3b10ba9176264687b352e85a8041811d18ce8b28ffc7f4f8e10e",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r03/ground_truth.json",
+      "path_from_run": "routing_role_error-r03/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 403,
+      "sha256": "bee3bd672e118486c4c3b47106ad3e2e807259a1909f5ad71151aaca675e4c64",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r03/trace.jsonl",
+      "path_from_run": "routing_role_error-r03/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 1795,
+      "sha256": "77b4fa3b7a3baf6624b57f8bce9b7b6ee27a1d1291354f792b105a1ce3659ead",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r01/analysis.json",
+      "path_from_run": "silent_tool_error-r01/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 506,
+      "sha256": "9615f922c681c8763cc6bd7f3dd0cf4e3f83dca84fe4f730e5598c2da84a6be2",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r01/ground_truth.json",
+      "path_from_run": "silent_tool_error-r01/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 395,
+      "sha256": "661ca2f0ddebfef57ba9c5daf283f90db868f5a145e6773e7beb867aa8505523",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r01/trace.jsonl",
+      "path_from_run": "silent_tool_error-r01/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 2150,
+      "sha256": "87983406de7ae01b5400545d0a8f719693c24eb7d1219a8128306b16679d28fc",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r02/analysis.json",
+      "path_from_run": "silent_tool_error-r02/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 506,
+      "sha256": "62853ef346a4a9888f21880a3c2193db1e0582b84e7587ece89bed3eb8860e87",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r02/ground_truth.json",
+      "path_from_run": "silent_tool_error-r02/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 395,
+      "sha256": "ceff48e6ad22e498a4b9fd4232b74324b0b9278f1c149d55c9d3bc234d6e280d",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r02/trace.jsonl",
+      "path_from_run": "silent_tool_error-r02/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 2150,
+      "sha256": "344562ee884ed3a0bcb3a380056e527f8cae05b4685b2012976bc36864ec2884",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r03/analysis.json",
+      "path_from_run": "silent_tool_error-r03/analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 506,
+      "sha256": "171ad89f3acdeb8c074936638eb2675c1c1d40d0653077916bab924d0452ff8b",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r03/ground_truth.json",
+      "path_from_run": "silent_tool_error-r03/ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 395,
+      "sha256": "2afe690eee4fe95a042aeec65d72e257201efdec121d30e99677007533a7797f",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/silent_tool_error-r03/trace.jsonl",
+      "path_from_run": "silent_tool_error-r03/trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 2150,
+      "sha256": "872074bd482352eb9bb84845e089072cb4c5b47ee023e6e29601f41ced177de5",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": false,
+    "application_log": false,
+    "task_context": false,
+    "independent_validator": true,
+    "derived_outputs": true
+  },
+  "warnings": [
+    "missing_raw_observation",
+    "missing_app_log"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

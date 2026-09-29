@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "trace-run-manifest-v0.2",
+  "title": "Trace Adapter run manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "run_kind",
+    "experiment_family",
+    "source_root",
+    "artifacts",
+    "completeness",
+    "adapter_contract"
+  ],
+  "properties": {
+    "schema_version": {"const": "trace-run-manifest-v0.2"},
+    "run_id": {"type": "string", "minLength": 1},
+    "run_kind": {"enum": ["run", "batch"]},
+    "experiment_family": {"type": "string", "minLength": 1},
+    "source_root": {"type": "string", "minLength": 1},
+    "indexed_at": {"type": "string"},
+    "framework": {"type": "string"},
+    "evidence_categories": {"type": "array", "items": {"type": "string"}},
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path", "path_from_run", "category", "format", "bytes", "sha256"],
+        "properties": {
+          "path": {"type": "string"},
+          "path_from_run": {"type": "string"},
+          "category": {"enum": ["raw_observation", "app_log", "task_context", "validator", "derived", "metadata", "unclassified"]},
+          "format": {"type": "string"},
+          "bytes": {"type": "integer", "minimum": 0},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "parse_status": {"type": "string"},
+          "signals": {"type": "object"}
+        }
+      }
+    },
+    "completeness": {
+      "type": "object",
+      "required": ["raw_observation", "application_log", "task_context", "independent_validator", "derived_outputs"],
+      "properties": {
+        "raw_observation": {"type": "boolean"},
+        "application_log": {"type": "boolean"},
+        "task_context": {"type": "boolean"},
+        "independent_validator": {"type": "boolean"},
+        "derived_outputs": {"type": "boolean"}
+      }
+    },
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "adapter_contract": {
+      "type": "object",
+      "required": ["raw_is_observation_only", "validator_is_independent_of_trace", "derived_outputs_are_not_ground_truth"],
+      "properties": {
+        "raw_is_observation_only": {"const": true},
+        "validator_is_independent_of_trace": {"const": true},
+        "derived_outputs_are_not_ground_truth": {"const": true},
+        "raw_content_may_contain_prompts_or_secrets": {"type": "boolean"}
+      }
+    }
+  }
+}

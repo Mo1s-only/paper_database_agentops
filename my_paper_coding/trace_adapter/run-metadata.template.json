@@ -1,0 +1,42 @@
+{
+  "schema_version": "trace-run-metadata-v0.1",
+  "run_id": "YYYYMMDDThhmmssZ_<experiment>_<repeat>",
+  "experiment_family": "failure_pilot|p0_pairing|evaluation_gate|other",
+  "started_at": "2026-09-29T00:00:00Z",
+  "ended_at": null,
+  "framework": "Claude Code CLI",
+  "framework_version": null,
+  "model": null,
+  "model_provider": null,
+  "agent_framework": null,
+  "agentsight_version": null,
+  "kernel": null,
+  "os": "Windows + WSL2",
+  "git_commit": null,
+  "command": null,
+  "capture_mode": "attach|record|http|synthetic",
+  "clock": {
+    "timezone": "UTC",
+    "source": "wall_clock",
+    "uncertainty_ms": null
+  },
+  "identifiers": {
+    "run_id": null,
+    "session_ids": [],
+    "request_ids": [],
+    "markers": [],
+    "agent_pids": [],
+    "tool_pids": []
+  },
+  "artifacts": {
+    "app_log": [],
+    "agentsight_raw": [],
+    "task_context": [],
+    "validator": [],
+    "derived": []
+  },
+  "privacy": {
+    "contains_prompt_or_response": true,
+    "redaction_status": "local_only_unredacted"
+  }
+}

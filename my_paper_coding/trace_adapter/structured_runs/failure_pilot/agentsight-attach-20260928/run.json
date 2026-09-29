@@ -1,0 +1,182 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "agentsight-attach-20260928",
+  "run_kind": "run",
+  "experiment_family": "failure_pilot",
+  "source_root": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928",
+  "indexed_at": "2026-09-29T09:26:43.551151Z",
+  "framework": "Claude Code CLI",
+  "signals": {
+    "models": [
+      "deepseek-v4-pro"
+    ],
+    "session_ids": [
+      "234dcade-adc9-4e62-ac41-4ba01e6f4b63"
+    ],
+    "costs": []
+  },
+  "evidence_categories": [
+    "app_log",
+    "metadata",
+    "raw_observation",
+    "unclassified"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/agent-exit.txt",
+      "path_from_run": "agent-exit.txt",
+      "category": "app_log",
+      "format": "text",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/claude-run.log",
+      "path_from_run": "claude-run.log",
+      "category": "app_log",
+      "format": "text",
+      "bytes": 1893,
+      "sha256": "abfb4e2103ad802537bef1bc765d60cb43febd5f53edf54646f943a8c6fdb902",
+      "parse_status": "inventory_only",
+      "signals": {
+        "model": "deepseek-v4-pro",
+        "session_id": "234dcade-adc9-4e62-ac41-4ba01e6f4b63"
+      }
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/db-rows.txt",
+      "path_from_run": "db-rows.txt",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 432,
+      "sha256": "c3a10f897477b392890b30d74027b31b6f75fd536d0da497407a025f005b8403",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/probe-truth.json",
+      "path_from_run": "probe-truth.json",
+      "category": "unclassified",
+      "format": "json",
+      "bytes": 375,
+      "sha256": "cbdbc7e02ab6c77c5893351bb429c1fe80da8fa5c494bcda40a3abd537167762",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/raw-stream.log",
+      "path_from_run": "raw-stream.log",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 390747,
+      "sha256": "b86756224a27272e6e4bb604ea2516fe9c8960f7e2beb6c41d0d98dadfc82aea",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/record.log",
+      "path_from_run": "record.log",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 1365,
+      "sha256": "9a542ae42e66bf2b5e3248d21129297bc6474535c70def40b6cc2f1eaf7c3855",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/report--fixed.txt",
+      "path_from_run": "report--fixed.txt",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 117,
+      "sha256": "bb692924a08b1b627b6e62a53e3aaf9938487af34f78f61cdd751e5796c804e0",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/report-audit.txt",
+      "path_from_run": "report-audit.txt",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 11485,
+      "sha256": "4e32e521ef84cd32478151a01662730c752856eae03f423364b37d69c4c5ef2c",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/report-prompts.txt",
+      "path_from_run": "report-prompts.txt",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 242,
+      "sha256": "8c0ffc459e2a12710670c86feaa91f63388f64cd33c69f9e9ac0d675945774bd",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/report-summary.txt",
+      "path_from_run": "report-summary.txt",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 491,
+      "sha256": "c06acd7053b3157419f07ba9e51a194a3f75f79c74391df6594ac4e928b185e8",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/report-token.txt",
+      "path_from_run": "report-token.txt",
+      "category": "raw_observation",
+      "format": "text",
+      "bytes": 261,
+      "sha256": "c566b466a1b41b655ac7a5e08a513fa71fde85bdf8f93ec684e8588687f10827",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/run-info.txt",
+      "path_from_run": "run-info.txt",
+      "category": "metadata",
+      "format": "text",
+      "bytes": 102,
+      "sha256": "83fb5b34daa456b297f891149e85dc9eafbb90dd2efa9f97ced1ddad802ea1c2",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/session.db",
+      "path_from_run": "session.db",
+      "category": "raw_observation",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 294912,
+      "sha256": "23bd920fd36c29d380fa1ab8c7975f7eabfe86face804ac3df276e1d3fa61c44",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/session.db-shm",
+      "path_from_run": "session.db-shm",
+      "category": "raw_observation",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 32768,
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928/session.db-wal",
+      "path_from_run": "session.db-wal",
+      "category": "raw_observation",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": true,
+    "application_log": true,
+    "task_context": false,
+    "independent_validator": false,
+    "derived_outputs": false
+  },
+  "warnings": [
+    "missing_independent_validator",
+    "missing_derived_outputs"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

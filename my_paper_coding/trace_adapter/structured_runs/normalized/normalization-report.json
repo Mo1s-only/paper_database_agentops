@@ -1,0 +1,295 @@
+{
+  "schema_version": "trace-adapter-normalized-v0.1",
+  "generated_at": "2026-09-29T09:26:44.091436Z",
+  "source_index": "my_paper_coding/trace_adapter/structured_runs/run-index.json",
+  "runs": [
+    {
+      "run_id": "document_retrieval-routing_role_error-r01",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/document_retrieval-routing_role_error-r01/run.json",
+      "normalized_events": "normalized/evaluation_gate/document_retrieval-routing_role_error-r01/evidence-events.jsonl",
+      "emitted_records": 4,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "document_retrieval-routing_role_error-r02",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/document_retrieval-routing_role_error-r02/run.json",
+      "normalized_events": "normalized/evaluation_gate/document_retrieval-routing_role_error-r02/evidence-events.jsonl",
+      "emitted_records": 4,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "document_retrieval-routing_role_error-r03",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/document_retrieval-routing_role_error-r03/run.json",
+      "normalized_events": "normalized/evaluation_gate/document_retrieval-routing_role_error-r03/evidence-events.jsonl",
+      "emitted_records": 4,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "inventory-silent_tool_error-r01",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/inventory-silent_tool_error-r01/run.json",
+      "normalized_events": "normalized/evaluation_gate/inventory-silent_tool_error-r01/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "inventory-silent_tool_error-r02",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/inventory-silent_tool_error-r02/run.json",
+      "normalized_events": "normalized/evaluation_gate/inventory-silent_tool_error-r02/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "inventory-silent_tool_error-r03",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/inventory-silent_tool_error-r03/run.json",
+      "normalized_events": "normalized/evaluation_gate/inventory-silent_tool_error-r03/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "service_restart-error_propagation-r01",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/service_restart-error_propagation-r01/run.json",
+      "normalized_events": "normalized/evaluation_gate/service_restart-error_propagation-r01/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "service_restart-error_propagation-r02",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/service_restart-error_propagation-r02/run.json",
+      "normalized_events": "normalized/evaluation_gate/service_restart-error_propagation-r02/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "service_restart-error_propagation-r03",
+      "experiment_family": "evaluation_gate",
+      "manifest": "evaluation_gate/service_restart-error_propagation-r03/run.json",
+      "normalized_events": "normalized/evaluation_gate/service_restart-error_propagation-r03/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 36,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "agentsight-attach-20260928",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/agentsight-attach-20260928/run.json",
+      "normalized_events": "normalized/failure_pilot/agentsight-attach-20260928/evidence-events.jsonl",
+      "emitted_records": 175,
+      "skipped_non_event_lines": 1871,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "agentsight-capture-20260928",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/agentsight-capture-20260928/run.json",
+      "normalized_events": "normalized/failure_pilot/agentsight-capture-20260928/evidence-events.jsonl",
+      "emitted_records": 8,
+      "skipped_non_event_lines": 29,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "agentsight-capture-20260928b",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/agentsight-capture-20260928b/run.json",
+      "normalized_events": "normalized/failure_pilot/agentsight-capture-20260928b/evidence-events.jsonl",
+      "emitted_records": 9,
+      "skipped_non_event_lines": 29,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "agentsight-two-agent-20260928",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/agentsight-two-agent-20260928/run.json",
+      "normalized_events": "normalized/failure_pilot/agentsight-two-agent-20260928/evidence-events.jsonl",
+      "emitted_records": 250,
+      "skipped_non_event_lines": 2468,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "error_propagation-r01",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/error_propagation-r01/run.json",
+      "normalized_events": "normalized/failure_pilot/error_propagation-r01/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "error_propagation-r02",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/error_propagation-r02/run.json",
+      "normalized_events": "normalized/failure_pilot/error_propagation-r02/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "error_propagation-r03",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/error_propagation-r03/run.json",
+      "normalized_events": "normalized/failure_pilot/error_propagation-r03/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "pilot-01",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/pilot-01/run.json",
+      "normalized_events": "normalized/failure_pilot/pilot-01/evidence-events.jsonl",
+      "emitted_records": 8,
+      "skipped_non_event_lines": 87,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "real-canary-20260929",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/real-canary-20260929/run.json",
+      "normalized_events": "normalized/failure_pilot/real-canary-20260929/evidence-events.jsonl",
+      "emitted_records": 2,
+      "skipped_non_event_lines": 46,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "real-canary-20260929-ubuntu24",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/real-canary-20260929-ubuntu24/run.json",
+      "normalized_events": "normalized/failure_pilot/real-canary-20260929-ubuntu24/evidence-events.jsonl",
+      "emitted_records": 222,
+      "skipped_non_event_lines": 2329,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "real-pilot-inventory-20260928",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/real-pilot-inventory-20260928/run.json",
+      "normalized_events": "normalized/failure_pilot/real-pilot-inventory-20260928/evidence-events.jsonl",
+      "emitted_records": 448,
+      "skipped_non_event_lines": 1454,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "real-pilot-inventory-20260928-r2",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/real-pilot-inventory-20260928-r2/run.json",
+      "normalized_events": "normalized/failure_pilot/real-pilot-inventory-20260928-r2/evidence-events.jsonl",
+      "emitted_records": 239,
+      "skipped_non_event_lines": 2321,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "routing_role_error-r01",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/routing_role_error-r01/run.json",
+      "normalized_events": "normalized/failure_pilot/routing_role_error-r01/evidence-events.jsonl",
+      "emitted_records": 4,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "routing_role_error-r02",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/routing_role_error-r02/run.json",
+      "normalized_events": "normalized/failure_pilot/routing_role_error-r02/evidence-events.jsonl",
+      "emitted_records": 4,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "routing_role_error-r03",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/routing_role_error-r03/run.json",
+      "normalized_events": "normalized/failure_pilot/routing_role_error-r03/evidence-events.jsonl",
+      "emitted_records": 4,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "silent_tool_error-r01",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/silent_tool_error-r01/run.json",
+      "normalized_events": "normalized/failure_pilot/silent_tool_error-r01/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "silent_tool_error-r02",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/silent_tool_error-r02/run.json",
+      "normalized_events": "normalized/failure_pilot/silent_tool_error-r02/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "silent_tool_error-r03",
+      "experiment_family": "failure_pilot",
+      "manifest": "failure_pilot/silent_tool_error-r03/run.json",
+      "normalized_events": "normalized/failure_pilot/silent_tool_error-r03/evidence-events.jsonl",
+      "emitted_records": 5,
+      "skipped_non_event_lines": 35,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "20260928T031958Z_p0_pairing_pilot_01",
+      "experiment_family": "p0_pairing",
+      "manifest": "p0_pairing/20260928T031958Z_p0_pairing_pilot_01/run.json",
+      "normalized_events": "normalized/p0_pairing/20260928T031958Z_p0_pairing_pilot_01/evidence-events.jsonl",
+      "emitted_records": 53,
+      "skipped_non_event_lines": 57,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "20260928T032023Z_p0_pairing_pilot_02",
+      "experiment_family": "p0_pairing",
+      "manifest": "p0_pairing/20260928T032023Z_p0_pairing_pilot_02/run.json",
+      "normalized_events": "normalized/p0_pairing/20260928T032023Z_p0_pairing_pilot_02/evidence-events.jsonl",
+      "emitted_records": 63,
+      "skipped_non_event_lines": 57,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "20260928T032046Z_p0_pairing_pilot_03",
+      "experiment_family": "p0_pairing",
+      "manifest": "p0_pairing/20260928T032046Z_p0_pairing_pilot_03/run.json",
+      "normalized_events": "normalized/p0_pairing/20260928T032046Z_p0_pairing_pilot_03/evidence-events.jsonl",
+      "emitted_records": 37,
+      "skipped_non_event_lines": 57,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "20260928T032109Z_p0_pairing_pilot_04",
+      "experiment_family": "p0_pairing",
+      "manifest": "p0_pairing/20260928T032109Z_p0_pairing_pilot_04/run.json",
+      "normalized_events": "normalized/p0_pairing/20260928T032109Z_p0_pairing_pilot_04/evidence-events.jsonl",
+      "emitted_records": 37,
+      "skipped_non_event_lines": 57,
+      "authority": "evidence_records_only; no synthetic event completion"
+    },
+    {
+      "run_id": "20260928T_p0_pairing_pilot_01",
+      "experiment_family": "p0_pairing",
+      "manifest": "p0_pairing/20260928T_p0_pairing_pilot_01/run.json",
+      "normalized_events": "normalized/p0_pairing/20260928T_p0_pairing_pilot_01/evidence-events.jsonl",
+      "emitted_records": 45,
+      "skipped_non_event_lines": 57,
+      "authority": "evidence_records_only; no synthetic event completion"
+    }
+  ]
+}

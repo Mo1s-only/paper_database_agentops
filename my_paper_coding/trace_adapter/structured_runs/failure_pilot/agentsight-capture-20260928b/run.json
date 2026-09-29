@@ -1,0 +1,92 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "agentsight-capture-20260928b",
+  "run_kind": "run",
+  "experiment_family": "failure_pilot",
+  "source_root": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b",
+  "indexed_at": "2026-09-29T09:26:43.577567Z",
+  "framework": "unknown_or_synthetic",
+  "signals": {
+    "models": [],
+    "session_ids": [],
+    "costs": []
+  },
+  "evidence_categories": [
+    "derived",
+    "unclassified",
+    "validator"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b/agentsight-20260928-112955.db",
+      "path_from_run": "agentsight-20260928-112955.db",
+      "category": "unclassified",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 114688,
+      "sha256": "93989362179edc725c5e834f97fbfd831ca2b0075c4cc2e843a6cc06b2384971",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b/agentsight-20260928-112955.db-shm",
+      "path_from_run": "agentsight-20260928-112955.db-shm",
+      "category": "unclassified",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 32768,
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b/agentsight-20260928-112955.db-wal",
+      "path_from_run": "agentsight-20260928-112955.db-wal",
+      "category": "unclassified",
+      "format": "sqlite_or_sqlite_sidecar",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b/ground_truth.json",
+      "path_from_run": "ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 522,
+      "sha256": "4d5b34c6de3433ce2693657abcc353dc2070fa1cfb313fd62d86b8edd126852d",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b/run-meta.json",
+      "path_from_run": "run-meta.json",
+      "category": "unclassified",
+      "format": "json",
+      "bytes": 116,
+      "sha256": "55f1d20c2d29852516a080b96fa614bdd5be3bdd73efd440e1b861fab89c4d98",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b/trace.jsonl",
+      "path_from_run": "trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 3407,
+      "sha256": "826a67c1f927cb85a24a3a4bce441df974e6815f6d279601f1348e722dbe046e",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": false,
+    "application_log": false,
+    "task_context": false,
+    "independent_validator": true,
+    "derived_outputs": true
+  },
+  "warnings": [
+    "missing_raw_observation",
+    "missing_app_log"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

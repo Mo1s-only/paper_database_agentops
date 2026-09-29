@@ -1,0 +1,64 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "routing_role_error-r02",
+  "run_kind": "run",
+  "experiment_family": "failure_pilot",
+  "source_root": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r02",
+  "indexed_at": "2026-09-29T09:26:43.721115Z",
+  "framework": "unknown_or_synthetic",
+  "signals": {
+    "models": [],
+    "session_ids": [],
+    "costs": []
+  },
+  "evidence_categories": [
+    "derived",
+    "validator"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r02/analysis.json",
+      "path_from_run": "analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 514,
+      "sha256": "74197e9fe3fd05c9e73c00729d78989a6adb15702591dec6726f1fc1d9663cf3",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r02/ground_truth.json",
+      "path_from_run": "ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 403,
+      "sha256": "e1827193a078844a8b86039eee5ac912f3598145ca4101548a3742e5c10dce3b",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/fault-matrix-20260928/routing_role_error-r02/trace.jsonl",
+      "path_from_run": "trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 1795,
+      "sha256": "320fd52291a3491b2125b25c794d75698139fa7d1335ec27dbf29dd3139a2777",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": false,
+    "application_log": false,
+    "task_context": false,
+    "independent_validator": true,
+    "derived_outputs": true
+  },
+  "warnings": [
+    "missing_raw_observation",
+    "missing_app_log"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

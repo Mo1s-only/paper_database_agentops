@@ -1,0 +1,74 @@
+{
+  "schema_version": "trace-run-manifest-v0.2",
+  "run_id": "pilot-01",
+  "run_kind": "run",
+  "experiment_family": "failure_pilot",
+  "source_root": "my_paper_coding/failure_pilot/results/pilot-01",
+  "indexed_at": "2026-09-29T09:26:43.770819Z",
+  "framework": "unknown_or_synthetic",
+  "signals": {
+    "models": [],
+    "session_ids": [],
+    "costs": []
+  },
+  "evidence_categories": [
+    "derived",
+    "unclassified",
+    "validator"
+  ],
+  "artifacts": [
+    {
+      "path": "my_paper_coding/failure_pilot/results/pilot-01/analysis.json",
+      "path_from_run": "analysis.json",
+      "category": "derived",
+      "format": "json",
+      "bytes": 1485,
+      "sha256": "53dc756b67cc1954e9c7570039afe5f241286807891aae30c496dc0445d9a970",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/pilot-01/ground_truth.json",
+      "path_from_run": "ground_truth.json",
+      "category": "validator",
+      "format": "json",
+      "bytes": 546,
+      "sha256": "3bf460a1a5b3ed1271774123a2d35aaa60f1def97b0c5e176aa7a19df5b9a055",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/pilot-01/run-meta.json",
+      "path_from_run": "run-meta.json",
+      "category": "unclassified",
+      "format": "json",
+      "bytes": 121,
+      "sha256": "f97575a364b1aff71a6d361037901ec52291ac50cf6ae9030399e4ed69f19a48",
+      "parse_status": "inventory_only"
+    },
+    {
+      "path": "my_paper_coding/failure_pilot/results/pilot-01/trace.jsonl",
+      "path_from_run": "trace.jsonl",
+      "category": "derived",
+      "format": "jsonl",
+      "bytes": 3415,
+      "sha256": "e3e3fb0b6e929f985e9c405868ac33b95a2ff4f4112559ce4b2e69d8a4afe22e",
+      "parse_status": "inventory_only"
+    }
+  ],
+  "completeness": {
+    "raw_observation": false,
+    "application_log": false,
+    "task_context": false,
+    "independent_validator": true,
+    "derived_outputs": true
+  },
+  "warnings": [
+    "missing_raw_observation",
+    "missing_app_log"
+  ],
+  "adapter_contract": {
+    "raw_is_observation_only": true,
+    "validator_is_independent_of_trace": true,
+    "derived_outputs_are_not_ground_truth": true,
+    "raw_content_may_contain_prompts_or_secrets": true
+  }
+}

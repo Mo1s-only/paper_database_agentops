@@ -49,9 +49,20 @@ cd "${WORKSPACE}" || die "cannot enter workspace"
 timeout 360 "${AGENTSIGHT_BIN}" record -c claude --db "${DB}" --no-server > "${OUT}/record.log" 2>&1 &
 RPID=$!
 sleep "${ATTACH_DELAY:-2}"
+if ! kill -0 "${RPID}" 2>/dev/null; then
+    echo "ERROR: AgentSight record exited before the first API call; inspect ${OUT}/record.log" >&2
+    wait "${RPID}" 2>/dev/null || true
+    exit 2
+fi
 timeout 360 "${AGENTSIGHT_BIN}" debug process > "${OUT}/raw-stream.log" 2>&1 &
 SPID=$!
 sleep 1
+if ! kill -0 "${SPID}" 2>/dev/null; then
+    echo "ERROR: AgentSight process probe exited before the first API call; inspect ${OUT}/raw-stream.log" >&2
+    kill "${RPID}" 2>/dev/null || true
+    wait "${RPID}" 2>/dev/null || true
+    exit 2
+fi
 
 timeout "${CLAUDE_TIMEOUT_SEC:-90}" claude -p "${PROMPT_A}" --output-format json --model "${ANTHROPIC_MODEL}" --allowedTools Write > "${OUT}/claude-agent-a.log" 2>&1
 RC_A=$?
@@ -67,6 +78,11 @@ printf '%s\n' "${RC_B}" > "${OUT}/agent-b-exit.txt"
 sleep 3
 kill -INT "${RPID}" 2>/dev/null; wait "${RPID}" 2>/dev/null
 kill "${SPID}" 2>/dev/null; wait "${SPID}" 2>/dev/null
+
+if [ ! -s "${DB}" ]; then
+    echo "ERROR: AgentSight did not create a non-empty session database; inspect ${OUT}/record.log" >&2
+    exit 2
+fi
 
 for sub in summary token prompts audit; do
     "${AGENTSIGHT_BIN}" report "${sub}" --db "${DB}" > "${OUT}/report-${sub}.txt" 2>&1

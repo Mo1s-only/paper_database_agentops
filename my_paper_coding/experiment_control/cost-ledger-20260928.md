@@ -1,10 +1,10 @@
 # API 成本账本
 
-> 仅解析本地 Claude JSON 日志，本次生成没有发起 API 请求。
+> 本账本由本地 Claude JSON 日志更新；2026-09-29 的两次 canary 已实际调用 API，并单独列出。
 
-- 扫描文件数：12
-- 可计价运行数：11
-- 累计成本（USD）：0.944059
+- 扫描文件数：15
+- 可计价运行数：15
+- 累计成本（USD）：1.3206682
 - 单次最高成本（USD）：0.123159
 
 | 日志 | 模型 | 成本 USD | 输入 token | 输出 token |
@@ -20,3 +20,7 @@
 | `my_paper_coding\p0_pairing\results\20260928T032046Z_p0_pairing_pilot_03\claude.json` | deepseek-v4-pro | 0.081970 | 16214 | 36 |
 | `my_paper_coding\p0_pairing\results\20260928T032109Z_p0_pairing_pilot_04\claude.json` | deepseek-v4-pro | 0.081970 | 16214 | 36 |
 | `my_paper_coding\p0_pairing\results\20260928T_p0_pairing_pilot_01\claude.json` | deepseek-v4-pro | 0.082345 | 16214 | 51 |
+| `my_paper_coding\failure_pilot\results\real-canary-20260929\claude-agent-a.log` | deepseek-v4-pro | 0.0717216 | — | — |
+| `my_paper_coding\failure_pilot\results\real-canary-20260929\claude-agent-b.log` | deepseek-v4-pro | 0.0871416 | 16520 | 559 |
+| `my_paper_coding\failure_pilot\results\real-canary-20260929-ubuntu24\claude-agent-a.log` | deepseek-v4-pro | 0.0945170 | 16360 | 181 |
+| `my_paper_coding\failure_pilot\results\real-canary-20260929-ubuntu24\claude-agent-b.log` | deepseek-v4-pro | 0.1232290 | 16681 | 592 |
