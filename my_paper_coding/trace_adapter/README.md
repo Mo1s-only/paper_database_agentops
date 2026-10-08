@@ -78,6 +78,8 @@ Adapter 应当对每个 `run.json`：
 
 规范化脚本已经为现有结果完成了第一轮证据索引，但它不会补造历史上不存在的应用事件、时间戳或关联 ID。要真正消除这些缺口，下一次真实运行必须在同一个 run 目录中同时保存完整应用 JSONL、AgentSight 原始文件、任务 oracle 和运行元数据。
 
+字段和真实记录示例见：[规范化数据格式说明](规范化数据格式说明.md)。该文档使用 `real-canary-20260929-ubuntu24` 的实际输出解释每一种记录类型及其证据边界。
+
 ## 完整性和证据边界
 
 `completeness` 记录本次运行是否具备原始观测、应用日志、任务上下文、独立判据和派生结果。`warnings` 是 Adapter 的前置检查结果。`derived_outputs_are_not_ground_truth` 固定为 `true`，避免把之前的人工或 manifest 驱动分析误当成自动归因证据。

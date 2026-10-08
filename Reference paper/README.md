@@ -55,9 +55,17 @@
 
 ## 检索记录
 
-- 本轮核验与下载日期：2026-09-23。
+- 本轮核验与下载日期：2026-09-29。
 - 主要来源：ACL Anthology、NeurIPS Proceedings、PMLR、OpenReview、USENIX、ACM Digital Library、IEEE Xplore、arXiv。
 - 纳入原则：与 Agent 评价指标、运行观测、故障归因或系统可靠性直接相关；优先正式主会论文；必须有可追溯的论文页面或原始PDF。
 - 排除原则：只有博客或榜单、无法核验论文身份、只评价基础模型且不能映射到 Agent 运行过程的材料。
+
+## 2026-09-29 新增同行论文
+
+本轮根据“系统边界观测 + 应用日志融合 + Agent/Step/Edge 责任归因”方向补齐：
+
+- `02_failure_attribution/`：TraceElephant、MAST、AgentTrace、ErrorProbe 的独立精读笔记；ErrorProbe PDF。
+- `03_diagnosis_localization/`：Tools Fail、TELLER、GALA、ReLog 的独立精读笔记与 PDF。
+- 已有 AgentSight、Who&When 精读笔记继续沿用；重复副本不作为新论文计数。
 
 下一道研究关口：把 `06_agent_evaluation_metrics/` 中的成功率、过程进展率、`pass^k`、里程碑KPI、成本和安全指标映射到 `my_paper/metric/`，并明确哪些指标是文献继承、哪些是本文针对边级故障归因的新定义。

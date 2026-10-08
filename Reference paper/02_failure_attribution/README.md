@@ -9,5 +9,6 @@
 | Why Do Multi-Agent LLM Systems Fail? | `MAST_Why_Do_Multi_Agent_LLM_Systems_Fail.pdf` | [NeurIPS Proceedings](https://papers.nips.cc/paper_files/paper/2025/hash/b1041e52d3be19f0a9bc491657488e4a-Abstract-Datasets_and_Benchmarks_Track.html)；[arXiv](https://arxiv.org/abs/2503.13657) | NeurIPS 2025 Datasets and Benchmarks Track | 顶级会议 | `VERIFIED` |
 | Automatic Failure Attribution and Critical Step Prediction Method for Multi-Agent Systems Based on Causal Inference | `CDC-MAS_Automatic_Failure_Attribution.pdf` | [arXiv](https://arxiv.org/abs/2509.08682) | arXiv 2025；PDF含AAAI 2026版权 | 正式级别待核 | `INFERRED`：未检索到AAAI官方论文页，不把作者笔记单独作为录用证据 |
 | EDGE: Error Dependency Graph-Guided Multi-Error Attribution in Multi-Agent LLM Systems | `EDGE_Error_Dependency_Graph.pdf` | [arXiv](https://arxiv.org/abs/2609.01360) | arXiv 2026 | 预印本 | `VERIFIED`：当前只确认预印本状态 |
+| Towards Self-Improving Error Diagnosis in Multi-Agent Systems / ErrorProbe | `ErrorProbe_Self_Improving_Error_Diagnosis_ACL2026.pdf` | [ACL Anthology](https://aclanthology.org/2026.findings-acl.98/) | Findings ACL 2026 | Findings | `VERIFIED` |
 
 辅助文件：`Which Agent Causes Task Failures and When(Chain).pdf`、`*_text.txt` 与精读笔记不作为独立论文计数。
