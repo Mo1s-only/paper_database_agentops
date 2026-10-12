@@ -1,0 +1,14 @@
+[
+  {
+    "run_id": "agentsight-two-agent-20260928",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/failure_pilot/results/agentsight-two-agent-20260928",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/agentsight-two-agent-20260928/run.json",
+    "recorded_time": "2026-09-28T12:01:00.124777+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/agentsight-two-agent-20260928/ground_truth.json",
+    "artifact_count": 22
+  }
+]

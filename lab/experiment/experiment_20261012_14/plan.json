@@ -1,0 +1,31 @@
+{
+  "schema_version": "agentops-sse-clock-v2-real-plan-v0.1",
+  "experiment_id": "experiment_20261012_14",
+  "timezone": "Asia/Shanghai",
+  "framework": "Claude Code CLI native stream-json",
+  "observer": "AgentSight locally built from lab/agentsight/source/thesis_adapter",
+  "agentsight_version": "1.0.31",
+  "agentsight_binary_sha256": "6ef1946310895168c5df6b57addf8622725d45dc579c6a91e0fe441812d4211c",
+  "real_api_sessions": 1,
+  "per_session_budget_usd": 0.1,
+  "cumulative_cost_before_usd": 1.626016,
+  "projected_cost_upper_bound_usd": 1.726016,
+  "hard_stop_total_usd": 2.0,
+  "no_automatic_retry": true,
+  "preflight_tests": {
+    "python": 57,
+    "agentsight_analysis": 128,
+    "agentsight_analysis_doc": 2,
+    "agentsight_clock": 4
+  },
+  "acceptance_gates": [
+    "one real API session succeeds",
+    "native tool_call_id uniquely matches one AgentSight row",
+    "observer_raw_boot_ns is persisted",
+    "observer_boot_epoch_ns is persisted",
+    "observer_clock_uncertainty_ns is persisted",
+    "observer epoch formula recomputes exactly",
+    "raw AgentSight process start is inside application launch interval",
+    "application event v0.2 stream has six closed events and passes strict validation"
+  ]
+}

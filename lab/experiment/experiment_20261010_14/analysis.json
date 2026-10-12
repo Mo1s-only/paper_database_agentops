@@ -1,0 +1,80 @@
+{
+  "schema_version": "agentops-framework-process-clock-analysis-v0.1",
+  "experiment_id": "experiment_20261010_14",
+  "framework_lifecycle": {
+    "system_init": 1,
+    "tool_use": 1,
+    "tool_result": 1,
+    "result": 1
+  },
+  "native_tool_id_hash": "6b40487ec38e8154",
+  "native_tool_name": "Bash",
+  "native_tool_closed": true,
+  "agentsight_tool_match_count": 1,
+  "agentsight_llm_rows_for_session": 2,
+  "launcher_pid": 81,
+  "tool_probe_pid": 171,
+  "tool_probe_ppid": 169,
+  "tool_probe_nspid": [
+    171
+  ],
+  "tool_probe_pid_namespace": "pid:[4026532214]",
+  "process_samples": 620,
+  "unique_sampled_descendants": 18,
+  "agentsight_pids": [
+    341
+  ],
+  "agentsight_pids_in_sampled_tree": {
+    "341": false
+  },
+  "agentsight_pid_names": {
+    "341": null
+  },
+  "process_nodes_schema": [
+    "id",
+    "pid",
+    "ppid",
+    "root_pid",
+    "start_timestamp_ms",
+    "end_timestamp_ms",
+    "comm",
+    "command",
+    "argv_json",
+    "cwd",
+    "exit_code",
+    "status",
+    "view_source",
+    "confidence"
+  ],
+  "process_nodes_rows": 39,
+  "clock_anchor_samples": 620,
+  "realtime_minus_monotonic_ns_median": 1791615119413555968,
+  "realtime_minus_monotonic_ns_range": [
+    1791615119413549800,
+    1791615119413579800
+  ],
+  "anchor_offset_range_ns": 30000,
+  "agentsight_boot_second_quantization_correction_ns": 413555968,
+  "tool_result_receipt_minus_agentsight_tool_ms": 1542.487548828125,
+  "tool_result_receipt_minus_corrected_agentsight_tool_ms": 1128.931640625,
+  "agentsight_process_start_corrected_ms": 1791615126130.556,
+  "application_launch_interval_ms": [
+    1791615126129.4229,
+    1791615126130.9282
+  ],
+  "corrected_process_start_in_launch_interval": true,
+  "agentsight_tool_converted_monotonic_ns": 34587443968,
+  "tool_result_receipt_monotonic_ns": 36129931442,
+  "converted_monotonic_delta_ms": 1542.487474,
+  "probe_realtime_uncertainty_ns": 2050,
+  "reported_cost_usd": 0.024657000000000002,
+  "source_evidence": [
+    "lab/agentsight/source/thesis_adapter/bpf/process.bpf.c: bpf_get_current_pid_tgid",
+    "lab/agentsight/source/thesis_adapter/agentsight-capture/src/time.rs: integer-second boot_ns_to_epoch_ms"
+  ],
+  "boundaries": [
+    "The active binary's exact source build provenance is not independently verified",
+    "The boot-second correction is measured for this boot and must not be reused across boots",
+    "Session ID plus corrected start time supports this mapping; numeric PID translation is not available from mounted /proc"
+  ]
+}

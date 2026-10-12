@@ -1,0 +1,26 @@
+[
+  {
+    "run_id": "watson-offline_experiment",
+    "family": "watson",
+    "run_kind": "run",
+    "framework": null,
+    "source_path": "lab/Watson/results/raw/offline_experiment",
+    "manifest_path": null,
+    "recorded_time": "2026-09-20T17:42:32.241893+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:lab/Watson/results/raw/offline_experiment/results.json",
+    "artifact_count": 2
+  },
+  {
+    "run_id": "watson-real_demo",
+    "family": "watson",
+    "run_kind": "run",
+    "framework": null,
+    "source_path": "lab/Watson/results/raw/real_demo",
+    "manifest_path": null,
+    "recorded_time": "2026-09-20T17:54:01.780248+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:lab/Watson/results/raw/real_demo/20260920T095310948675Z/primary_calls.jsonl",
+    "artifact_count": 4
+  }
+]

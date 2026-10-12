@@ -1,0 +1,25 @@
+{
+  "schema_version": "agentops-pid-namespace-ground-truth-v0.1",
+  "evidence_kind": "runtime_observed_local_fixture",
+  "mapping_status": "accepted",
+  "mapping_method": "proc_status_nspid",
+  "local_pid": 1,
+  "observer_pid": 13,
+  "nspid_vector": [
+    13,
+    1
+  ],
+  "observer_pid_matches_vector_head": true,
+  "local_pid_matches_vector_tail": true,
+  "process_pid_namespace": "pid:[4026532217]",
+  "observer_view_pid_namespace": "pid:[4026532214]",
+  "direct_ground_truth": true,
+  "environment": {
+    "system": "Linux",
+    "kernel_release": "6.18.40.1-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "python": "3.12.3",
+    "unshare": "unshare from util-linux 2.39.3"
+  },
+  "network_calls": 0
+}

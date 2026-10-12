@@ -1,0 +1,343 @@
+{
+  "files_scanned": 33,
+  "priced_records": 31,
+  "duplicate_session_records": 1,
+  "priced_runs": 30,
+  "total_cost_usd": 2.183708,
+  "max_single_run_usd": 0.137935,
+  "entries": [
+    {
+      "path": "lab\\agentsight\\results\\runs\\20260923T141354_agentsight_e2e\\claude-run.log",
+      "session_id": "a515b0df-7cab-4b62-8a63-6889d4420263",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.13596049999999998,
+      "input_tokens": 22580,
+      "output_tokens": 214,
+      "cache_read_tokens": 35421,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "lab\\agentsight\\results\\runs\\20260923T145844_agentsight_e2e\\claude-run.log",
+      "session_id": "f30208a1-fbcc-4ce7-89f3-9d4977bfbc52",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.137935,
+      "input_tokens": 22578,
+      "output_tokens": 291,
+      "cache_read_tokens": 35540,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "lab\\agentsight\\results\\runs\\20260928T105904_agentsight_e2e\\claude-run.log",
+      "session_id": "1bfd6279-0280-4c1c-a5f1-9a28162c2f74",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.122847,
+      "input_tokens": 19321,
+      "output_tokens": 274,
+      "cache_read_tokens": 38784,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "lab\\agentsight\\results\\upstream\\session\\claude-run.log",
+      "session_id": "edd0ebe2-c816-4bbd-9247-e87c9c3ddb56",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.136117,
+      "input_tokens": 22529,
+      "output_tokens": 228,
+      "cache_read_tokens": 35544,
+      "is_error": false,
+      "duplicate_paths": [
+        "lab\\agentsight\\results\\upstream\\test-out\\claude-run.log"
+      ]
+    },
+    {
+      "path": "lab\\experiment\\experiment_20261010_14\\results\\framework-native.jsonl",
+      "session_id": "862103ad-d13a-46c6-9f75-163b02a384bd",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.024657000000000002,
+      "input_tokens": 3798,
+      "output_tokens": 155,
+      "cache_read_tokens": 3584,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "lab\\experiment\\experiment_20261010_15\\results\\framework-native.jsonl",
+      "session_id": "c3bbdfde-13a5-4667-9c88-883b7ed526ec",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.024867,
+      "input_tokens": 3805,
+      "output_tokens": 162,
+      "cache_read_tokens": 3584,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "lab\\experiment\\experiment_20261012_14\\results\\framework-native.jsonl",
+      "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.024832,
+      "input_tokens": 3803,
+      "output_tokens": 161,
+      "cache_read_tokens": 3584,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\agentsight-attach-20260928\\claude-run.log",
+      "session_id": "234dcade-adc9-4e62-ac41-4ba01e6f4b63",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.095757,
+      "input_tokens": 16318,
+      "output_tokens": 239,
+      "cache_read_tokens": 16384,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\agentsight-two-agent-20260928\\claude-agent-a.log",
+      "session_id": "309ef5d9-6ac2-4011-aefb-6c71bd697128",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.09542199999999999,
+      "input_tokens": 16426,
+      "output_tokens": 204,
+      "cache_read_tokens": 16384,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\agentsight-two-agent-20260928\\claude-agent-b.log",
+      "session_id": "64e896c6-c849-4128-a6db-0e51c757afb2",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.12258900000000002,
+      "input_tokens": 16683,
+      "output_tokens": 566,
+      "cache_read_tokens": 50048,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-canary-20260929\\claude-agent-a.log",
+      "session_id": "bb417671-df39-4eeb-b58f-609ab99d976b",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.07172160000000001,
+      "input_tokens": 16134,
+      "output_tokens": 198,
+      "cache_read_tokens": 16128,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-canary-20260929\\claude-agent-b.log",
+      "session_id": "8b7634a6-773b-422a-9052-617f071f8250",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08714160000000001,
+      "input_tokens": 16520,
+      "output_tokens": 559,
+      "cache_read_tokens": 49408,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-canary-20260929-ubuntu24\\claude-agent-a.log",
+      "session_id": "60c54158-e567-4d70-aaec-efac01c2dae5",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.09451700000000002,
+      "input_tokens": 16360,
+      "output_tokens": 181,
+      "cache_read_tokens": 16384,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-canary-20260929-ubuntu24\\claude-agent-b.log",
+      "session_id": "43eebd0d-58b6-4f12-9899-006ae6f124f5",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.12322899999999999,
+      "input_tokens": 16681,
+      "output_tokens": 592,
+      "cache_read_tokens": 50048,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-pilot-inventory-20260928\\claude-agent-a.log",
+      "session_id": "ead4e1c7-c052-4fc5-8b0a-1631c9fde25d",
+      "model": null,
+      "cost_usd": 0.0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cache_read_tokens": 0,
+      "is_error": true,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-pilot-inventory-20260928-r2\\claude-agent-a.log",
+      "session_id": "8bd64318-2535-4446-83a0-59f687b3120b",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.09568700000000001,
+      "input_tokens": 16419,
+      "output_tokens": 216,
+      "cache_read_tokens": 16384,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\failure_pilot\\results\\real-pilot-inventory-20260928-r2\\claude-agent-b.log",
+      "session_id": "fb22598a-43b7-42b0-8d98-090e12442ec0",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.12315900000000002,
+      "input_tokens": 16757,
+      "output_tokens": 574,
+      "cache_read_tokens": 50048,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T031958Z_p0_pairing_pilot_01\\claude.json",
+      "session_id": "4fdfb910-ae51-4770-a4f1-40be627ed54e",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08254000000000002,
+      "input_tokens": 16213,
+      "output_tokens": 59,
+      "cache_read_tokens": 0,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T032023Z_p0_pairing_pilot_02\\claude.json",
+      "session_id": "54e54bf0-414a-4869-912d-c00ee11bf854",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08262,
+      "input_tokens": 16214,
+      "output_tokens": 62,
+      "cache_read_tokens": 0,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T032046Z_p0_pairing_pilot_03\\claude.json",
+      "session_id": "7880b990-eea9-455b-acb0-a85c7781c6e1",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08197,
+      "input_tokens": 16214,
+      "output_tokens": 36,
+      "cache_read_tokens": 0,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T032109Z_p0_pairing_pilot_04\\claude.json",
+      "session_id": "28d77709-3d68-4650-a0ae-18ad0b292d00",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.08197,
+      "input_tokens": 16214,
+      "output_tokens": 36,
+      "cache_read_tokens": 0,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\p0_pairing\\results\\20260928T_p0_pairing_pilot_01\\claude.json",
+      "session_id": "d800b563-bcd7-4304-8b39-6627c1982ef6",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.082345,
+      "input_tokens": 16214,
+      "output_tokens": 51,
+      "cache_read_tokens": 0,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-application-20261010\\claude-agent-a.log",
+      "session_id": "27944dca-cabf-491d-a4ad-b36e981ff669",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.022047,
+      "input_tokens": 3070,
+      "output_tokens": 209,
+      "cache_read_tokens": 2944,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-application-20261010\\claude-agent-b.log",
+      "session_id": "7538dc83-9dfc-44a3-9317-f6af24db99bb",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.04043200000000001,
+      "input_tokens": 4758,
+      "output_tokens": 402,
+      "cache_read_tokens": 13184,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-complete-20261010\\claude-agent-a.log",
+      "session_id": "f4e80ee0-437e-439a-88e1-a8b8652c5501",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.020137000000000002,
+      "input_tokens": 3013,
+      "output_tokens": 144,
+      "cache_read_tokens": 2944,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-complete-20261010\\claude-agent-b.log",
+      "session_id": "0f849550-7f03-4805-9d64-edc030b05a24",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.033318,
+      "input_tokens": 4110,
+      "output_tokens": 352,
+      "cache_read_tokens": 7936,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-error-propagation-20261010\\claude-agent-a.log",
+      "session_id": "c9ae8af8-673d-4635-a4db-1a8e9e3c959b",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.035867,
+      "input_tokens": 4002,
+      "output_tokens": 473,
+      "cache_read_tokens": 8064,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-error-propagation-20261010\\claude-agent-b.log",
+      "session_id": "f1aad580-6682-4967-9b08-9799d01f0f83",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.034668,
+      "input_tokens": 4120,
+      "output_tokens": 404,
+      "cache_read_tokens": 7936,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-routing-error-20261010\\claude-agent-a.log",
+      "session_id": "317c042f-8461-4b4a-9063-e3db3d5cbaff",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.036272000000000006,
+      "input_tokens": 4088,
+      "output_tokens": 472,
+      "cache_read_tokens": 8064,
+      "is_error": false,
+      "duplicate_paths": []
+    },
+    {
+      "path": "my_paper_coding\\trace_adapter\\real_application_runs\\real-routing-error-20261010\\claude-agent-b.log",
+      "session_id": "a6be45e9-1eb0-46f6-90b2-ad09e1f34ec0",
+      "model": "deepseek-v4-pro",
+      "cost_usd": 0.033083,
+      "input_tokens": 4003,
+      "output_tokens": 364,
+      "cache_read_tokens": 7936,
+      "is_error": false,
+      "duplicate_paths": []
+    }
+  ],
+  "source_policy": "local logs only; one maximum final cost per provider session; no API calls"
+}

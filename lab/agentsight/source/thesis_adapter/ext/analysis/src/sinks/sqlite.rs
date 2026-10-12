@@ -46,6 +46,7 @@ impl SqliteStore {
         self.conn.execute_batch(SCHEMA)?;
         self.ensure_llm_call_columns()?;
         self.ensure_audit_event_columns()?;
+        self.ensure_tool_call_columns()?;
         Ok(())
     }
 
@@ -78,6 +79,22 @@ impl SqliteStore {
             if !self.has_column("audit_events", column) {
                 self.conn.execute(
                     &format!("ALTER TABLE audit_events ADD COLUMN {column} {ty}"),
+                    [],
+                )?;
+            }
+        }
+        Ok(())
+    }
+
+    fn ensure_tool_call_columns(&self) -> ViewResult<()> {
+        for (column, ty) in [
+            ("observer_raw_boot_ns", "INTEGER"),
+            ("observer_boot_epoch_ns", "INTEGER"),
+            ("observer_clock_uncertainty_ns", "INTEGER"),
+        ] {
+            if !self.has_column("tool_calls", column) {
+                self.conn.execute(
+                    &format!("ALTER TABLE tool_calls ADD COLUMN {column} {ty}"),
                     [],
                 )?;
             }
@@ -267,8 +284,9 @@ impl SqliteStore {
             "INSERT OR REPLACE INTO tool_calls (
                 id, session_id, conversation_id, timestamp_ms, tool_name, tool_call_id,
                 start_timestamp_ms, end_timestamp_ms, duration_ms, status, input_json,
-                output_json, related_pid, related_event_id, view_source, confidence
-             ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16)",
+                output_json, related_pid, related_event_id, view_source, confidence,
+                observer_raw_boot_ns, observer_boot_epoch_ns, observer_clock_uncertainty_ns
+             ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19)",
             params![
                 tool.id,
                 tool.session_id.as_deref(),
@@ -286,6 +304,9 @@ impl SqliteStore {
                 tool.related_event_id.as_deref(),
                 tool.view_source,
                 tool.confidence.unwrap_or(1.0),
+                tool.observer_raw_boot_ns.map(|v| v as i64),
+                tool.observer_boot_epoch_ns.map(|v| v as i64),
+                tool.observer_clock_uncertainty_ns.map(|v| v as i64),
             ],
         )?;
         Ok(())
@@ -370,6 +391,24 @@ impl SqliteStore {
 
     pub fn tool_call_rows(&self) -> ViewResult<Vec<ToolCallRow>> {
         let has_view_source = self.has_column("tool_calls", "view_source");
+        let clock_cols = [
+            ("observer_raw_boot_ns", "NULL AS observer_raw_boot_ns"),
+            ("observer_boot_epoch_ns", "NULL AS observer_boot_epoch_ns"),
+            (
+                "observer_clock_uncertainty_ns",
+                "NULL AS observer_clock_uncertainty_ns",
+            ),
+        ]
+        .iter()
+        .map(|(column, fallback)| {
+            if self.has_column("tool_calls", column) {
+                (*column).to_string()
+            } else {
+                (*fallback).to_string()
+            }
+        })
+        .collect::<Vec<_>>()
+        .join(", ");
         let extra_cols = if has_view_source {
             ", view_source, confidence"
         } else {
@@ -378,7 +417,7 @@ impl SqliteStore {
         let sql = format!(
             "SELECT id, session_id, conversation_id, timestamp_ms, tool_name, tool_call_id,
                     start_timestamp_ms, end_timestamp_ms, duration_ms, status, input_json,
-                    output_json, related_pid, related_event_id{extra_cols}
+                    output_json, related_pid, related_event_id, {clock_cols}{extra_cols}
              FROM tool_calls
              ORDER BY timestamp_ms, id"
         );
@@ -391,6 +430,9 @@ impl SqliteStore {
                 session_id: row.get(1)?,
                 conversation_id: row.get(2)?,
                 timestamp_ms: row.get::<_, i64>(3)? as u64,
+                observer_raw_boot_ns: row.get::<_, Option<i64>>(14)?.map(|v| v as u64),
+                observer_boot_epoch_ns: row.get::<_, Option<i64>>(15)?.map(|v| v as u64),
+                observer_clock_uncertainty_ns: row.get::<_, Option<i64>>(16)?.map(|v| v as u64),
                 tool_name: row.get(4)?,
                 tool_call_id: row.get(5)?,
                 start_timestamp_ms: row.get::<_, Option<i64>>(6)?.map(|v| v as u64),
@@ -402,12 +444,12 @@ impl SqliteStore {
                 related_pid: row.get::<_, Option<i64>>(12)?.map(|v| v as u32),
                 related_event_id: row.get(13)?,
                 view_source: if has_view_source {
-                    row.get::<_, Option<String>>(14)?
+                    row.get::<_, Option<String>>(17)?
                         .unwrap_or_else(|| "view".to_string())
                 } else {
                     "view".to_string()
                 },
-                confidence: if has_view_source { row.get(15)? } else { None },
+                confidence: if has_view_source { row.get(18)? } else { None },
             })
         })?;
         collect_rows(rows)
@@ -731,6 +773,9 @@ CREATE TABLE IF NOT EXISTS tool_calls (
   session_id TEXT,
   conversation_id TEXT,
   timestamp_ms INTEGER NOT NULL,
+  observer_raw_boot_ns INTEGER,
+  observer_boot_epoch_ns INTEGER,
+  observer_clock_uncertainty_ns INTEGER,
   start_timestamp_ms INTEGER,
   end_timestamp_ms INTEGER,
   duration_ms INTEGER,

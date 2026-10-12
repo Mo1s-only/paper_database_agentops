@@ -8,7 +8,7 @@
 
 use super::Analyzer;
 use crate::event::Event;
-use crate::time::boot_ns_to_epoch_ms;
+use crate::time::{boot_ns_to_epoch_ms, get_boot_time_ns, get_boot_time_uncertainty_ns};
 use async_trait::async_trait;
 use futures::stream::{Stream, StreamExt};
 use std::pin::Pin;
@@ -38,7 +38,21 @@ impl Analyzer for TimestampNormalizer {
     ) -> Result<EventStream, Box<dyn std::error::Error + Send + Sync>> {
         let normalized_stream = stream.map(|mut event| {
             // Convert timestamp from nanoseconds since boot to milliseconds since UNIX epoch
-            let timestamp_ms = boot_ns_to_epoch_ms(event.timestamp);
+            let raw_boot_ns = event.timestamp;
+            let boot_epoch_ns = get_boot_time_ns();
+            let timestamp_ms = boot_ns_to_epoch_ms(raw_boot_ns);
+            if let Some(data) = event.data.as_object_mut() {
+                data.insert(
+                    "_agentsight_clock".to_string(),
+                    serde_json::json!({
+                        "raw_boot_ns": raw_boot_ns,
+                        "boot_epoch_ns": boot_epoch_ns,
+                        "epoch_ms": timestamp_ms,
+                        "anchor_uncertainty_ns": get_boot_time_uncertainty_ns(),
+                        "conversion": "boot_epoch_ns_plus_bpf_ktime_ns"
+                    }),
+                );
+            }
             event.timestamp = timestamp_ms;
             event
         });
@@ -75,6 +89,22 @@ mod tests {
         // Timestamp should be converted to milliseconds since epoch
         // Should be much larger than 1 second (boot time + 1 second)
         assert!(results[0].timestamp > 1_000_000_000_000); // Should be > year 2001 in ms
+        assert_eq!(
+            results[0].data.pointer("/_agentsight_clock/raw_boot_ns"),
+            Some(&json!(1_000_000_000u64))
+        );
+        assert_eq!(
+            results[0].data.pointer("/_agentsight_clock/epoch_ms"),
+            Some(&json!(results[0].timestamp))
+        );
+        assert!(
+            results[0]
+                .data
+                .pointer("/_agentsight_clock/anchor_uncertainty_ns")
+                .and_then(serde_json::Value::as_u64)
+                .is_some_and(|value| value > 0),
+            "normalized runtime evidence must carry a nonzero clock-resolution floor"
+        );
     }
 
     #[tokio::test]

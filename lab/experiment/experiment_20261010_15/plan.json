@@ -1,0 +1,21 @@
+{
+  "schema_version": "agentops-process-clock-fix-plan-v0.1",
+  "experiment_id": "experiment_20261010_15",
+  "timezone": "Asia/Shanghai",
+  "framework": "Claude Code CLI native stream-json",
+  "observer": "AgentSight locally built from lab/agentsight/source/thesis_adapter",
+  "real_api_sessions": 1,
+  "per_session_budget_usd": 0.1,
+  "cumulative_cost_before_usd": 1.601149,
+  "projected_cost_upper_bound_usd": 1.701149,
+  "hard_stop_total_usd": 2.0,
+  "no_automatic_retry": true,
+  "acceptance_gates": [
+    "source build and focused tests pass",
+    "one real API session succeeds",
+    "native tool_call_id uniquely matches one AgentSight row",
+    "raw boot-relative tool time and boot epoch anchor are persisted",
+    "raw AgentSight process start is inside the application launch interval",
+    "application event v0.2 stream passes strict validation"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "planned_cli_sessions": 2,
+  "upper_bound_usd_per_session": 0.20,
+  "hard_stop_total_usd": 2.00,
+  "batch_limit_usd": 0.40,
+  "authorization": "User explicitly requested real API calls on 2026-10-10; conservative per-session cap chosen for this canary, not a user-specified budget",
+  "scope": "One two-agent inventory task; no automatic retry or bulk expansion",
+  "measurement": "Claude native stream plus AgentSight SQLite and measured launcher metadata",
+  "limitation": "CLI budget is checked using its reported model costs, not a prepaid provider billing limit"
+}

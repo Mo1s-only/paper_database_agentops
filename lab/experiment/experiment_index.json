@@ -1,0 +1,84 @@
+{
+  "schema_version": "agentops-experiment-index-v0.1",
+  "timezone": "Asia/Shanghai",
+  "directory_rule": "experiment_YYYYMMDD_HH",
+  "historical_cutoff": "2026-10-10T00:00:00+08:00",
+  "historical_run_records": 40,
+  "hour_directories": 8,
+  "verified_time_records": 8,
+  "inferred_time_records": 32,
+  "directories": [
+    {
+      "directory": "experiment_20260920_17",
+      "run_count": 2
+    },
+    {
+      "directory": "experiment_20260923_14",
+      "run_count": 2
+    },
+    {
+      "directory": "experiment_20260928_10",
+      "run_count": 2
+    },
+    {
+      "directory": "experiment_20260928_11",
+      "run_count": 9
+    },
+    {
+      "directory": "experiment_20260928_12",
+      "run_count": 1
+    },
+    {
+      "directory": "experiment_20260928_14",
+      "run_count": 20
+    },
+    {
+      "directory": "experiment_20260928_15",
+      "run_count": 2
+    },
+    {
+      "directory": "experiment_20260929_17",
+      "run_count": 2
+    },
+    {
+      "directory": "experiment_20261010_14",
+      "run_count": 1,
+      "record_kind": "current",
+      "result": "passed"
+    },
+    {
+      "directory": "experiment_20261010_15",
+      "run_count": 1,
+      "record_kind": "current",
+      "result": "partial"
+    },
+    {
+      "directory": "experiment_20261012_14",
+      "run_count": 1,
+      "record_kind": "current",
+      "result": "passed"
+    },
+    {
+      "directory": "experiment_20261012_15",
+      "run_count": 1,
+      "record_kind": "current",
+      "result": "passed_with_warnings",
+      "network_calls": 0
+    },
+    {
+      "directory": "experiment_20261012_16",
+      "run_count": 1,
+      "record_kind": "current",
+      "result": "passed_with_warnings",
+      "network_calls": 0
+    }
+  ],
+  "boundary": "Source paths are indexed in place; inferred hours use earliest surviving file mtime.",
+  "current_hour_directories": [
+    "experiment_20261010_14",
+    "experiment_20261010_15",
+    "experiment_20261012_14",
+    "experiment_20261012_15",
+    "experiment_20261012_16"
+  ]
+}

@@ -19,6 +19,14 @@ venv/
 node_modules/
 target/
 .pytest_cache/
+# Local real API captures can contain prompts, transport data and machine metadata.
+my_paper_coding/trace_adapter/real_application_runs/
+my_paper_coding/trace_adapter/alignment_runs/
+my_paper_coding/trace_adapter/application_runs/
+my_paper_coding/trace_adapter/capture_diagnostics/
+# Hourly experiment folders keep summaries in Git and raw captures locally.
+lab/experiment/**/results/
+lab/experiment/**/replay*.jsonl
 lab/Watson/out/
 lab/agentsight/agentsight-bin
 # Experimental captures, local databases and assistant state

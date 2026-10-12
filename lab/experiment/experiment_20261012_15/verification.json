@@ -1,0 +1,43 @@
+{
+  "schema_version": "agentops-observation-quality-verification-v0.1",
+  "experiment_id": "experiment_20261012_15",
+  "network_calls": 0,
+  "python": {
+    "trace_adapter_tests_passed": 64,
+    "failed": 0
+  },
+  "rust": {
+    "agentsight_capture_tests_passed": 44,
+    "failed": 0,
+    "ignored": 1,
+    "clock_tests_passed": 5
+  },
+  "release_build": {
+    "version": "agentsight 1.0.31",
+    "artifact": "agentsight-clock-v3-resolution-floor",
+    "sha256": "70c839ba59ff8c1bbf679e4258b6fa019fb7f6bec625d4e7f0885768b3c3134f"
+  },
+  "deterministic_replay": {
+    "runs": 2,
+    "byte_identical": true,
+    "sha256": "ba8a8dd6e42706c58710e96a553f3db5e142d5ec0f9127655cd8331c3b37d06f"
+  },
+  "negative_protocol_matrix": {
+    "cases": 8,
+    "rejected": 8
+  },
+  "mapping_sessions": {
+    "accepted": 0,
+    "inferred": 1,
+    "abstain": 0,
+    "accuracy_status": "UNVERIFIED_WITHOUT_INDEPENDENT_PID_GROUND_TRUTH"
+  },
+  "controlled_pid_namespace_fixture": {
+    "mapping_status": "accepted",
+    "observer_pid": 13,
+    "local_pid": 1,
+    "nspid_vector": [13, 1],
+    "direct_ground_truth": true
+  },
+  "component_status": "READY_WITH_WARNINGS"
+}

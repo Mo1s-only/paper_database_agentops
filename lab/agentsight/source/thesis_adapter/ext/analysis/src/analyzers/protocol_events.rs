@@ -32,7 +32,8 @@ pub struct SSEProcessorEvent {
 impl SSEProcessorEvent {
     pub fn to_event(&self, original_event: &Event) -> Event {
         // Serialize struct to JSON Value to ensure exact match with struct fields
-        let data = serde_json::to_value(self).unwrap_or_else(|_| serde_json::json!({}));
+        let mut data = serde_json::to_value(self).unwrap_or_else(|_| serde_json::json!({}));
+        preserve_clock_evidence(&mut data, original_event);
 
         // Use merged end_time if events were merged, otherwise use original timestamp
         let timestamp = if self.event_count > 1 {
@@ -76,7 +77,8 @@ pub struct HTTPEvent {
 impl HTTPEvent {
     pub fn to_event(&self, original_event: &Event) -> Event {
         // Serialize struct to JSON Value to ensure exact match with struct fields
-        let data = serde_json::to_value(self).unwrap_or_else(|_| serde_json::json!({}));
+        let mut data = serde_json::to_value(self).unwrap_or_else(|_| serde_json::json!({}));
+        preserve_clock_evidence(&mut data, original_event);
 
         Event::new_with_timestamp(
             original_event.timestamp, // Use original event timestamp directly
@@ -85,5 +87,64 @@ impl HTTPEvent {
             original_event.comm.clone(),
             data,
         )
+    }
+}
+
+fn preserve_clock_evidence(data: &mut Value, original_event: &Event) {
+    let Some(clock) = original_event.data.get("_agentsight_clock") else {
+        return;
+    };
+    if let Some(object) = data.as_object_mut() {
+        object.insert("_agentsight_clock".to_string(), clock.clone());
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn sse_event_preserves_timestamp_normalizer_evidence() {
+        let source = Event::new_with_timestamp(
+            2_100,
+            "ssl".to_string(),
+            7,
+            "claude".to_string(),
+            json!({
+                "_agentsight_clock": {
+                    "raw_boot_ns": 600_000_000u64,
+                    "boot_epoch_ns": 1_500_000_000u64,
+                    "epoch_ms": 2_100u64,
+                    "anchor_uncertainty_ns": 10u64,
+                    "conversion": "boot_epoch_ns_plus_bpf_ktime_ns"
+                }
+            }),
+        );
+        let event = SSEProcessorEvent {
+            connection_id: "connection".to_string(),
+            message_id: None,
+            start_time: 2_100,
+            end_time: 2_100,
+            duration_ns: 0,
+            original_source: "ssl".to_string(),
+            host: None,
+            method: None,
+            path: None,
+            status_code: None,
+            function: "READ/RECV".to_string(),
+            tid: 8,
+            json_content: "{}".to_string(),
+            text_content: String::new(),
+            total_size: 2,
+            event_count: 1,
+            has_message_start: false,
+            sse_events: Vec::new(),
+        }
+        .to_event(&source);
+        assert_eq!(
+            event.data.pointer("/_agentsight_clock/raw_boot_ns"),
+            Some(&json!(600_000_000u64))
+        );
     }
 }

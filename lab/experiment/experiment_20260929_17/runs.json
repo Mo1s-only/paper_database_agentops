@@ -1,0 +1,26 @@
+[
+  {
+    "run_id": "real-canary-20260929",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/failure_pilot/results/real-canary-20260929",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/real-canary-20260929/run.json",
+    "recorded_time": "2026-09-29T17:21:06.757057+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/real-canary-20260929/ground_truth.json",
+    "artifact_count": 15
+  },
+  {
+    "run_id": "real-canary-20260929-ubuntu24",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/failure_pilot/results/real-canary-20260929-ubuntu24",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/real-canary-20260929-ubuntu24/run.json",
+    "recorded_time": "2026-09-29T17:23:08.459739+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/real-canary-20260929-ubuntu24/ground_truth.json",
+    "artifact_count": 19
+  }
+]

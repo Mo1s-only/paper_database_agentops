@@ -1,0 +1,110 @@
+[
+  {
+    "run_id": "20260928T_p0_pairing_pilot_01",
+    "family": "p0_pairing",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/p0_pairing/results/20260928T_p0_pairing_pilot_01",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/p0_pairing/20260928T_p0_pairing_pilot_01/run.json",
+    "recorded_time": "2026-09-28T11:16:05.219149+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/p0_pairing/results/20260928T_p0_pairing_pilot_01/marker.txt",
+    "artifact_count": 8
+  },
+  {
+    "run_id": "20260928T031958Z_p0_pairing_pilot_01",
+    "family": "p0_pairing",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/p0_pairing/results/20260928T031958Z_p0_pairing_pilot_01",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/p0_pairing/20260928T031958Z_p0_pairing_pilot_01/run.json",
+    "recorded_time": "2026-09-28T11:19:58+08:00",
+    "time_status": "VERIFIED",
+    "time_evidence": "run_id_utc",
+    "artifact_count": 8
+  },
+  {
+    "run_id": "20260928T032023Z_p0_pairing_pilot_02",
+    "family": "p0_pairing",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/p0_pairing/results/20260928T032023Z_p0_pairing_pilot_02",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/p0_pairing/20260928T032023Z_p0_pairing_pilot_02/run.json",
+    "recorded_time": "2026-09-28T11:20:23+08:00",
+    "time_status": "VERIFIED",
+    "time_evidence": "run_id_utc",
+    "artifact_count": 8
+  },
+  {
+    "run_id": "20260928T032046Z_p0_pairing_pilot_03",
+    "family": "p0_pairing",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/p0_pairing/results/20260928T032046Z_p0_pairing_pilot_03",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/p0_pairing/20260928T032046Z_p0_pairing_pilot_03/run.json",
+    "recorded_time": "2026-09-28T11:20:46+08:00",
+    "time_status": "VERIFIED",
+    "time_evidence": "run_id_utc",
+    "artifact_count": 8
+  },
+  {
+    "run_id": "20260928T032109Z_p0_pairing_pilot_04",
+    "family": "p0_pairing",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/p0_pairing/results/20260928T032109Z_p0_pairing_pilot_04",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/p0_pairing/20260928T032109Z_p0_pairing_pilot_04/run.json",
+    "recorded_time": "2026-09-28T11:21:09+08:00",
+    "time_status": "VERIFIED",
+    "time_evidence": "run_id_utc",
+    "artifact_count": 8
+  },
+  {
+    "run_id": "pilot-01",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "unknown_or_synthetic",
+    "source_path": "my_paper_coding/failure_pilot/results/pilot-01",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/pilot-01/run.json",
+    "recorded_time": "2026-09-28T11:26:29.143313+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/pilot-01/ground_truth.json",
+    "artifact_count": 4
+  },
+  {
+    "run_id": "agentsight-capture-20260928",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "unknown_or_synthetic",
+    "source_path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/agentsight-capture-20260928/run.json",
+    "recorded_time": "2026-09-28T11:28:55.715436+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/agentsight-capture-20260928/agentsight-20260928-112855.db",
+    "artifact_count": 6
+  },
+  {
+    "run_id": "agentsight-capture-20260928b",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "unknown_or_synthetic",
+    "source_path": "my_paper_coding/failure_pilot/results/agentsight-capture-20260928b",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/agentsight-capture-20260928b/run.json",
+    "recorded_time": "2026-09-28T11:29:56.513199+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/agentsight-capture-20260928b/trace.jsonl",
+    "artifact_count": 6
+  },
+  {
+    "run_id": "agentsight-attach-20260928",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/failure_pilot/results/agentsight-attach-20260928",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/agentsight-attach-20260928/run.json",
+    "recorded_time": "2026-09-28T11:55:01.582313+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/agentsight-attach-20260928/probe-truth.json",
+    "artifact_count": 15
+  }
+]

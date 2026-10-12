@@ -1,0 +1,17 @@
+{
+  "schema_version": "agentops-process-clock-plan-v0.1",
+  "experiment_id": "experiment_20261010_14",
+  "timezone": "Asia/Shanghai",
+  "framework": "Claude Code CLI native stream-json",
+  "real_api_sessions": 1,
+  "per_session_budget_usd": 0.10,
+  "cumulative_cost_before_usd": 1.576492,
+  "hard_stop_total_usd": 2.0,
+  "no_automatic_retry": true,
+  "measurements": [
+    "framework native lifecycle",
+    "process tree and PID namespace",
+    "CLOCK_REALTIME/CLOCK_MONOTONIC/CLOCK_BOOTTIME anchors",
+    "AgentSight process and tool timestamps"
+  ]
+}

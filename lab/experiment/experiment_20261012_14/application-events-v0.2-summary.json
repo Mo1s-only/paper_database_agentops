@@ -1,0 +1,17 @@
+{
+  "schema_version": "agentops-application-event-v0.2-build-summary",
+  "experiment_id": "experiment_20261012_14",
+  "stream": {
+    "run_id": "experiment_20261012_14",
+    "evidence_kind": "runtime_observed",
+    "event_count": 6,
+    "session_count": 1,
+    "all_sessions_closed": true
+  },
+  "event_file_sha256": "f9fb7a628866c127f27749d95b582e4697cd3ce133f7eade7a16aa572a5c47b0",
+  "process_mapping_status": "inferred",
+  "local_pid": 81,
+  "observer_pid": 1758,
+  "clock_formula_verified": true,
+  "applied_clock_correction_ns": 0
+}

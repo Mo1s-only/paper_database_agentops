@@ -1,0 +1,98 @@
+{
+  "schema_version": "agentops-pid-namespace-matrix-v0.1",
+  "evidence_kind": "runtime_observed_local_fixture",
+  "concurrent_namespace_count": 2,
+  "same_local_pid": true,
+  "distinct_observer_pids": true,
+  "distinct_process_namespaces": true,
+  "candidates": [
+    {
+      "label": "a",
+      "local_pid": 1,
+      "observer_pid": 14,
+      "nspid_vector": [
+        14,
+        1
+      ],
+      "process_pid_namespace": "pid:[4026532217]",
+      "observer_pid_namespace": "pid:[4026532214]",
+      "indirect_match": false
+    },
+    {
+      "label": "b",
+      "local_pid": 1,
+      "observer_pid": 15,
+      "nspid_vector": [
+        15,
+        1
+      ],
+      "process_pid_namespace": "pid:[4026532220]",
+      "observer_pid_namespace": "pid:[4026532214]",
+      "indirect_match": false
+    }
+  ],
+  "decisions": {
+    "namespace_scoped_direct": [
+      {
+        "mapping_status": "accepted",
+        "mapping_method": "proc_status_nspid",
+        "mapping_evidence": [
+          "proc.status.NSpid=14,1"
+        ],
+        "observer_pid": 14,
+        "observer_pid_namespace": "pid:[4026532214]",
+        "reason": "unique_direct_nspid_mapping",
+        "candidate_count": 1
+      },
+      {
+        "mapping_status": "accepted",
+        "mapping_method": "proc_status_nspid",
+        "mapping_evidence": [
+          "proc.status.NSpid=15,1"
+        ],
+        "observer_pid": 15,
+        "observer_pid_namespace": "pid:[4026532214]",
+        "reason": "unique_direct_nspid_mapping",
+        "candidate_count": 1
+      }
+    ],
+    "local_pid_only_ambiguous": {
+      "mapping_status": "abstain",
+      "mapping_method": null,
+      "mapping_evidence": [
+        "local_pid_namespace_missing"
+      ],
+      "observer_pid": null,
+      "observer_pid_namespace": null,
+      "reason": "ambiguous_local_pid_across_namespaces",
+      "candidate_count": 2
+    },
+    "unique_indirect_real_shape": {
+      "mapping_status": "inferred",
+      "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
+      "mapping_evidence": [
+        "capture-summary.session_id",
+        "process_nodes.comm=claude",
+        "analysis.process_start_in_launch_interval=true",
+        "tool_calls.tool_call_id=framework.tool_use.id"
+      ],
+      "observer_pid": 1758,
+      "observer_pid_namespace": "linux-initial-pid-namespace",
+      "reason": "unique_supported_indirect_mapping",
+      "candidate_count": 1
+    }
+  },
+  "status_counts": {
+    "accepted": 2,
+    "inferred": 1,
+    "abstain": 1
+  },
+  "acceptance_passed": true,
+  "environment": {
+    "system": "Linux",
+    "kernel_release": "6.18.40.1-microsoft-standard-WSL2",
+    "machine": "x86_64",
+    "python": "3.12.3"
+  },
+  "network_calls": 0
+}

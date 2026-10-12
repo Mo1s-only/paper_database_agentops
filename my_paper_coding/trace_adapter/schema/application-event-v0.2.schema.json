@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentOps application event v0.2",
+  "description": "Per-record contract. application_events_v2.validate_stream enforces lifecycle, stable process identity, sequence and clock monotonicity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_kind", "run_id", "event_id", "session_id", "agent_id", "event_type", "sequence", "step_id", "tool_call_id", "process", "clock"],
+  "properties": {
+    "schema_version": {"const": "agentops-application-event-v0.2"},
+    "evidence_kind": {"enum": ["runtime_observed", "synthetic_fixture"]},
+    "run_id": {"$ref": "#/$defs/id"}, "event_id": {"$ref": "#/$defs/id"},
+    "session_id": {"$ref": "#/$defs/id"}, "agent_id": {"$ref": "#/$defs/id"},
+    "event_type": {"enum": ["session.start", "step.start", "tool.start", "tool.end", "step.end", "session.end"]},
+    "sequence": {"type": "integer", "minimum": 0},
+    "step_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+    "tool_call_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+    "process": {
+      "type": "object", "additionalProperties": false,
+      "required": ["host_id", "boot_id", "local_pid", "local_pid_namespace", "observer_pid", "observer_pid_namespace", "mapping_status", "mapping_method", "mapping_evidence", "start_realtime_interval_ns", "observer_start_epoch_ms"],
+      "properties": {
+        "host_id": {"$ref": "#/$defs/id"}, "boot_id": {"$ref": "#/$defs/id"},
+        "local_pid": {"type": "integer", "minimum": 1}, "local_pid_namespace": {"$ref": "#/$defs/id"},
+        "observer_pid": {"anyOf": [{"type": "integer", "minimum": 1}, {"type": "null"}]},
+        "observer_pid_namespace": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+        "mapping_status": {"enum": ["accepted", "inferred", "abstain"]},
+        "mapping_method": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+        "mapping_evidence": {"type": "array", "items": {"$ref": "#/$defs/id"}, "minItems": 1, "uniqueItems": true},
+        "start_realtime_interval_ns": {"$ref": "#/$defs/interval"},
+        "observer_start_epoch_ms": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"mapping_status": {"const": "accepted"}}},
+          "then": {
+            "properties": {
+              "mapping_method": {"const": "proc_status_nspid"},
+              "mapping_evidence": {"contains": {"type": "string", "pattern": "^proc\\.status\\.NSpid="}}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"mapping_status": {"const": "abstain"}}},
+          "then": {
+            "properties": {
+              "observer_pid": {"type": "null"},
+              "observer_pid_namespace": {"type": "null"},
+              "mapping_method": {"type": "null"}
+            }
+          }
+        }
+      ]
+    },
+    "clock": {
+      "type": "object", "additionalProperties": false,
+      "required": ["application_realtime_ns", "application_realtime_interval_ns", "application_monotonic_ns", "application_boottime_ns", "application_uncertainty_ns", "observer_raw_boot_ns", "observer_epoch_ms", "observer_boot_epoch_ns", "observer_anchor_uncertainty_ns", "conversion", "correction_ns"],
+      "properties": {
+        "application_realtime_ns": {"type": "integer", "minimum": 0},
+        "application_realtime_interval_ns": {"$ref": "#/$defs/interval"},
+        "application_monotonic_ns": {"type": "integer", "minimum": 0},
+        "application_boottime_ns": {"type": "integer", "minimum": 0},
+        "application_uncertainty_ns": {"type": "integer", "minimum": 0},
+        "observer_raw_boot_ns": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "observer_epoch_ms": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "observer_boot_epoch_ns": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "observer_anchor_uncertainty_ns": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]},
+        "conversion": {"anyOf": [{"const": "boot_epoch_ns_plus_bpf_ktime_ns"}, {"type": "null"}]},
+        "correction_ns": {"anyOf": [{"type": "integer", "minimum": 0}, {"type": "null"}]}
+      }
+    }
+  },
+  "$defs": {
+    "id": {"type": "string", "minLength": 1, "pattern": "\\S"},
+    "interval": {"type": "array", "items": {"type": "integer", "minimum": 0}, "minItems": 2, "maxItems": 2}
+  }
+}

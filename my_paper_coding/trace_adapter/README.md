@@ -1,4 +1,24 @@
-# Trace Adapter 输入索引（v0.2）
+# Trace Adapter 输入索引与候选对齐（v0.6）
+
+归因前统一输入门见 [`experiment_20261012_16`](../../lab/experiment/experiment_20261012_16/README.md)：两个并发 namespace 的内层 PID 都为 1，外层 PID 分别为 14 和 15；namespace+NSpid 可 accepted，仅 local PID 时必须 abstain，历史 Claude 间接证据保持 inferred。真实六事件流字段完整率为 114/114，工具捕获为 1/1。当前允许构建身份/工具关系图，但历史 0 ns 不确定度使严格有界时间排序保持关闭。
+
+观测模块严格质量门见 [`experiment_20261012_15`](../../lab/experiment/experiment_20261012_15/README.md)：同一真实输入两次回放字节一致，8/8 无效协议场景被拒绝；真实会话映射覆盖率按 session 统计为 accepted=0、inferred=1、abstain=0，并明确不将覆盖率当作准确率。本地受控 PID namespace 另以 `NSpid=[13, 1]` 建立一条直接真值并标为 accepted。AgentSight 时钟不确定度已加入系统时钟分辨率下界，新的 release 二进制已经离线构建，但尚未用新的 API 会话验证。
+
+最新真实闭环见 [`experiment_20261012_14`](../../lab/experiment/experiment_20261012_14/README.md)：修复 SSE 对 `_agentsight_clock` 的透传后，真实工具记录保存了 observer boot-relative 时间、boot epoch 锚点和不确定度字段；协议 v0.2 生成 6 条闭合事件并通过严格读取校验。应用 PID 81 与观测器 PID 1758 的对应关系仍标为 `INFERRED`。全仓去重成本为 2.183708 USD，后续停止 API 调用，使用这条真实事件流做离线 provenance/responsibility graph 构建。
+
+框架原生事件、进程和时钟的真实联合实测已记录到 [`lab/experiment/experiment_20261010_14`](../../lab/experiment/experiment_20261010_14/README.md)：原生工具与 AgentSight 1/1 对齐；620 次锚点显示墙钟—单调钟范围宽度 30 微秒；应用 PID 81 和 eBPF 观测 PID 341 为两套命名空间视图。按本地源码的整数秒 boot epoch 转换规则，本次需补偿 413.555968 ms，补偿后的进程开始时间落入 Popen 边界。
+
+4 次真实运行的零 API 聚合诊断已完成：15 次原生工具调用中 AgentSight 捕获 12 次，3 个缺失 ID 均未出现在 SQLite 任一表。新增 `capture_incomplete` 门控，跨层工具不能一一覆盖时禁止系统层 Edge 完整性结论。证据与边界见 [工具捕获完整性诊断](capture_diagnostics/20261010/工具捕获完整性诊断_2026-10-10.md)。
+
+真实跨故障扩展实验已完成：错误传播与路由角色错误各运行一个真实双 Agent case，共 4 个 API 会话。两个单例场景的 fault type、责任 Agent、责任 Step、责任边和传播边均与 API 调用前冻结的真值一致；每个场景原生工具 4 次、AgentSight 工具 3 次，跨层捕获仍有 1 条缺失。当前 50 项测试通过，结论边界与下一闸门见 [真实跨故障扩展实验报告](真实跨故障扩展实验报告_2026-10-10.md)。
+
+完整真实进度实验已完成：两个真实 Agent 会话、3 次原生工具调用和 3 条 AgentSight 工具记录全部通过 `session-and-tool` 模式建立关系；失败触发候选为 Agent B 的 Bash 步骤，Agent 级与运行前真值一致。报告、边界和后续闸门见 [完整真实进度实验报告](完整真实进度实验报告_2026-10-10.md)。
+
+最新已执行真实 API 双 Agent canary：原生工具调用 4 次，系统记录 3 次，共享 ID 对齐 3 条，1 条保留缺失；严格进程/时钟模式未通过。当前 41 项测试通过，真实日志报告费用合计 0.062479 USD。执行方式、证据与下一闸门见 [真实应用对齐实验报告](真实应用对齐实验报告_2026-10-10.md)。
+
+后续新增显式应用事件协议、writer、严格解析器与跨层工具身份对齐；当前共 34 项测试通过。接口见 [应用事件协议与对齐说明](应用事件协议与对齐说明.md)，新实验及失败修复记录见 [应用身份对齐实验报告](应用身份对齐实验报告_2026-10-10.md)。该部分已通过合成协议验证，尚未接入真实框架事件采集。
+
+2026-10-10 新增离线候选匹配器、来源一致性审计及 20 项测试。真实数据上的实验与局限见 [候选对齐实验报告](候选对齐实验报告_2026-10-10.md)。本阶段输出统一轨迹草案，不生成责任标签。
 
 这个目录把现有实验结果整理成 Adapter 可读取的证据清单。它不改动 `lab/`，也不移动或复制原始日志；`structured_runs/` 中保存的是每次运行的 `run.json` 清单、相对路径、文件格式、大小和 SHA256。Adapter 先读取清单，再按 `category` 访问原始目录，因而不会依赖某一个固定文件名或固定实验。
 
@@ -63,7 +83,7 @@ python .\my_paper_coding\trace_adapter\smoke_check.py `
   --normalized .\my_paper_coding\trace_adapter\structured_runs\normalized\failure_pilot\<run-id>\evidence-events.jsonl
 ```
 
-该检查会读取 SQLite 中的 `llm_calls`、`tool_calls`、`audit_events`、`process_nodes` 等表，统计真实 API 调用、AgentSight 观测和任务工件是否存在。它不会生成责任标签；只有 `unified_trace_ready` 为 `true` 后，才进入跨层对齐和归因阶段。
+该检查会读取 SQLite 中的 `llm_calls`、`tool_calls`、`audit_events`、`process_nodes` 等表，统计真实 API 调用、AgentSight 观测和任务工件是否存在。默认 `--require inputs` 只验证文件与记录数量完整性，通过返回 0，失败返回 2；`--require unified-trace` 当前返回 2，因为本脚本不能验证 Agent/Step 对齐。输入检查通过后可以开发候选对齐，但不能直接声称归因可用。默认只输出报告；指定 `--output` 时只允许创建新文件，避免改写历史报告。
 
 ## Adapter 的最小输入契约
 
@@ -84,4 +104,32 @@ Adapter 应当对每个 `run.json`：
 
 `completeness` 记录本次运行是否具备原始观测、应用日志、任务上下文、独立判据和派生结果。`warnings` 是 Adapter 的前置检查结果。`derived_outputs_are_not_ground_truth` 固定为 `true`，避免把之前的人工或 manifest 驱动分析误当成自动归因证据。
 
-当前目录描述的是已有数据的结构化入口，不代表已经完成通用 Trace Adapter。下一步需要实现事件解析、跨层对齐、冲突处理和缺失证据下的 abstention，并在不同任务、故障和 Agent 框架上验证。
+当前已有系统侧关联、冲突处理和缺失证据下的 abstention；应用会话到 Agent/Step 的映射仍不具备证据，不代表通用 Trace Adapter 已完成。
+
+## 离线候选对齐与审计
+
+以下命令在仓库根目录执行，仅使用本地文件；输出目录必须尚不存在：
+
+```powershell
+$adapterRoot = 'my_paper_coding/trace_adapter'
+$adapterRun = 'real-canary-20260929-ubuntu24'
+$adapterOut = "$adapterRoot/alignment_runs/my-new-review/$adapterRun"
+python "$adapterRoot/align_candidates.py" --manifest "$adapterRoot/structured_runs/failure_pilot/$adapterRun/run.json" --evidence "$adapterRoot/structured_runs/normalized/failure_pilot/$adapterRun/evidence-events.jsonl" --output $adapterOut
+python "$adapterRoot/audit_alignment.py" --manifest "$adapterRoot/structured_runs/failure_pilot/$adapterRun/run.json" --evidence "$adapterRoot/structured_runs/normalized/failure_pilot/$adapterRun/evidence-events.jsonl" --output "$adapterOut/audit-report.json"
+python -m unittest discover -s my_paper_coding/trace_adapter -p 'test_*.py' -v
+```
+
+`align_candidates.py` 校验 manifest 列出的原始输入哈希，仅消费 `observed` 且在 `raw_observation/app_log` 白名单中的记录，不读取 validator 或 derived 工件。输出：
+
+| 文件 | 用途 |
+|---|---|
+| `candidate-alignments.jsonl` | 关联候选、规则接受状态、依据和来源引用 |
+| `unified-trace-draft.jsonl` | 保留原始记录类型的轨迹草案；Agent/Step 未确定时为空 |
+| `provenance-graph.json` | 观测关联图，非因果图或责任图 |
+| `alignment-report.json` | 输入哈希、分关系覆盖率、证据缺口 |
+| `alignment-review-template.jsonl` | 待独立复核表，不能当作已标注真值 |
+| `audit-report.json` | 原始 SQLite 一致性核查与受控扰动结果 |
+
+`accepted` 表示规则接受观测关联，不表示真实责任已确认；`uncertain` 表示候选无法唯一确认，`abstain` 表示没有可接受候选。未校准的置信度保持 `null`。同 PID 和相同时间只能作为工具—LLM 的弱候选；响应中结构化工具 ID 可支持更强关联，PID 冲突或重复候选会阻止接受。
+
+审计仅验证进程关联与原始字段一致，不是独立人工标注；Precision/Recall 保持为空。P0 的 HTTP 记录可保留和追溯，本版没有实现 HTTP 请求—响应匹配算法。完整消息缺失时不得从系统记录补造 B1 消息基线。

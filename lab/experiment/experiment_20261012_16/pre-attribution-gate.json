@@ -1,0 +1,36 @@
+{
+  "schema_version": "agentops-pre-attribution-gate-v0.1",
+  "status": "READY_WITH_WARNINGS",
+  "checks": {
+    "lifecycle_closed": true,
+    "required_fields_complete": true,
+    "deterministic_replay": true,
+    "invalid_streams_rejected": true,
+    "native_tool_capture_complete": true,
+    "pid_mapping_policy_passed": true,
+    "real_pid_mapping_supported": true,
+    "observer_clock_formula_verified": true,
+    "observer_clock_resolution_floor_verified_in_source_event": false
+  },
+  "tool_capture": {
+    "native_tool_use_count": 1,
+    "agentsight_match_count": 1,
+    "complete": true
+  },
+  "ready_modes": {
+    "identity_and_tool_graph": true,
+    "bounded_temporal_ordering": false,
+    "responsibility_or_root_cause": false
+  },
+  "warnings": [
+    "Real PID mapping is supported inference rather than direct NSpid truth",
+    "Historical observer clock uncertainty is unbounded for strict timing claims"
+  ],
+  "responsibility_claim_made": false,
+  "network_calls": 0,
+  "input_sha256": {
+    "lab\\experiment\\experiment_20261012_16\\observation-quality-report-final.json": "da6e5762b006f9a6c3764ebe02fa0d050703277cf2afef93a2118de086b1d1fd",
+    "lab\\experiment\\experiment_20261012_14\\analysis.json": "6ff85493f6cffe07bd630a87cf61610a60b99875bcbf7fee39cd95444bf72b6f",
+    "lab\\experiment\\experiment_20261012_16\\pid-namespace-matrix-final.json": "ccd597f6a6966c62b97824b55e58c3bcca190cef890f7496e2fd816771012e84"
+  }
+}

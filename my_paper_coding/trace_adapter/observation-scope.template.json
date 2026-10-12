@@ -1,0 +1,12 @@
+{
+  "schema_version": "agentops-observation-scope-v0.1",
+  "run_id": null,
+  "evidence_kind": "runtime_observed",
+  "source_path": null,
+  "source_sha256": null,
+  "host_id": null,
+  "boot_id": null,
+  "pid_namespace": null,
+  "clock_domain": null,
+  "uncertainty_ms": null
+}

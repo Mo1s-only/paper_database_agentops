@@ -16,13 +16,19 @@ def main() -> int:
     args = parser.parse_args()
     manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
     ledger = json.loads(args.ledger.read_text(encoding="utf-8"))
-    calls = int(manifest.get("planned_api_calls", 0))
-    per_call = float(manifest.get("upper_bound_usd_per_call", ledger.get("max_single_run_usd", 0)))
+    session_plan = "planned_cli_sessions" in manifest
+    calls = int(manifest.get("planned_cli_sessions" if session_plan else "planned_api_calls", 0))
+    per_call = float(manifest.get("upper_bound_usd_per_session" if session_plan else "upper_bound_usd_per_call", ledger.get("max_single_run_usd", 0)))
     planned = calls * per_call
     already = float(ledger.get("total_cost_usd", 0))
     projected = already + planned
     status = "PASS" if planned <= args.max_usd and projected <= float(manifest.get("hard_stop_total_usd", args.max_usd)) else "BLOCKED"
     result = {"status": status, "planned_api_calls": calls, "upper_bound_usd_per_call": per_call, "planned_cost_usd": round(planned, 6), "already_spent_usd": round(already, 6), "projected_total_usd": round(projected, 6), "max_usd": args.max_usd, "hard_stop_total_usd": manifest.get("hard_stop_total_usd", args.max_usd), "network_calls_made": 0}
+    if session_plan:
+        result.pop("planned_api_calls")
+        result.pop("upper_bound_usd_per_call")
+        result.update(planned_cli_sessions=calls, upper_bound_usd_per_session=per_call,
+                      note="Each CLI session may make multiple model API requests; runtime limits use CLI reported costs")
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if status == "PASS" else 2
 

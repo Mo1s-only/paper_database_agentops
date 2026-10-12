@@ -1,0 +1,149 @@
+{
+  "schema_version": "agentops-observation-quality-gate-v0.1",
+  "source": "lab\\experiment\\experiment_20261012_14\\results\\application-events-v0.2.jsonl",
+  "source_sha256": "f9fb7a628866c127f27749d95b582e4697cd3ce133f7eade7a16aa572a5c47b0",
+  "stream": {
+    "run_id": "experiment_20261012_14",
+    "evidence_kind": "runtime_observed",
+    "event_count": 6,
+    "session_count": 1,
+    "all_sessions_closed": true
+  },
+  "deterministic_replay": {
+    "replay_count": 2,
+    "sha256": [
+      "ba8a8dd6e42706c58710e96a553f3db5e142d5ec0f9127655cd8331c3b37d06f",
+      "ba8a8dd6e42706c58710e96a553f3db5e142d5ec0f9127655cd8331c3b37d06f"
+    ],
+    "byte_identical": true
+  },
+  "mapping_coverage": {
+    "session_counts": {
+      "accepted": 0,
+      "inferred": 1,
+      "abstain": 0
+    },
+    "event_counts": {
+      "accepted": 0,
+      "inferred": 6,
+      "abstain": 0
+    },
+    "session_total": 1,
+    "accepted_session_coverage": 0.0,
+    "supported_inference_session_coverage": 1.0,
+    "abstain_session_coverage": 0.0,
+    "accuracy_status": "UNVERIFIED_WITHOUT_INDEPENDENT_PID_GROUND_TRUTH"
+  },
+  "clock_quality": {
+    "observer_clock_event_count": 1,
+    "nonzero_uncertainty_event_count": 0,
+    "zero_uncertainty_event_count": 1,
+    "zero_uncertainty_event_ids": [
+      "4021bac3-5995-4e9b-865f-3773cfaa16f0"
+    ],
+    "resolution_floor_gate_passed": false
+  },
+  "field_completeness": {
+    "groups": {
+      "event_identity": {
+        "present": 36,
+        "expected": 36,
+        "rate": 1.0
+      },
+      "process_scope": {
+        "present": 42,
+        "expected": 42,
+        "rate": 1.0
+      },
+      "application_clock": {
+        "present": 30,
+        "expected": 30,
+        "rate": 1.0
+      },
+      "tool_start_observer_clock": {
+        "present": 6,
+        "expected": 6,
+        "rate": 1.0
+      }
+    },
+    "overall_present": 114,
+    "overall_expected": 114,
+    "overall_rate": 1.0,
+    "lifecycle_missing_by_session": {
+      "48174557-6d35-42b7-aecd-4ab4fcac8760": []
+    },
+    "all_required_lifecycle_kinds_present": true
+  },
+  "negative_protocol_matrix": {
+    "case_count": 8,
+    "rejected_count": 8,
+    "all_invalid_cases_rejected": true,
+    "cases": [
+      {
+        "name": "duplicate_event_id",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Duplicate application event_id"
+      },
+      {
+        "name": "sequence_gap",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Non-contiguous sequence or backwards application clock"
+      },
+      {
+        "name": "changed_process_identity",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Closed session or changed process identity"
+      },
+      {
+        "name": "missing_tool_end",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Step ended with open tool"
+      },
+      {
+        "name": "inconsistent_observer_formula",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Observer epoch time does not match raw boot time and anchor"
+      },
+      {
+        "name": "partial_observer_clock",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Observer clock fields must be present or absent together"
+      },
+      {
+        "name": "duplicate_tool_start",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Tool ID reused"
+      },
+      {
+        "name": "backwards_application_clock",
+        "rejected": true,
+        "error_type": "ValueError",
+        "reason": "Non-contiguous sequence or backwards application clock"
+      }
+    ]
+  },
+  "publication_component_gate": {
+    "status": "READY_WITH_WARNINGS",
+    "blocking_implementation_failures": [],
+    "evidence_warnings": [
+      "Historical observer clock evidence has a zero uncertainty floor",
+      "PID mapping is supported inference, not direct namespace ground truth"
+    ]
+  },
+  "network_calls": 0,
+  "code_provenance": {
+    "application_events_v2.py": "e2b6f393402c5d6bfd1bfa66900fa7cd137eeca970021b06507b6786a3e0226a",
+    "observation_quality_gate.py": "632d03325fccb17bda7d22eec9e915b3664bfad7f50b4ac57160757773264317"
+  },
+  "environment": {
+    "system": "Windows",
+    "python": "3.12.1"
+  }
+}

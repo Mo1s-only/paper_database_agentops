@@ -1,0 +1,26 @@
+[
+  {
+    "run_id": "real-pilot-inventory-20260928",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/real-pilot-inventory-20260928/run.json",
+    "recorded_time": "2026-09-28T15:20:24.513183+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928/ground_truth.json",
+    "artifact_count": 8
+  },
+  {
+    "run_id": "real-pilot-inventory-20260928-r2",
+    "family": "failure_pilot",
+    "run_kind": "run",
+    "framework": "Claude Code CLI",
+    "source_path": "my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928-r2",
+    "manifest_path": "my_paper_coding/trace_adapter/structured_runs/failure_pilot/real-pilot-inventory-20260928-r2/run.json",
+    "recorded_time": "2026-09-28T15:28:12.169690+08:00",
+    "time_status": "INFERRED",
+    "time_evidence": "earliest_file_mtime:my_paper_coding/failure_pilot/results/real-pilot-inventory-20260928-r2/ground_truth.json",
+    "artifact_count": 24
+  }
+]

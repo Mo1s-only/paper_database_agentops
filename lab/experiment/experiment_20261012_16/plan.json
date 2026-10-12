@@ -1,0 +1,23 @@
+{
+  "schema_version": "agentops-pre-attribution-gate-plan-v0.1",
+  "experiment_id": "experiment_20261012_16",
+  "timezone": "Asia/Shanghai",
+  "network_calls_allowed": 0,
+  "source_experiment": "experiment_20261012_14",
+  "checks": [
+    "accepted_requires_direct_nspid",
+    "unique_indirect_mapping_is_inferred",
+    "ambiguous_local_pid_is_abstain",
+    "concurrent_namespace_collision",
+    "protocol_field_completeness",
+    "input_and_code_hash_manifest"
+  ],
+  "acceptance": {
+    "concurrent_namespaces": 2,
+    "same_inner_pid_observed": true,
+    "distinct_outer_pids_observed": true,
+    "ambiguous_mapping_abstains": true,
+    "required_field_completeness": 1.0,
+    "network_calls": 0
+  }
+}

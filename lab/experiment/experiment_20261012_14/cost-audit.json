@@ -1,0 +1,14 @@
+{
+  "schema_version": "agentops-cost-audit-v0.1",
+  "experiment_id": "experiment_20261012_14",
+  "previous_scoped_total_usd": 1.626016,
+  "current_experiment_cost_usd": 0.024832,
+  "previously_omitted_unique_sessions": 4,
+  "previously_omitted_cost_usd": 0.5328595,
+  "duplicate_session_records": 1,
+  "comprehensive_unique_runs": 30,
+  "comprehensive_total_usd": 2.183708,
+  "hard_stop_usd": 2.0,
+  "status": "STOP_API_CALLS",
+  "source_policy": "local logs only; deduplicate by provider session ID"
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": "agentops-observation-quality-plan-v0.1",
+  "experiment_id": "experiment_20261012_15",
+  "timezone": "Asia/Shanghai",
+  "source_experiment": "experiment_20261012_14",
+  "network_calls_allowed": 0,
+  "checks": [
+    "nonzero_clock_resolution_floor",
+    "byte_deterministic_replay",
+    "mapping_decision_coverage",
+    "negative_protocol_matrix",
+    "one_command_reproduction"
+  ],
+  "acceptance": {
+    "rust_clock_tests_pass": true,
+    "python_tests_pass": true,
+    "replay_count": 2,
+    "replays_byte_identical": true,
+    "invalid_protocol_cases_all_rejected": true,
+    "mapping_accuracy_claim_requires_independent_ground_truth": true
+  }
+}

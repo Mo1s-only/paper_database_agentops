@@ -1,0 +1,10 @@
+{
+  "planned_cli_sessions": 2,
+  "upper_bound_usd_per_session": 0.20,
+  "hard_stop_total_usd": 2.00,
+  "batch_limit_usd": 0.40,
+  "authorization": "User explicitly requested one complete real progress experiment on 2026-10-10",
+  "scenario": "complete-v1",
+  "scope": "One two-agent inventory run with native streams, AgentSight, PID namespace snapshot, parsing, alignment, validation and progress report",
+  "no_automatic_retry": true
+}

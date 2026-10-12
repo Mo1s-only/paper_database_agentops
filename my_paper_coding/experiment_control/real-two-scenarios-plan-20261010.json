@@ -1,0 +1,9 @@
+{
+  "planned_cli_sessions": 4,
+  "upper_bound_usd_per_session": 0.13,
+  "hard_stop_total_usd": 2.00,
+  "batch_limit_usd": 0.52,
+  "authorization": "User asked to continue after the complete real controlled run",
+  "scenarios": ["error-propagation-v1", "routing-error-v1"],
+  "scope": "One real run per scenario, two Agent sessions each, no automatic retries"
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "agentops-pre-attribution-verification-v0.1",
+  "experiment_id": "experiment_20261012_16",
+  "network_calls": 0,
+  "tests": {
+    "trace_adapter_passed": 77,
+    "trace_adapter_failed": 0,
+    "agentsight_analysis_passed": 128,
+    "agentsight_analysis_failed": 0
+  },
+  "real_event_completeness": {
+    "present_slots": 114,
+    "expected_slots": 114,
+    "rate": 1.0,
+    "all_lifecycle_kinds_present": true,
+    "native_tool_use_count": 1,
+    "agentsight_tool_match_count": 1
+  },
+  "concurrent_pid_namespace_matrix": {
+    "namespace_count": 2,
+    "local_pids": [1, 1],
+    "observer_pids": [14, 15],
+    "accepted": 2,
+    "inferred": 1,
+    "abstain": 1,
+    "passed": true
+  },
+  "pre_attribution_gate": {
+    "status": "READY_WITH_WARNINGS",
+    "identity_and_tool_graph": true,
+    "bounded_temporal_ordering": false,
+    "responsibility_or_root_cause": false
+  },
+  "code_sha256": {
+    "timestamp_normalizer.rs": "8458aae6be090d86180bb0369cad5a51000b96a669218849e3c80204ee977c5c",
+    "process_identity.py": "b5756cef1f3a3639cd1bedb40c36df49d30bda0bf020fcb6c7de490e1732a0a5",
+    "pid_namespace_matrix.py": "e4a6e0b4815ee393fc36edc35c8ef8e5e8b472b644ae629a2ffa1dc9e16c50bc",
+    "application_events_v2.py": "e2b6f393402c5d6bfd1bfa66900fa7cd137eeca970021b06507b6786a3e0226a",
+    "observation_quality_gate.py": "632d03325fccb17bda7d22eec9e915b3664bfad7f50b4ac57160757773264317",
+    "pre_attribution_gate.py": "8978a6a47acafa7809e017e26625ab81b14a1b574338b1527daf0b008ad7d348",
+    "application-event-v0.2.schema.json": "a3abc54a68f30b2c23c37c8ae2c96f7b656dbb6930e2c183a81d83ab7d769a8b"
+  },
+  "report_sha256": {
+    "pid-namespace-matrix-final.json": "ccd597f6a6966c62b97824b55e58c3bcca190cef890f7496e2fd816771012e84",
+    "observation-quality-report-final.json": "da6e5762b006f9a6c3764ebe02fa0d050703277cf2afef93a2118de086b1d1fd",
+    "pre-attribution-gate.json": "ac8926cdc6ba1edae0a68eec3e4ac9d53ddebadc1f71ced7ae292289b05ef7f9"
+  }
+}

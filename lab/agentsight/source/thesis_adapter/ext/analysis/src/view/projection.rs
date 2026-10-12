@@ -19,6 +19,23 @@ use serde_json::Value;
 const PENDING_REQUEST_TTL_MS: u64 = 5 * 60 * 1000;
 const MAX_PENDING_REQUESTS_PER_STREAM: usize = 16;
 
+fn observer_clock(event: &CanonicalEvent) -> (Option<u64>, Option<u64>, Option<u64>) {
+    (
+        event
+            .attributes
+            .pointer("/_agentsight_clock/raw_boot_ns")
+            .and_then(Value::as_u64),
+        event
+            .attributes
+            .pointer("/_agentsight_clock/boot_epoch_ns")
+            .and_then(Value::as_u64),
+        event
+            .attributes
+            .pointer("/_agentsight_clock/anchor_uncertainty_ns")
+            .and_then(Value::as_u64),
+    )
+}
+
 impl MaterializedView {
     pub fn ingest_event(&mut self, event: &Event) -> ViewResult<()> {
         self.next_seq += 1;
@@ -425,11 +442,16 @@ impl MaterializedView {
                     .and_then(Value::as_i64)
                     .map(|v| v as u64);
                 let request_id = item.get("request_id").and_then(Value::as_str);
+                let (observer_raw_boot_ns, observer_boot_epoch_ns, observer_clock_uncertainty_ns) =
+                    observer_clock(event);
                 self.emit_tool_call(ToolCallRow {
                     id: format!("claude-tool-telemetry-{}-{idx}", event.event_id),
                     session_id: None,
                     conversation_id: None,
                     timestamp_ms: event.timestamp_ms,
+                    observer_raw_boot_ns,
+                    observer_boot_epoch_ns,
+                    observer_clock_uncertainty_ns,
                     tool_name: Some(tool_name.to_string()),
                     tool_call_id: request_id.map(str::to_string),
                     start_timestamp_ms: duration_ms.and_then(|d| event.timestamp_ms.checked_sub(d)),
@@ -514,11 +536,16 @@ impl MaterializedView {
                 let tool_id = tool_call_id
                     .map(str::to_string)
                     .unwrap_or_else(|| format!("openai-tool-{idx}"));
+                let (observer_raw_boot_ns, observer_boot_epoch_ns, observer_clock_uncertainty_ns) =
+                    observer_clock(event);
                 self.emit_tool_call(ToolCallRow {
                     id: format!("tool-{llm_call_id}-{tool_id}"),
                     session_id: None,
                     conversation_id: Some(format!("conv-{llm_call_id}")),
                     timestamp_ms: event.timestamp_ms,
+                    observer_raw_boot_ns,
+                    observer_boot_epoch_ns,
+                    observer_clock_uncertainty_ns,
                     tool_name: Some(name.to_string()),
                     tool_call_id: tool_call_id.map(str::to_string),
                     start_timestamp_ms: Some(event.timestamp_ms),
@@ -551,11 +578,16 @@ impl MaterializedView {
             let tool_id = tool_call_id
                 .map(str::to_string)
                 .unwrap_or_else(|| format!("tool-{idx}"));
+            let (observer_raw_boot_ns, observer_boot_epoch_ns, observer_clock_uncertainty_ns) =
+                observer_clock(event);
             self.emit_tool_call(ToolCallRow {
                 id: format!("tool-{llm_call_id}-{tool_id}"),
                 session_id: None,
                 conversation_id: Some(format!("conv-{llm_call_id}")),
                 timestamp_ms: event.timestamp_ms,
+                observer_raw_boot_ns,
+                observer_boot_epoch_ns,
+                observer_clock_uncertainty_ns,
                 tool_name: Some(name.to_string()),
                 tool_call_id: tool_call_id.map(str::to_string),
                 start_timestamp_ms: Some(event.timestamp_ms),

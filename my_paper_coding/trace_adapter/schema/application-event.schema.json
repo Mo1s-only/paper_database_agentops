@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AgentOps application event v0.1",
+  "description": "Per-record contract. application_events.validate_stream additionally enforces lifecycle, sequence, stable identity and closure.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "evidence_kind", "run_id", "event_id", "session_id", "agent_id", "event_type", "sequence", "timestamp_ms", "step_id", "tool_call_id", "process", "clock"],
+  "properties": {
+    "schema_version": {"const": "agentops-application-event-v0.1"},
+    "evidence_kind": {"enum": ["runtime_observed", "synthetic_fixture"]},
+    "run_id": {"$ref": "#/$defs/id"},
+    "event_id": {"$ref": "#/$defs/id"},
+    "session_id": {"$ref": "#/$defs/id"},
+    "agent_id": {"$ref": "#/$defs/id"},
+    "event_type": {"enum": ["session.start", "step.start", "tool.start", "tool.end", "step.end", "session.end"]},
+    "sequence": {"type": "integer", "minimum": 0},
+    "timestamp_ms": {"type": "integer", "minimum": 0},
+    "step_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+    "tool_call_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+    "process": {
+      "type": "object", "additionalProperties": false,
+      "required": ["host_id", "boot_id", "pid_namespace", "pid", "start_ms"],
+      "properties": {
+        "host_id": {"$ref": "#/$defs/id"}, "boot_id": {"$ref": "#/$defs/id"},
+        "pid_namespace": {"$ref": "#/$defs/id"}, "pid": {"type": "integer", "minimum": 1},
+        "start_ms": {"type": "integer", "minimum": 0}
+      }
+    },
+    "clock": {
+      "type": "object", "additionalProperties": false, "required": ["domain", "uncertainty_ms"],
+      "properties": {"domain": {"$ref": "#/$defs/id"}, "uncertainty_ms": {"type": "integer", "minimum": 0}}
+    }
+  },
+  "$defs": {"id": {"type": "string", "minLength": 1, "pattern": "\\S"}},
+  "allOf": [
+    {"if": {"properties": {"event_type": {"enum": ["session.start", "session.end"]}}},
+     "then": {"properties": {"step_id": {"type": "null"}, "tool_call_id": {"type": "null"}}},
+     "else": {"properties": {"step_id": {"$ref": "#/$defs/id"}}}},
+    {"if": {"properties": {"event_type": {"enum": ["tool.start", "tool.end"]}}},
+     "then": {"properties": {"tool_call_id": {"$ref": "#/$defs/id"}}},
+     "else": {"properties": {"tool_call_id": {"type": "null"}}}}
+  ]
+}
