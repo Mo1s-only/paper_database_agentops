@@ -1,5 +1,9 @@
 # Trace Adapter 输入索引与候选对齐（v0.6）
 
+原生 PID namespace 身份实测见 [`experiment_20261013_13`](../../lab/experiment/experiment_20261013_13/README.md)：同一 EXEC 事件记录 initial namespace PID 1791 与 collector namespace PID 34，用户态 PID 也是 34，因此映射由间接 `inferred` 提升为内核直接 `accepted`。同一事件保存 1 ns 的非零时钟不确定度下界。分析器、统一事件 v0.2 和 schema 已接入该证据，Trace Adapter 101/101 测试通过。真实双 Agent API 阶段受 2.00 USD 硬停止线阻止，本轮网络调用为 0。
+
+归因前可查询证据包见 [`experiment_20261013_10`](../../lab/experiment/experiment_20261013_10/README.md)：吸收 RCACopilot 的可组合 handler、OpenRCA 的程序化查询、Watson 的调用条件检查和 OpenRCA 2.0 的逐关系收据。一次真实六事件流生成 5 个可重放查询和 3 条观察关系，5/5 查询哈希一致；PID 关系保持 inferred，严格时间关系和所有归因结论保持关闭。新增 model invocation context v0.1，只保存模型参数、请求/响应配对和提示词/schema 哈希，缺字段时拒绝重建。
+
 归因前统一输入门见 [`experiment_20261012_16`](../../lab/experiment/experiment_20261012_16/README.md)：两个并发 namespace 的内层 PID 都为 1，外层 PID 分别为 14 和 15；namespace+NSpid 可 accepted，仅 local PID 时必须 abstain，历史 Claude 间接证据保持 inferred。真实六事件流字段完整率为 114/114，工具捕获为 1/1。当前允许构建身份/工具关系图，但历史 0 ns 不确定度使严格有界时间排序保持关闭。
 
 观测模块严格质量门见 [`experiment_20261012_15`](../../lab/experiment/experiment_20261012_15/README.md)：同一真实输入两次回放字节一致，8/8 无效协议场景被拒绝；真实会话映射覆盖率按 session 统计为 accepted=0、inferred=1、abstain=0，并明确不将覆盖率当作准确率。本地受控 PID namespace 另以 `NSpid=[13, 1]` 建立一条直接真值并标为 accepted。AgentSight 时钟不确定度已加入系统时钟分辨率下界，新的 release 二进制已经离线构建，但尚未用新的 API 会话验证。

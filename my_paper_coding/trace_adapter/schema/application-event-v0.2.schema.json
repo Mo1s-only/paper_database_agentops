@@ -33,9 +33,23 @@
           "if": {"properties": {"mapping_status": {"const": "accepted"}}},
           "then": {
             "properties": {
-              "mapping_method": {"const": "proc_status_nspid"},
-              "mapping_evidence": {"contains": {"type": "string", "pattern": "^proc\\.status\\.NSpid="}}
+              "mapping_method": {"enum": ["proc_status_nspid", "bpf_get_ns_current_pid_tgid"]}
             }
+            ,
+            "anyOf": [
+              {
+                "properties": {
+                  "mapping_method": {"const": "proc_status_nspid"},
+                  "mapping_evidence": {"contains": {"type": "string", "pattern": "^proc\\.status\\.NSpid=[1-9][0-9]*(,[1-9][0-9]*)+$"}}
+                }
+              },
+              {
+                "properties": {
+                  "mapping_method": {"const": "bpf_get_ns_current_pid_tgid"},
+                  "mapping_evidence": {"contains": {"type": "string", "pattern": "^bpf\\.pidns\\.tgid=[1-9][0-9]*,[1-9][0-9]*$"}}
+                }
+              }
+            ]
           }
         },
         {

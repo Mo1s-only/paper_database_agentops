@@ -1,0 +1,12 @@
+{
+  "status": "BLOCKED",
+  "planned_cost_usd": 0.1,
+  "already_spent_usd": 2.183708,
+  "projected_total_usd": 2.283708,
+  "max_usd": 0.1,
+  "hard_stop_total_usd": 2.0,
+  "network_calls_made": 0,
+  "planned_cli_sessions": 2,
+  "upper_bound_usd_per_session": 0.05,
+  "note": "Each CLI session may make multiple model API requests; runtime limits use CLI reported costs"
+}

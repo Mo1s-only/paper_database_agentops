@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <sys/resource.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <bpf/libbpf.h>
 #include <bpf/bpf.h>
@@ -330,12 +331,41 @@ static bool process_in_target_session(pid_t pid)
 	return getsid(pid) == env.session_id;
 }
 
+static pid_t namespace_parent_pid(pid_t namespace_pid)
+{
+	char path[64];
+	char line[128];
+	FILE *status;
+	long value;
+
+	if (namespace_pid <= 0)
+		return 0;
+	snprintf(path, sizeof(path), "/proc/%d/status", namespace_pid);
+	status = fopen(path, "r");
+	if (!status)
+		return 0;
+	while (fgets(line, sizeof(line), status)) {
+		if (sscanf(line, "PPid:%ld", &value) == 1) {
+			fclose(status);
+			return value > 0 ? (pid_t)value : 0;
+		}
+	}
+	fclose(status);
+	return 0;
+}
+
 static bool should_track_event_process(struct pid_tracker *tracker,
 				       const char *comm,
 				       pid_t pid,
-				       pid_t ppid)
+				       pid_t ppid,
+				       pid_t namespace_pid,
+				       pid_t namespace_ppid)
 {
-	if (process_in_target_session(pid))
+	pid_t visible_pid = namespace_pid > 0 ? namespace_pid : pid;
+	if (tracker->target_pid > 0 &&
+	    (visible_pid == tracker->target_pid || namespace_ppid == tracker->target_pid))
+		return true;
+	if (process_in_target_session(visible_pid))
 		return true;
 	if (env.session_id > 0)
 		return false;
@@ -653,7 +683,8 @@ static void print_exec_event(const struct event *e)
 	printf("\"event\":\"EXEC\",");
 	printf("\"comm\":\"%s\",", comm_esc);
 	printf("\"pid\":%d,", e->pid);
-	printf("\"ppid\":%d", e->ppid);
+	printf("\"ppid\":%d,", e->ppid);
+	printf("\"namespace_pid\":%d", e->namespace_pid);
 	printf(",\"filename\":\"%s\"", filename_esc);
 	printf(",\"full_command\":\"%s\"", command_esc);
 
@@ -673,7 +704,8 @@ static void print_exit_event(const struct event *e)
 	printf("\"event\":\"EXIT\",");
 	printf("\"comm\":\"%s\",", comm_esc);
 	printf("\"pid\":%d,", e->pid);
-	printf("\"ppid\":%d", e->ppid);
+	printf("\"ppid\":%d,", e->ppid);
+	printf("\"namespace_pid\":%d", e->namespace_pid);
 	printf(",\"exit_code\":%u", e->exit_code);
 	if (e->duration_ns)
 		printf(",\"duration_ms\":%llu", e->duration_ns / 1000000);
@@ -785,7 +817,10 @@ static int handle_event(void *ctx, void *data, size_t data_sz)
 			if (g_agg_map_fd >= 0)
 				flush_pid_from_agg_map(g_agg_map_fd, e->pid);
 		} else {
-			bool should_track = should_track_event_process(tracker, e->comm, e->pid, e->ppid);
+			pid_t namespace_ppid = namespace_parent_pid(e->namespace_pid);
+			bool should_track = should_track_event_process(
+				tracker, e->comm, e->pid, e->ppid,
+				e->namespace_pid, namespace_ppid);
 
 			if (should_track) {
 				pid_tracker_add(tracker, e->pid, e->ppid);
@@ -855,6 +890,7 @@ int main(int argc, char **argv)
 {
 	struct ring_buffer *rb = NULL;
 	struct process_bpf *skel;
+	struct stat pid_ns_stat = {};
 	int err;
 
 	/* Parse command line arguments */
@@ -892,6 +928,12 @@ int main(int argc, char **argv)
 
 	/* Parameterize BPF code with minimum duration */
 	skel->rodata->min_duration_ns = env.min_duration_ms * 1000000ULL;
+	if (stat("/proc/self/ns/pid", &pid_ns_stat) == 0) {
+		skel->rodata->target_pid_ns_dev = (unsigned long long)pid_ns_stat.st_dev;
+		skel->rodata->target_pid_ns_ino = (unsigned long long)pid_ns_stat.st_ino;
+	} else if (env.verbose) {
+		fprintf(stderr, "Warning: cannot stat /proc/self/ns/pid: %s\n", strerror(errno));
+	}
 	skel->rodata->trace_fs_mutations = env.trace_fs;
 	skel->rodata->trace_network = env.trace_net;
 	skel->rodata->trace_signals = env.trace_signals;

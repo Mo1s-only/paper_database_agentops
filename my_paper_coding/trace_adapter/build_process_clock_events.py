@@ -94,21 +94,26 @@ def main() -> int:
     if analysis["applied_clock_correction_ns"] != 0:
         raise ValueError("Native nanosecond conversion was not validated")
 
+    mapping_status = analysis.get("pid_mapping_status", "inferred")
+    mapping_method = analysis.get(
+        "pid_mapping_method", "session+comm+launch_interval+shared_tool_call_id")
+    mapping_evidence = analysis.get("pid_mapping_evidence", [
+        "capture-summary.session_id",
+        "process_nodes.comm=claude",
+        "analysis.process_start_in_launch_interval=true",
+        "tool_calls.tool_call_id=framework.tool_use.id"
+    ])
+    mapped_observer_pid = analysis.get("pid_mapping_observer_pid")
     process = {
         "host_id": scope["host_id"],
         "boot_id": scope["boot_id"],
         "local_pid": capture["launcher_pid"],
         "local_pid_namespace": launch["pid_namespace"],
-        "observer_pid": observer["related_pid"],
+        "observer_pid": mapped_observer_pid or observer["related_pid"],
         "observer_pid_namespace": scope["observer_pid_namespace"],
-        "mapping_status": "inferred",
-        "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
-        "mapping_evidence": [
-            "capture-summary.session_id",
-            "process_nodes.comm=claude",
-            "analysis.process_start_in_launch_interval=true",
-            "tool_calls.tool_call_id=framework.tool_use.id"
-        ],
+        "mapping_status": mapping_status,
+        "mapping_method": mapping_method,
+        "mapping_evidence": mapping_evidence,
         "start_realtime_interval_ns": [
             launch["launch_before"]["realtime_interval_ns"][0],
             launch["launch_after"]["realtime_interval_ns"][1]

@@ -17,7 +17,7 @@ experiment_YYYYMMDD_HH
 
 历史实验不移动原始文件，只登记原始路径和时间证据。总索引见 [experiment_index.json](experiment_index.json)。
 
-当前已登记 40 条 2026-10-10 之前的历史运行，分布在 8 个小时目录；另有 5 个当前实验目录：`experiment_20261010_14`、`experiment_20261010_15`、`experiment_20261012_14`、`experiment_20261012_15` 和 `experiment_20261012_16`。历史记录中 8 条时间来自运行名，32 条依据最早存续文件时间推断，二者在索引中分别标为 `VERIFIED` 与 `INFERRED`。
+当前已登记 40 条 2026-10-10 之前的历史运行，分布在 8 个小时目录；另有 7 个当前实验目录：`experiment_20261010_14`、`experiment_20261010_15`、`experiment_20261012_14`、`experiment_20261012_15`、`experiment_20261012_16`、`experiment_20261013_10` 和 `experiment_20261013_13`。历史记录中 8 条时间来自运行名，32 条依据最早存续文件时间推断，二者在索引中分别标为 `VERIFIED` 与 `INFERRED`。
 
 当前实验状态：
 
@@ -26,5 +26,7 @@ experiment_YYYYMMDD_HH
 - `experiment_20261012_14`：SSE 时钟透传、SQLite 持久化和六事件协议 v0.2 真实闭环通过。
 - `experiment_20261012_15`：零 API 严格质量门；非零时钟分辨率下界、确定性回放和 8 类负向协议检查通过，PID 准确率仍缺独立真值。
 - `experiment_20261012_16`：零 API 归因前统一门；并发 namespace 三态映射、114/114 字段完整率和工具捕获覆盖通过，历史真实事件的有界时间结论仍关闭。
+- `experiment_20261013_10`：真实 API 历史会话的归因前证据包；5/5 查询可重放、3/3 关系有事件与查询收据，Watson 式调用上下文因历史字段缺失保持关闭。
+- `experiment_20261013_13`：原生双 PID 与非零时钟下界实测通过；initial namespace PID 1791 与用户态/collector namespace PID 34 由内核直接对应。真实双会话阶段受成本硬停止线阻止，网络调用 0 次。
 
 全仓 API 成本台账已按 session ID 去重，累计 2.183708 USD，超过 2.00 USD 硬停止线；后续实验仅允许离线回放或合成数据，不再发起真实 API 调用。

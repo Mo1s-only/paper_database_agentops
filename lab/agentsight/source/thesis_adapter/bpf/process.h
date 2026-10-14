@@ -25,6 +25,7 @@ struct event {
 	enum event_type type;
 	int pid;
 	int ppid;
+	int namespace_pid;
 	unsigned exit_code;
 	unsigned long long duration_ns;
 	unsigned long long timestamp_ns;

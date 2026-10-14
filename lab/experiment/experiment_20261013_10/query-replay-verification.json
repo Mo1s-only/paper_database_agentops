@@ -1,0 +1,16 @@
+{
+  "schema_version": "agentops-pre-attribution-evidence-verification-v0.1",
+  "query_count": 5,
+  "relation_count": 3,
+  "all_queries_replayed": true,
+  "relation_receipts_complete": true,
+  "identifiers_unique": true,
+  "forbidden_claims_absent": true,
+  "passed": true,
+  "failures": [],
+  "network_calls": 0,
+  "input_sha256": {
+    "events": "f9fb7a628866c127f27749d95b582e4697cd3ce133f7eade7a16aa572a5c47b0",
+    "evidence_package": "6b73ff9c3c69018e8bb9816fb2aa5b47f7837bca2401ec586dfc56fe16820df7"
+  }
+}

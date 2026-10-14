@@ -71,6 +71,20 @@
       "record_kind": "current",
       "result": "passed_with_warnings",
       "network_calls": 0
+    },
+    {
+      "directory": "experiment_20261013_10",
+      "run_count": 1,
+      "record_kind": "current",
+      "result": "passed_with_warnings",
+      "network_calls": 0
+    },
+    {
+      "directory": "experiment_20261013_13",
+      "run_count": 1,
+      "record_kind": "current",
+      "result": "passed_local_blocked_api",
+      "network_calls": 0
     }
   ],
   "boundary": "Source paths are indexed in place; inferred hours use earliest surviving file mtime.",
@@ -79,6 +93,8 @@
     "experiment_20261010_15",
     "experiment_20261012_14",
     "experiment_20261012_15",
-    "experiment_20261012_16"
+    "experiment_20261012_16",
+    "experiment_20261013_10",
+    "experiment_20261013_13"
   ]
 }

@@ -1,0 +1,77 @@
+{
+  "schema_version": "agentops-implementation-verification-v0.1",
+  "experiment_id": "experiment_20261013_13",
+  "result": "passed_local_blocked_api",
+  "network_calls": 0,
+  "artifacts": {
+    "agentsight_release": {
+      "path": "lab/agentsight/source/thesis_adapter/collector/target/release/agentsight",
+      "sha256": "f366a5b0b0fa40cf75de5cd6afa1cf196d18c15dc87bfbb2ce88b0dfe15dfac1"
+    },
+    "embedded_process_loader": {
+      "path": "lab/agentsight/source/thesis_adapter/agentsight-capture/vendor/bpf/process",
+      "sha256": "1a239aead603fbb0925e4cd41ca2ea430986ff596fce2b9c4e00f8ed17037644"
+    },
+    "local_runner": {
+      "path": "lab/experiment/experiment_20261013_13/run-local-native-identity.sh",
+      "sha256": "2034b685f1ae516664547828f36804f34a613c40477c2b483cacb7e044f2b5b5"
+    },
+    "verifier": {
+      "path": "my_paper_coding/trace_adapter/verify_native_identity_capture.py",
+      "sha256": "ac72b14479e468682ce2b496e4157771c78ad36897cb8644802848ac24fbc308"
+    }
+  },
+  "checks": {
+    "trace_adapter_python": {
+      "passed": 101,
+      "failed": 0
+    },
+    "bpf_runtime": {
+      "passed": 7,
+      "failed": 0
+    },
+    "agentsight_capture_core": {
+      "passed": 44,
+      "failed": 0,
+      "ignored": 1
+    },
+    "agentsight_capture_public_api": {
+      "passed": 1,
+      "failed": 0
+    },
+    "bpf_unit_suites": [
+      {
+        "name": "process_utils",
+        "passed": 3,
+        "failed": 0
+      },
+      {
+        "name": "process_filter",
+        "passed": 63,
+        "failed": 0
+      },
+      {
+        "name": "map_flush",
+        "passed": 48,
+        "failed": 0
+      },
+      {
+        "name": "types",
+        "passed": 49,
+        "failed": 0
+      },
+      {
+        "name": "codex_offsets",
+        "passed": 17,
+        "failed": 0
+      }
+    ]
+  },
+  "api_phase": {
+    "status": "BLOCKED",
+    "already_spent_usd": 2.183708,
+    "planned_cost_usd": 0.1,
+    "projected_total_usd": 2.283708,
+    "hard_stop_total_usd": 2.0
+  }
+}

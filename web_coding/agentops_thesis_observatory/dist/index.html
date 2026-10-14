@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="AgentOps thesis experiment observability dashboard">
+  <title>AgentOps Thesis Observatory</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23b9f64a'/%3E%3Cpath d='M17 43 27 18h10l10 25h-8l-2-6H27l-2 6zm12-12h6l-3-9z' fill='%23080b0f'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand"><span class="brand-mark">AO</span><div><strong>Observatory</strong><small>THESIS LAB</small></div></div>
+    <nav aria-label="主导航">
+      <a class="nav-item active" href="#overview" data-section="overview"><span>⌁</span>总览</a>
+      <a class="nav-item" href="#traces" data-section="traces"><span>⌘</span>Traces</a>
+      <a class="nav-item" href="#identity" data-section="identity"><span>⌬</span>身份图谱</a>
+      <a class="nav-item" href="#clock" data-section="clock"><span>◴</span>时钟质量</a>
+      <a class="nav-item" href="#evidence" data-section="evidence"><span>◇</span>证据与查询</a>
+      <a class="nav-item" href="#evaluations" data-section="evaluations"><span>✓</span>Evaluations</a>
+    </nav>
+    <div class="side-footer">
+      <div class="live-dot"><i></i> LOCAL SNAPSHOT</div>
+      <button id="themeToggle" class="icon-button" aria-label="切换主题">◐</button>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <button class="mobile-menu" id="menuButton" aria-label="打开导航">☰</button>
+      <div><p class="eyebrow">AGENTOPS / RESEARCH OBSERVABILITY</p><h1>归因前实验控制台</h1></div>
+      <div class="top-actions">
+        <div class="snapshot"><span>DATA SNAPSHOT</span><strong id="snapshotTime">—</strong></div>
+        <button class="kbd-button" id="focusSearch"><kbd>/</kbd> 搜索实验</button>
+      </div>
+    </header>
+
+    <section id="overview" class="section hero-section">
+      <div class="section-head">
+        <div><p class="eyebrow">SYSTEM HEALTH</p><h2>Observation readiness</h2></div>
+        <div class="gate-pill warning"><i></i><span>Pre-attribution gate</span><strong id="gateStatus">—</strong></div>
+      </div>
+      <div class="metric-grid" id="metricGrid"></div>
+      <div class="grid two-one">
+        <article class="panel capability-panel">
+          <div class="panel-head"><div><span class="panel-kicker">READINESS MATRIX</span><h3>能力栈</h3></div><span class="micro">EVIDENCE-BOUNDED</span></div>
+          <div id="capabilityList" class="capability-list"></div>
+        </article>
+        <article class="panel budget-panel">
+          <div class="panel-head"><div><span class="panel-kicker">COST GUARD</span><h3>API 预算</h3></div><span class="status-tag blocked">BLOCKED</span></div>
+          <div class="budget-number"><span>$</span><strong id="spentCost">—</strong><small>累计已记录</small></div>
+          <div class="budget-track"><div id="budgetFill"></div><i id="budgetLimit"></i></div>
+          <div class="budget-labels"><span>$0</span><span id="limitCost">—</span><span id="projectedCost">—</span></div>
+          <p class="panel-note">预算预检阻止了新的真实 API 会话。页面只呈现已记录证据。</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="traces" class="section">
+      <div class="section-head"><div><p class="eyebrow">DISTRIBUTED TRACE</p><h2>真实六事件闭环</h2></div><div class="legend"><span><i class="cyan"></i>应用</span><span><i class="purple"></i>工具</span><span><i class="lime"></i>系统</span></div></div>
+      <article class="panel trace-panel">
+        <div class="trace-meta" id="traceMeta"></div>
+        <div class="trace-ruler"><span>0 ms</span><span>280</span><span>560</span><span>840</span><span>1,120 ms</span></div>
+        <div id="traceRows" class="trace-rows"></div>
+        <div class="lifecycle" id="lifecycle"></div>
+      </article>
+      <div class="grid two-one">
+        <article class="panel"><div class="panel-head"><div><span class="panel-kicker">TRACE VOLUME</span><h3>测试增长</h3></div><span class="micro">PASSING TESTS</span></div><div id="testChart" class="chart"></div></article>
+        <article class="panel inspector" id="spanInspector"><div class="panel-head"><div><span class="panel-kicker">SPAN INSPECTOR</span><h3>选择一条 Span</h3></div></div><p class="empty-state">点击上方时间线查看证据详情。</p></article>
+      </div>
+    </section>
+
+    <section id="identity" class="section">
+      <div class="section-head"><div><p class="eyebrow">IDENTITY CORRELATION</p><h2>跨层身份图谱</h2></div><span class="status-tag verified">ACCEPTED</span></div>
+      <div class="grid graph-layout">
+        <article class="panel identity-graph" id="identityGraph"></article>
+        <article class="panel">
+          <div class="panel-head"><div><span class="panel-kicker">DIRECT EVIDENCE</span><h3>PID namespace 映射</h3></div></div>
+          <div class="mapping-hero"><div><span>INITIAL NS</span><strong id="initialPid">—</strong></div><b>→</b><div><span>COLLECTOR NS</span><strong id="collectorPid">—</strong></div></div>
+          <code id="mappingMethod">—</code>
+          <div id="identityChecks" class="check-list"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="clock" class="section">
+      <div class="section-head"><div><p class="eyebrow">CLOCK INTEGRITY</p><h2>时间统一与误差下界</h2></div><span class="status-tag verified">FORMULA VERIFIED</span></div>
+      <div class="grid three">
+        <article class="panel clock-formula"><span class="panel-kicker">CONVERSION</span><div><em>epoch</em><b>=</b><em>boot epoch</em><b>+</b><em>BPF ktime</em></div><p id="clockFormula">—</p></article>
+        <article class="panel dial-card"><span class="panel-kicker">UNCERTAINTY FLOOR</span><div class="dial"><svg viewBox="0 0 120 70"><path d="M12 62 A48 48 0 0 1 108 62"/><path class="dial-value" d="M12 62 A48 48 0 0 1 108 62"/></svg><strong id="clockFloor">—</strong><small>nanosecond</small></div></article>
+        <article class="panel"><span class="panel-kicker">ANCHOR RANGE</span><h3 class="compact-title">实验变化</h3><div id="clockBars" class="bar-chart"></div></article>
+      </div>
+    </section>
+
+    <section id="evidence" class="section">
+      <div class="section-head"><div><p class="eyebrow">EVIDENCE LEDGER</p><h2>查询、关系与收据</h2></div><span class="status-tag verified">5 / 5 REPLAYED</span></div>
+      <div class="grid evidence-grid">
+        <article class="panel"><div class="panel-head"><div><span class="panel-kicker">COLLECTION HANDLERS</span><h3>证据通道</h3></div></div><div id="handlerList" class="handler-list"></div></article>
+        <article class="panel"><div class="panel-head"><div><span class="panel-kicker">QUERY RECEIPTS</span><h3>可重放查询</h3></div></div><div id="queryList" class="query-list"></div></article>
+        <article class="panel"><div class="panel-head"><div><span class="panel-kicker">OBSERVED RELATIONS</span><h3>结构关系</h3></div></div><div id="relationList" class="relation-list"></div></article>
+      </div>
+    </section>
+
+    <section id="evaluations" class="section">
+      <div class="section-head"><div><p class="eyebrow">EVALUATIONS</p><h2>完整性、协议与实验记录</h2></div><span class="status-tag verified">101 TESTS PASS</span></div>
+      <div class="grid two-one quality-row">
+        <article class="panel"><div class="panel-head"><div><span class="panel-kicker">FIELD COMPLETENESS</span><h3>字段覆盖</h3></div><strong class="score">100%</strong></div><div id="fieldGroups" class="field-groups"></div></article>
+        <article class="panel protocol-card"><span class="panel-kicker">ADVERSARIAL MATRIX</span><div class="protocol-score"><strong>8/8</strong><span>无效协议<br>均被拒绝</span></div><div class="mini-checks"><span>✓ deterministic replay</span><span>✓ lifecycle closed</span><span>✓ no causal claim</span></div></article>
+      </div>
+      <article class="panel experiments-panel">
+        <div class="panel-head"><div><span class="panel-kicker">EXPERIMENT RUNS</span><h3>阶段记录</h3></div><input id="experimentSearch" class="search" type="search" placeholder="搜索实验、阶段或状态…" aria-label="搜索实验"></div>
+        <div class="table-wrap"><table><thead><tr><th>运行</th><th>时间</th><th>阶段</th><th>关键指标</th><th>状态</th><th>网络</th></tr></thead><tbody id="experimentRows"></tbody></table></div>
+      </article>
+    </section>
+
+    <footer><span>AgentOps Thesis Observatory</span><span>Evidence labels: VERIFIED · INFERRED · UNVERIFIED · BLOCKED</span><span id="sourceCount">—</span></footer>
+  </main>
+  <script src="app.js" defer></script>
+</body>
+</html>

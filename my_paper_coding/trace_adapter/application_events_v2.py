@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 import uuid
 
-from process_identity import DIRECT_METHOD
+from process_identity import direct_mapping_evidence_valid
 
 VERSION = "agentops-application-event-v0.2"
 KINDS = {"session.start", "step.start", "tool.start", "tool.end", "step.end", "session.end"}
@@ -76,9 +76,8 @@ def validate_event(event: dict) -> None:
     if not evidence or len(evidence) != len(set(evidence)):
         raise ValueError("PID mapping decision requires unique evidence")
     if process["mapping_status"] == "accepted":
-        if process["mapping_method"] != DIRECT_METHOD or not any(
-                item.startswith("proc.status.NSpid=") for item in evidence):
-            raise ValueError("Accepted PID mapping requires direct NSpid evidence")
+        if not direct_mapping_evidence_valid(process["mapping_method"], evidence):
+            raise ValueError("Accepted PID mapping requires direct PID namespace evidence")
     if not nullable_integer(process["observer_start_epoch_ms"]):
         raise ValueError("Invalid observer process start time")
 

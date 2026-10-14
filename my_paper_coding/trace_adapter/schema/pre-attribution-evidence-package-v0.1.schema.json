@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/agentops/pre-attribution-evidence-package-v0.1.schema.json",
+  "title": "AgentOps pre-attribution evidence package v0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "stream",
+    "canonical_event_stream_sha256",
+    "collection_handlers",
+    "queries",
+    "observed_relations",
+    "mirror_readiness",
+    "readiness",
+    "claims",
+    "boundaries",
+    "network_calls"
+  ],
+  "properties": {
+    "schema_version": {"const": "agentops-pre-attribution-evidence-v0.1"},
+    "canonical_event_stream_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "queries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["query_id", "operation", "selector", "result_event_ids", "result_sha256"],
+        "properties": {
+          "operation": {"const": "select_events_exact"},
+          "result_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "observed_relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["relation_id", "relation_type", "evidence_status", "evidence_event_ids", "query_ids", "causal_claim", "responsibility_claim"],
+        "properties": {
+          "evidence_status": {"enum": ["direct", "inferred", "abstain"]},
+          "causal_claim": {"const": false},
+          "responsibility_claim": {"const": false}
+        }
+      }
+    },
+    "claims": {
+      "type": "object",
+      "properties": {
+        "root_cause_generated": {"const": false},
+        "responsibility_generated": {"const": false},
+        "causal_path_generated": {"const": false}
+      },
+      "required": ["root_cause_generated", "responsibility_generated", "causal_path_generated"]
+    },
+    "network_calls": {"const": 0}
+  }
+}

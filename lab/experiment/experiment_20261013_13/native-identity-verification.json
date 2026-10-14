@@ -1,0 +1,35 @@
+{
+  "schema_version": "agentops-native-identity-verification-v0.1",
+  "status": "PASS",
+  "checks": {
+    "unique_marker_event": true,
+    "exec_event": true,
+    "initial_namespace_pid_present": true,
+    "collector_namespace_pid_present": true,
+    "collector_namespace_pid_matches_userspace": true,
+    "namespace_views_are_distinct": true,
+    "clock_resolution_floor_nonzero": true,
+    "native_clock_formula_declared": true
+  },
+  "evidence": {
+    "marker": "agentops-direct-pid-20261013-13",
+    "userspace_pid": 34,
+    "initial_namespace_pid": 1791,
+    "collector_namespace_pid": 34,
+    "pid_mapping_status": "accepted",
+    "mapping_method": "bpf_get_ns_current_pid_tgid",
+    "observer_raw_boot_ns": 623900254940,
+    "observer_boot_epoch_ns": 1791870003149853200,
+    "observer_anchor_uncertainty_ns": 1
+  },
+  "claims": {
+    "root_cause_generated": false,
+    "responsibility_generated": false,
+    "causal_path_generated": false
+  },
+  "network_calls": 0,
+  "input_sha256": {
+    "events": "b37e809d87d7511bcb78fe580f1b2c77344d0324b47056bce314a1c26b491cf6",
+    "target": "ca00c0e61d9cda23fcc9b2d84c65a8f2f4225edade0300f2ae51872514ce4630"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/agentops/model-invocation-context-v0.1.schema.json",
+  "title": "AgentOps model invocation context v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "evidence_kind", "run_id", "session_id", "agent_id",
+    "request_id", "response_id", "model_id", "model_version",
+    "sampling_temperature", "sampling_top_p", "system_prompt_sha256",
+    "tool_schema_sha256", "request_monotonic_ns", "response_monotonic_ns",
+    "pairing_method", "pairing_evidence"
+  ],
+  "properties": {
+    "schema_version": {"const": "agentops-model-invocation-context-v0.1"},
+    "evidence_kind": {"const": "runtime_observed"},
+    "system_prompt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "tool_schema_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sampling_temperature": {"type": "number", "minimum": 0},
+    "sampling_top_p": {"type": "number", "minimum": 0, "maximum": 1},
+    "request_monotonic_ns": {"type": "integer", "minimum": 0},
+    "response_monotonic_ns": {"type": "integer", "minimum": 0},
+    "pairing_evidence": {"type": "array", "minItems": 1, "uniqueItems": true}
+  }
+}

@@ -22,8 +22,24 @@ struct {
 } rb SEC(".maps");
 
 const volatile unsigned long long min_duration_ns = 0;
+const volatile unsigned long long target_pid_ns_dev = 0;
+const volatile unsigned long long target_pid_ns_ino = 0;
 
 #include "process_ext/bpf_common.h"
+
+static __always_inline int current_namespace_tgid(void)
+{
+	struct bpf_pidns_info info = {};
+	long ret;
+
+	if (!target_pid_ns_dev || !target_pid_ns_ino)
+		return 0;
+	ret = bpf_get_ns_current_pid_tgid(target_pid_ns_dev, target_pid_ns_ino,
+					  &info, sizeof(info));
+	if (ret)
+		return 0;
+	return (int)info.tgid;
+}
 
 /* Bash readline uretprobe handler */
 SEC("uretprobe//usr/bin/bash:readline")
@@ -100,6 +116,7 @@ int handle_exec(struct trace_event_raw_sched_process_exec *ctx)
 	e->exit_event = false;
 	e->pid = pid;
 	e->ppid = BPF_CORE_READ(task, real_parent, tgid);
+	e->namespace_pid = current_namespace_tgid();
 	e->timestamp_ns = ts;
 	bpf_get_current_comm(&e->comm, sizeof(e->comm));
 
@@ -202,6 +219,7 @@ int handle_exit(struct trace_event_raw_sched_process_template* ctx)
 	e->duration_ns = duration_ns;
 	e->pid = pid;
 	e->ppid = BPF_CORE_READ(task, real_parent, tgid);
+	e->namespace_pid = current_namespace_tgid();
 	e->timestamp_ns = ts;
 	e->exit_code = (BPF_CORE_READ(task, exit_code) >> 8) & 0xff;
 	bpf_get_current_comm(&e->comm, sizeof(e->comm));

@@ -1,0 +1,40 @@
+{
+  "schema_version": "agentops-pre-attribution-native-identity-plan-v0.1",
+  "experiment_id": "experiment_20261013_13",
+  "timezone": "Asia/Shanghai",
+  "objective": "在归因前链路中联合验证指定 PID namespace 身份、非零时钟分辨率下界和模型调用上下文采集准备度",
+  "phases": [
+    {
+      "phase": "local_native_identity",
+      "network_calls": 0,
+      "acceptance": [
+        "eBPF process event emits initial namespace pid and collector namespace pid",
+        "collector namespace pid equals the userspace process pid",
+        "release collector embeds the updated process loader"
+      ]
+    },
+    {
+      "phase": "real_multi_agent_capture",
+      "planned_cli_sessions": 2,
+      "upper_bound_usd_per_session": 0.05,
+      "planned_cost_usd": 0.10,
+      "no_automatic_retry": true,
+      "acceptance": [
+        "both sessions have direct namespace PID evidence",
+        "observer clock uncertainty includes a nonzero system resolution floor",
+        "each session has a valid model invocation context sidecar",
+        "all observed relations replay from query receipts"
+      ]
+    }
+  ],
+  "planned_cli_sessions": 2,
+  "upper_bound_usd_per_session": 0.05,
+  "hard_stop_total_usd": 2.0,
+  "cost_ledger": "my_paper_coding/experiment_control/cost-ledger-20261012-sse-clock.json",
+  "no_automatic_retry": true,
+  "forbidden_outputs": [
+    "root cause",
+    "responsibility label",
+    "causal path"
+  ]
+}

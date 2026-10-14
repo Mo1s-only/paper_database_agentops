@@ -1,0 +1,27 @@
+{
+  "schema_version": "agentops-experiment-plan-v0.1",
+  "experiment_id": "experiment_20261013_10",
+  "timezone": "Asia/Shanghai",
+  "objective": "将 RCACopilot、OpenRCA、Watson 与 OpenRCA 2.0 的可复用优点转化为不生成归因结论的可查询证据包",
+  "execution_mode": "replay_of_historical_real_api_capture",
+  "inputs": {
+    "application_events": "lab/experiment/experiment_20261012_14/results/application-events-v0.2.jsonl",
+    "pre_attribution_gate": "lab/experiment/experiment_20261012_16/pre-attribution-gate.json"
+  },
+  "acceptance_criteria": [
+    "每条观察关系包含原始事件 ID 和可重放查询 ID",
+    "所有查询在原始真实事件流上重放且结果哈希一致",
+    "PID 推断不得提升为直接证据",
+    "时钟门关闭时不得生成严格跨层时间关系",
+    "缺少模型调用上下文时 Watson 式重建必须拒绝执行",
+    "不得生成根因、责任或因果路径结论",
+    "完整 Python 测试集通过"
+  ],
+  "network_call_budget": 0,
+  "reason_for_no_new_api_call": "复用已核验的真实 API 会话；全仓去重成本已超过 2.00 USD 实验硬停止线",
+  "expected_outputs": [
+    "pre-attribution-evidence-package.json",
+    "query-replay-verification.json",
+    "实验报告.md"
+  ]
+}

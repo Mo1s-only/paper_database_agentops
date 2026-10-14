@@ -93,7 +93,19 @@ class ApplicationEventV2Tests(unittest.TestCase):
         )
         validate_event(event(shared, "session.start", 0, anchor(1_000)))
         shared["process"]["mapping_method"] = "fixture"
-        with self.assertRaisesRegex(ValueError, "direct NSpid"):
+        with self.assertRaisesRegex(ValueError, "direct PID namespace"):
+            event(shared, "session.start", 0, anchor(1_000))
+
+    def test_accepted_mapping_allows_direct_bpf_namespace_tgid(self):
+        shared = base()
+        shared["process"].update(
+            mapping_status="accepted",
+            mapping_method="bpf_get_ns_current_pid_tgid",
+            mapping_evidence=["bpf.pidns.tgid=1791,34"],
+        )
+        validate_event(event(shared, "session.start", 0, anchor(1_000)))
+        shared["process"]["mapping_evidence"] = ["bpf.pidns.tgid=1791"]
+        with self.assertRaisesRegex(ValueError, "direct PID namespace"):
             event(shared, "session.start", 0, anchor(1_000))
 
     def test_abstain_cannot_claim_observer_pid(self):

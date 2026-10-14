@@ -1,0 +1,266 @@
+{
+  "schema_version": "agentops-pre-attribution-evidence-v0.1",
+  "stream": {
+    "run_id": "experiment_20261012_14",
+    "evidence_kind": "runtime_observed",
+    "event_count": 6,
+    "session_count": 1,
+    "all_sessions_closed": true
+  },
+  "canonical_event_stream_sha256": "cef522bf34ae6ed2a19d2cc5580e43ddcfa6499dc1650dae52f402176feebcb4",
+  "design_sources": {
+    "RCACopilot": "composable evidence channels",
+    "OpenRCA": "programmatic exact-match telemetry queries",
+    "Watson": "explicit readiness check before post-hoc reasoning reconstruction",
+    "OpenRCA_2.0": "claim-level evidence receipts and replay verification"
+  },
+  "collection_handlers": [
+    {
+      "handler_id": "application_lifecycle_v0.2",
+      "channel": "framework_lifecycle",
+      "status": "available",
+      "evidence_kind": "runtime_observed",
+      "event_count": 6
+    },
+    {
+      "handler_id": "process_mapping_v0.2",
+      "channel": "process_identity",
+      "status": "available_with_inference",
+      "process_view_count": 1
+    },
+    {
+      "handler_id": "observer_clock_v0.2",
+      "channel": "observer_clock",
+      "status": "available_without_strict_bound",
+      "observer_clock_event_count": 1
+    },
+    {
+      "handler_id": "model_invocation_context_v0.1",
+      "channel": "reasoning_reconstruction_inputs",
+      "status": "unavailable",
+      "context_count": 0,
+      "missing_fields": [
+        "model_id",
+        "model_version",
+        "sampling_temperature",
+        "sampling_top_p",
+        "system_prompt_sha256",
+        "tool_schema_sha256",
+        "request_id",
+        "response_id",
+        "pairing_method",
+        "pairing_evidence"
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "query_id": "q-041c7c7f9a10bc26",
+      "purpose": "replay complete session lifecycle",
+      "operation": "select_events_exact",
+      "selector": {
+        "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760"
+      },
+      "result_count": 6,
+      "result_event_ids": [
+        "05220de0-e74f-453d-8575-cf1e909fa37d",
+        "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+        "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+        "bda1e076-e5e5-40f1-9b55-40c4ee097b7e",
+        "2185bfc9-c148-4439-a9e8-71523be662cb"
+      ],
+      "result_sha256": "cef522bf34ae6ed2a19d2cc5580e43ddcfa6499dc1650dae52f402176feebcb4"
+    },
+    {
+      "query_id": "q-873c9f0410539790",
+      "purpose": "replay session events with the observed process mapping",
+      "operation": "select_events_exact",
+      "selector": {
+        "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+        "process.mapping_status": "inferred"
+      },
+      "result_count": 6,
+      "result_event_ids": [
+        "05220de0-e74f-453d-8575-cf1e909fa37d",
+        "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+        "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+        "bda1e076-e5e5-40f1-9b55-40c4ee097b7e",
+        "2185bfc9-c148-4439-a9e8-71523be662cb"
+      ],
+      "result_sha256": "cef522bf34ae6ed2a19d2cc5580e43ddcfa6499dc1650dae52f402176feebcb4"
+    },
+    {
+      "query_id": "q-d9b74f47bd62d06c",
+      "purpose": "replay events for one framework step",
+      "operation": "select_events_exact",
+      "selector": {
+        "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+        "step_id": "step-native-bash-1"
+      },
+      "result_count": 4,
+      "result_event_ids": [
+        "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+        "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+        "bda1e076-e5e5-40f1-9b55-40c4ee097b7e"
+      ],
+      "result_sha256": "c977c61e88679d00f99d7c57d50085439c88c13e815bae46067d63040cb23594"
+    },
+    {
+      "query_id": "q-d4a715969369c82f",
+      "purpose": "replay one framework tool lifecycle",
+      "operation": "select_events_exact",
+      "selector": {
+        "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+        "step_id": "step-native-bash-1",
+        "tool_call_id": "call_00_Da4rghUlpsbWGEyZMdqF5028"
+      },
+      "result_count": 2,
+      "result_event_ids": [
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+        "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e"
+      ],
+      "result_sha256": "721a7d796b398bf1dedfdee965e93d86d1be368216213e82a6b9ca5235f75d95"
+    },
+    {
+      "query_id": "q-758fa5023b16f5e6",
+      "purpose": "replay one event containing observer-side clock evidence",
+      "operation": "select_events_exact",
+      "selector": {
+        "event_id": "4021bac3-5995-4e9b-865f-3773cfaa16f0"
+      },
+      "result_count": 1,
+      "result_event_ids": [
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0"
+      ],
+      "result_sha256": "41b2e05256b0644ba540ec240e88a1bc8333b81f4c92173c990d988305a50d98"
+    }
+  ],
+  "observed_relations": [
+    {
+      "relation_id": "r-50cb76753e10ec1c",
+      "relation_type": "session_observed_in_process",
+      "source": {
+        "kind": "session",
+        "id": "48174557-6d35-42b7-aecd-4ab4fcac8760"
+      },
+      "target": {
+        "kind": "process_view",
+        "id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a:7f9fd3cf-4235-4adc-9086-4dab7868b898:pid:[4026532214]:81"
+      },
+      "evidence_status": "inferred",
+      "evidence_event_ids": [
+        "05220de0-e74f-453d-8575-cf1e909fa37d",
+        "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+        "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+        "bda1e076-e5e5-40f1-9b55-40c4ee097b7e",
+        "2185bfc9-c148-4439-a9e8-71523be662cb"
+      ],
+      "query_ids": [
+        "q-873c9f0410539790"
+      ],
+      "time_relation": "not_applicable",
+      "causal_claim": false,
+      "responsibility_claim": false
+    },
+    {
+      "relation_id": "r-767c84768ef2ed73",
+      "relation_type": "session_contains_step",
+      "source": {
+        "kind": "session",
+        "id": "48174557-6d35-42b7-aecd-4ab4fcac8760"
+      },
+      "target": {
+        "kind": "step",
+        "id": "step-native-bash-1"
+      },
+      "evidence_status": "direct",
+      "evidence_event_ids": [
+        "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+        "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+        "bda1e076-e5e5-40f1-9b55-40c4ee097b7e"
+      ],
+      "query_ids": [
+        "q-041c7c7f9a10bc26",
+        "q-d9b74f47bd62d06c"
+      ],
+      "time_relation": "sequence_only",
+      "causal_claim": false,
+      "responsibility_claim": false
+    },
+    {
+      "relation_id": "r-09132d6737c1f8db",
+      "relation_type": "step_invokes_tool",
+      "source": {
+        "kind": "step",
+        "id": "step-native-bash-1"
+      },
+      "target": {
+        "kind": "tool_call",
+        "id": "call_00_Da4rghUlpsbWGEyZMdqF5028"
+      },
+      "evidence_status": "direct",
+      "evidence_event_ids": [
+        "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+        "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e"
+      ],
+      "query_ids": [
+        "q-d4a715969369c82f"
+      ],
+      "time_relation": "sequence_only_unbounded",
+      "lifecycle_closed": true,
+      "causal_claim": false,
+      "responsibility_claim": false
+    }
+  ],
+  "mirror_readiness": {
+    "status": "NOT_READY",
+    "method": "watson_style_post_hoc_reconstruction",
+    "missing_fields": [
+      "model_id",
+      "model_version",
+      "sampling_temperature",
+      "sampling_top_p",
+      "system_prompt_sha256",
+      "tool_schema_sha256",
+      "request_id",
+      "response_id",
+      "pairing_method",
+      "pairing_evidence"
+    ],
+    "context_summary": {
+      "context_count": 0,
+      "covered_session_count": 0,
+      "all_sessions_covered": false
+    },
+    "default_values_invented": false,
+    "reconstruction_attempted": false
+  },
+  "readiness": {
+    "queryable_evidence_package": true,
+    "identity_and_tool_relations": true,
+    "bounded_temporal_relations": false,
+    "reasoning_reconstruction": false,
+    "causal_attribution": false
+  },
+  "claims": {
+    "root_cause_generated": false,
+    "responsibility_generated": false,
+    "causal_path_generated": false
+  },
+  "boundaries": [
+    "Observed relations are structural evidence, not causal edges.",
+    "Sequence order is not promoted to a strict cross-layer time order when the clock gate is closed.",
+    "Inferred PID mapping remains inferred until direct namespace ground truth is observed.",
+    "Watson-style reconstruction is disabled until all required invocation context is captured."
+  ],
+  "network_calls": 0,
+  "input_sha256": {
+    "events": "f9fb7a628866c127f27749d95b582e4697cd3ce133f7eade7a16aa572a5c47b0",
+    "pre_attribution_gate": "ac8926cdc6ba1edae0a68eec3e4ac9d53ddebadc1f71ced7ae292289b05ef7f9"
+  }
+}

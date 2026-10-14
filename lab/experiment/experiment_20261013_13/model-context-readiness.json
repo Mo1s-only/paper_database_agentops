@@ -1,0 +1,29 @@
+{
+  "schema_version": "agentops-model-context-readiness-v0.1",
+  "experiment_id": "experiment_20261013_13",
+  "evidence_status": "IMPLEMENTATION_VERIFIED",
+  "supported_fields": [
+    "model_id",
+    "model_version",
+    "sampling_temperature",
+    "sampling_top_p",
+    "system_prompt_sha256",
+    "tool_schema_sha256",
+    "request_id",
+    "response_id",
+    "request_monotonic_ns",
+    "response_monotonic_ns",
+    "pairing_evidence"
+  ],
+  "privacy_boundary": [
+    "system_prompt_content_not_persisted",
+    "tool_schema_content_not_persisted"
+  ],
+  "test_result": {
+    "passed": 5,
+    "failed": 0
+  },
+  "live_provider_validation": "UNVERIFIED",
+  "blocker": "budget_preflight_status=BLOCKED",
+  "network_calls": 0
+}

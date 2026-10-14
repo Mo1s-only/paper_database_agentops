@@ -4,7 +4,33 @@ from __future__ import annotations
 
 
 DIRECT_METHOD = "proc_status_nspid"
+BPF_DIRECT_METHOD = "bpf_get_ns_current_pid_tgid"
+DIRECT_METHODS = {DIRECT_METHOD, BPF_DIRECT_METHOD}
 INDIRECT_METHOD = "session+comm+launch_interval+shared_tool_call_id"
+
+
+def direct_mapping_evidence_valid(method: str | None, evidence: list[str]) -> bool:
+    """Accept only methods whose evidence encodes both PID namespace views."""
+    prefixes = {
+        DIRECT_METHOD: "proc.status.NSpid=",
+        BPF_DIRECT_METHOD: "bpf.pidns.tgid=",
+    }
+    prefix = prefixes.get(method)
+    if prefix is None:
+        return False
+    for item in evidence:
+        if not item.startswith(prefix):
+            continue
+        values = item[len(prefix):].split(",")
+        if (method == DIRECT_METHOD and len(values) < 2) or (
+                method == BPF_DIRECT_METHOD and len(values) != 2):
+            continue
+        try:
+            if all(int(value) > 0 for value in values):
+                return True
+        except ValueError:
+            continue
+    return False
 
 
 def positive_integer(value) -> bool:

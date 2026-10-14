@@ -54,6 +54,42 @@ def decode(content):
         return None
 
 
+def choose_native_pid_mapping(audit_rows, launcher_pid, agentsight_pids):
+    """Resolve a unique observer/local TGID pair emitted by the BPF helper."""
+    direct = []
+    for row in audit_rows:
+        try:
+            details = json.loads(row.get("details_json") or "{}")
+        except (json.JSONDecodeError, TypeError):
+            continue
+        observer_pid = row.get("pid")
+        if (row.get("action") == "exec" and observer_pid in agentsight_pids and
+                details.get("event") == "EXEC" and
+                details.get("namespace_pid") == launcher_pid):
+            direct.append((observer_pid, details["namespace_pid"]))
+    direct = sorted(set(direct))
+    if len(direct) == 1:
+        observer_pid, local_pid = direct[0]
+        return {
+            "status": "accepted",
+            "method": "bpf_get_ns_current_pid_tgid",
+            "evidence": [f"bpf.pidns.tgid={observer_pid},{local_pid}"],
+            "observer_pid": observer_pid,
+            "candidate_count": 1,
+        }
+    return {
+        "status": "inferred" if agentsight_pids else "abstain",
+        "method": ("session+comm+launch_interval+shared_tool_call_id"
+                   if agentsight_pids else None),
+        "evidence": (["capture-summary.session_id", "process_nodes.comm=claude",
+                      "analysis.process_start_in_launch_interval=true",
+                      "tool_calls.tool_call_id=framework.tool_use.id"]
+                     if agentsight_pids else ["no_unique_supported_mapping"]),
+        "observer_pid": agentsight_pids[0] if len(agentsight_pids) == 1 else None,
+        "candidate_count": len(direct),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--experiment", type=Path, required=True)
@@ -107,10 +143,15 @@ def main() -> int:
             "PRAGMA table_info(tool_calls)")]
         process_rows = [dict(row) for row in connection.execute(
             "SELECT * FROM process_nodes")]
+        audit_rows = [dict(row) for row in connection.execute(
+            "SELECT pid, comm, action, details_json FROM audit_events "
+            "WHERE audit_type='process' AND action='exec'")]
 
     agentsight_pids = sorted(
         {row.get("related_pid") for row in tool_rows if row.get("related_pid") is not None} |
         {row.get("pid") for row in llm_rows if row.get("pid") is not None})
+    pid_mapping = choose_native_pid_mapping(
+        audit_rows, capture["launcher_pid"], agentsight_pids)
     probe = tool_result["value"] if isinstance(tool_result["value"], dict) else {}
     receipt = receipts[tool_result["line"]]
     tool_row = tool_rows[0] if len(tool_rows) == 1 else None
@@ -163,6 +204,11 @@ def main() -> int:
         "process_samples": len(samples),
         "unique_sampled_descendants": len(sampled_pids),
         "agentsight_pids": agentsight_pids,
+        "pid_mapping_status": pid_mapping["status"],
+        "pid_mapping_method": pid_mapping["method"],
+        "pid_mapping_evidence": pid_mapping["evidence"],
+        "pid_mapping_observer_pid": pid_mapping["observer_pid"],
+        "pid_mapping_direct_candidate_count": pid_mapping["candidate_count"],
         "agentsight_pids_in_sampled_tree": {
             str(pid): pid in sampled_pids for pid in agentsight_pids},
         "agentsight_pid_names": {
@@ -198,12 +244,14 @@ def main() -> int:
         "probe_realtime_uncertainty_ns": probe.get("realtime_uncertainty_ns"),
         "reported_cost_usd": capture.get("reported_cost_usd"),
         "source_evidence": [
-            "lab/agentsight/source/thesis_adapter/bpf/process.bpf.c: bpf_get_current_pid_tgid",
+            "lab/agentsight/source/thesis_adapter/bpf/process.bpf.c: bpf_get_ns_current_pid_tgid",
             "lab/agentsight/source/thesis_adapter/agentsight-capture/src/time.rs: paired realtime/CLOCK_MONOTONIC boot epoch",
             "tool_calls.observer_raw_boot_ns + tool_calls.observer_boot_epoch_ns"
         ],
         "boundaries": [
-            "PID mapping is inferred from session, process name, launch interval and shared tool_call ID",
+            ("PID mapping is direct for this session through the captured namespace TGID"
+             if pid_mapping["status"] == "accepted" else
+             "PID mapping is inferred from session, process name, launch interval and shared tool_call ID"),
             "One session does not establish mapping stability across long or multi-agent runs",
             "Tool receipt delta includes execution and stream delivery latency"
         ]

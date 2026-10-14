@@ -157,6 +157,27 @@ def test_json_escaping_exec():
         sess.cleanup()
 
 
+def test_namespace_pid_matches_userspace_view():
+    marker = f"agentsight-namespace-{uuid.uuid4().hex}"
+    sess = TracerSession("-m", "0")
+    try:
+        proc = subprocess.Popen(
+            ["/bin/echo", marker], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
+        )
+        local_pid = proc.pid
+        proc.wait(timeout=5)
+        time.sleep(0.5)
+        sess.stop()
+        matches = [event for event in sess.events()
+                   if event.get("event") == "EXEC" and marker in event_text(event)]
+        assert_true(len(matches) == 1, "expected one namespaced exec event")
+        assert_true(matches[0].get("namespace_pid") == local_pid,
+                    f"namespace PID mismatch: expected {local_pid}, got {matches[0].get('namespace_pid')}")
+        assert_true(matches[0].get("pid", 0) > 0, "initial namespace PID is absent")
+    finally:
+        sess.cleanup()
+
+
 def test_pid_filter_tracks_target_tree_only():
     tempdir, target, trigger, done, marker = run_controlled_parent()
     unrelated = f"agentsight-unrelated-{uuid.uuid4().hex}"
@@ -274,6 +295,7 @@ def test_trace_net_summary_events():
 
 TESTS = [
     test_json_escaping_exec,
+    test_namespace_pid_matches_userspace_view,
     test_pid_filter_tracks_target_tree_only,
     test_session_filter_tracks_session_tree_only,
     test_filter_mode_without_selector_does_not_fallback,

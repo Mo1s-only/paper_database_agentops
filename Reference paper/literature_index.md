@@ -1,6 +1,6 @@
 # AgentOps 文献总索引与证据地图
 
-检索截止日期：2026-09-23。完整来源链接和文件级说明见各分类目录的 `README.md`。
+检索截止日期：2026-10-13。完整来源链接和文件级说明见各分类目录的 `README.md`。
 
 状态：`core` = 论文主线必须引用；`supporting` = 支撑方法或背景；`contrast` = 用于建立边界；`candidate` = 已下载、待精读。证据状态使用 `VERIFIED`、`INFERRED`、`UNVERIFIED`。
 
@@ -35,6 +35,9 @@
 | R25 | LLMArena | 动态多Agent评测 | ACL 2024 | 顶级会议主会；`VERIFIED` | 在动态竞争/协作环境中测量对手建模和团队协作 | 多智能体能力维度 | `06_agent_evaluation_metrics/LLMArena_ACL2024.pdf` |
 | R26 | MultiAgentBench | 协同评测 | ACL 2025 | 顶级会议主会；`VERIFIED` | 使用动态里程碑KPI比较协作、竞争和通信拓扑 | 系统协同层指标核心来源 | `06_agent_evaluation_metrics/MultiAgentBench_ACL2025.pdf` |
 | R27 | DREAM | Agent化评测 | ACL 2026 | 顶级会议主会；`VERIFIED` | 结合固定指标和工具Agent生成的自适应指标评价深度研究Agent | 事实性、时效性与覆盖率评价 | `06_agent_evaluation_metrics/DREAM_ACL2026.pdf` |
+| R28 | RCACopilot | 工业RCA | EuroSys 2024 | 顶级系统会议；`VERIFIED` | 用incident handler收集多源证据并由LLM预测根因类别和解释 | 工业流程、证据收集和弱分类基线 | `03_diagnosis_localization/RCACopilot_Automatic_Root_Cause_Analysis_EuroSys2024.pdf` |
+| R29 | OpenRCA | RCA基准 | ICLR 2025 | 国际机器学习顶会主会；`VERIFIED` | 用335个企业故障和68.5GB多模态遥测评价LLM根因定位 | 任务定义、结构化输出与程序化证据检索 | `03_diagnosis_localization/OpenRCA_ICLR2025.pdf` |
+| R30 | OpenRCA 2.0 | 因果路径评测 | arXiv 2026 | 预印本；`VERIFIED` | 用故障注入和前向验证构造逐步传播路径真值 | 边级归因、路径验证与指标的核心相邻工作 | `03_diagnosis_localization/OpenRCA_2.0_Causal_Process_Supervision_2026.pdf` |
 
 ## Claim–Evidence视图
 
@@ -46,11 +49,13 @@
 | Agent评价应同时覆盖结果、过程与稳定性 | R18、R19、R20、R22 | 成功率应与进展率、pass^k、里程碑KPI联合报告 | 各指标跨任务的可比性仍需定义 |
 | 生产级Agent评价必须包含系统负载和成本 | R02、R11、R16 | 语义正确性与TTFT、TPOT、goodput、token成本应联合分析 | 尚缺面向多Agent关键路径的SLO指标 |
 | LLM-as-a-Judge需要可校准和可审计 | R07、R17、R23 | 自动评测器不能直接视为绝对真值 | 需要人类一致性、偏差和置信区间报告 |
+| 只命中根因不能证明诊断路径正确 | R29、R30 | 归因应同时评价节点、边、路径和可重执行证据 | 多智能体责任边仍缺独立真值与验证协议 |
+| 海量异构遥测需要程序化检索和证据压缩 | R28、R29 | 归因模型应按需查询证据，而非直接吞入全部原始事件 | 需验证证据压缩是否遗漏决定性Agent事件 |
 
 ## 当前优先级
 
-1. `core`：R02、R05、R06、R07、R09、R10、R15、R19、R20、R22。
-2. `supporting`：R01、R03、R04、R08、R11、R12、R14、R16、R17、R23。
+1. `core`：R02、R05、R06、R07、R09、R10、R15、R19、R20、R22、R29、R30。
+2. `supporting`：R01、R03、R04、R08、R11、R12、R14、R16、R17、R23、R28。
 3. `contrast`：R13、R18、R21、R24、R25、R26、R27。
 
-下一道研究关口：精读R19、R20、R22，统一“任务成功—过程进展—重复稳定—协同质量”的分母、统计粒度和聚合方法，再与R05/R06的Agent级、Step级归因准确率连接起来。
+下一道研究关口：把当前多智能体责任图 schema 与 R30 的 root/node/edge/path/evidence-query schema 对齐，明确“Agent责任边”相对“服务传播边”的不可替代信息，并据此冻结归因任务定义和评价指标。
