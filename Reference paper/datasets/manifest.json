@@ -1,0 +1,114 @@
+[
+  {
+    "name": "AgentTrace_ICLR2026_data",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/GeoffreyWang1117/AgentTrace",
+    "ref": "iclr2026-aiwild-camera-ready / 323fc63",
+    "papers": [
+      "R03"
+    ],
+    "file_count": 3521,
+    "bytes": 22436738,
+    "sha256_tree": "8cffc374aa5b09d6c4b704b14ac52f3201dfe35baeadb56928ce8495f9ebc4df"
+  },
+  {
+    "name": "WhoAndWhen_184",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/ag2ai/Agents_Failure_Attribution",
+    "ref": "main / f4d2b6d",
+    "papers": [
+      "R05",
+      "R08",
+      "R10"
+    ],
+    "file_count": 184,
+    "bytes": 6805312,
+    "sha256_tree": "07c64ea9b19e524fd52cdc3164263ebdb6fa822a0513f8ec9a44640810ab9f05"
+  },
+  {
+    "name": "AutoForm_exact_subsets",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/thunlp/AutoForm",
+    "ref": "main / 8df9450",
+    "papers": [
+      "R13"
+    ],
+    "file_count": 16,
+    "bytes": 22147522,
+    "sha256_tree": "22e30dfedb35c3efc38b5363ae63d26cdb13fa72a0d9638ce0be98037290ddc2"
+  },
+  {
+    "name": "EIB_selected_datasets",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/se7esx/EIB_learner",
+    "ref": "main / f34d42f",
+    "papers": [
+      "R04",
+      "R18"
+    ],
+    "file_count": 6,
+    "bytes": 967772,
+    "sha256_tree": "55fc642e4837c9879c0db9000907d1873f9e14518539e181c6eaa8318a4a04fa"
+  },
+  {
+    "name": "AgentBench_data",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/THUDM/AgentBench",
+    "ref": "main / d1e4a10",
+    "papers": [
+      "R22"
+    ],
+    "file_count": 125,
+    "bytes": 32046771,
+    "sha256_tree": "d9cf6e65daa3f0054370d02d83451e6ce4815f88131433490e7bef18956782c9"
+  },
+  {
+    "name": "TauBench_package",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/sierra-research/tau-bench",
+    "ref": "main / 59a200c",
+    "papers": [
+      "R24"
+    ],
+    "file_count": 100,
+    "bytes": 8832451,
+    "sha256_tree": "1894e4a8924e34b78b3f33b867c3d3e21a138f6ddb74a9822db192ef0e4fbf53"
+  },
+  {
+    "name": "GALA_annotation",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/EvanTian233/GALA-for-RCA",
+    "ref": "main / 24d1329",
+    "papers": [
+      "R16"
+    ],
+    "file_count": 3,
+    "bytes": 219958,
+    "sha256_tree": "14c9946e060f3e6f4b41329cc9e3dedc703efe3fb5c76e30104e690e096f1a51"
+  },
+  {
+    "name": "TRAIL_benchmarking_148_traces.zip",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/patronus-ai/trail-benchmark",
+    "ref": "main / 0ffbed9",
+    "papers": [
+      "R08",
+      "R09"
+    ],
+    "file_count": 1,
+    "bytes": 31454116,
+    "sha256": "518875332ffb616aa7d56c369821b30399531e2549049a9563f708c6a4c94ddc"
+  },
+  {
+    "name": "MultiAgentBench_task_configs",
+    "retrieved_at": "2026-10-16",
+    "source": "https://github.com/ulab-uiuc/MARBLE",
+    "ref": "main / 8d60fa1",
+    "papers": [
+      "R26"
+    ],
+    "file_count": 1219,
+    "bytes": 8124884,
+    "sha256_tree": "80e4104e32554435173232c52743c7bba7098fe4f04946f6378671677fb1c68f"
+  }
+]

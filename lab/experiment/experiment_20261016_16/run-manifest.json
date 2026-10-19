@@ -1,0 +1,181 @@
+{
+  "experiment_id": "experiment_20261016_16",
+  "purpose": "Normalize Who&When, TRAIL, and AgentTrace into attribution-benchmark-record-v0.1 and measure compatibility.",
+  "network_api_calls": 0,
+  "python": "3.12.1 (tags/v3.12.1:2305ca5, Dec  7 2023, 22:03:25) [MSC v.1937 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "inputs": [
+    {
+      "name": "AgentTrace_ICLR2026_data",
+      "retrieved_at": "2026-10-16",
+      "source": "https://github.com/GeoffreyWang1117/AgentTrace",
+      "ref": "iclr2026-aiwild-camera-ready / 323fc63",
+      "papers": [
+        "R03"
+      ],
+      "file_count": 3521,
+      "bytes": 22436738,
+      "sha256_tree": "8cffc374aa5b09d6c4b704b14ac52f3201dfe35baeadb56928ce8495f9ebc4df"
+    },
+    {
+      "name": "WhoAndWhen_184",
+      "retrieved_at": "2026-10-16",
+      "source": "https://github.com/ag2ai/Agents_Failure_Attribution",
+      "ref": "main / f4d2b6d",
+      "papers": [
+        "R05",
+        "R08",
+        "R10"
+      ],
+      "file_count": 184,
+      "bytes": 6805312,
+      "sha256_tree": "07c64ea9b19e524fd52cdc3164263ebdb6fa822a0513f8ec9a44640810ab9f05"
+    },
+    {
+      "name": "TRAIL_benchmarking_148_traces.zip",
+      "retrieved_at": "2026-10-16",
+      "source": "https://github.com/patronus-ai/trail-benchmark",
+      "ref": "main / 0ffbed9",
+      "papers": [
+        "R08",
+        "R09"
+      ],
+      "file_count": 1,
+      "bytes": 31454116,
+      "sha256": "518875332ffb616aa7d56c369821b30399531e2549049a9563f708c6a4c94ddc"
+    }
+  ],
+  "code": [
+    {
+      "path": "my_paper_coding/public_dataset_adapters/__init__.py",
+      "sha256": "0d815bd6b8eb283704220fab03e940980091e895c3795db2fc10fc6075b6a0c1",
+      "bytes": 135
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/agenttrace_adapter.py",
+      "sha256": "e5f70cb6abeef3af7ba2f3cc24e48e41e0ecddb853a06290d233033e95ab5b62",
+      "bytes": 9230
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/cli.py",
+      "sha256": "9c0d5b1eff7662afa28a1b959a4c3f92d6925fdff3b0eda12b859b9d1c5ce627",
+      "bytes": 2098
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/common.py",
+      "sha256": "bb2396df67fbdb3f0fe8a53e284c2059b441e257b23835e232d523edd640c417",
+      "bytes": 3039
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/compatibility.py",
+      "sha256": "3024dce354f6c0c3858077dae24acf10f4b222f561aac37115f2eeb3c629d823",
+      "bytes": 9839
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/ground_truth_protocol.md",
+      "sha256": "804ddfb9e76b8cf81739f82096cea68db14df21fe49b3da1117492923d2da382",
+      "bytes": 2594
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/README.md",
+      "sha256": "5bb44aef020e57477b44de94008b2a23aa2611198faff6fec0c5516a7d56a3dd",
+      "bytes": 1113
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/schema/attribution-benchmark-record-v0.1.schema.json",
+      "sha256": "ae4cf779327f6a8c4b59cf305893cd368f3cf6a1068fbdb57b6d83423c529a87",
+      "bytes": 5759
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/test_adapters.py",
+      "sha256": "3a72033703f06114f1dc431605815392487e899010e9c85ac1fc52f37f555701",
+      "bytes": 5322
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/trail_adapter.py",
+      "sha256": "61751b870c9c0ecb3e5122624ffe6d2191341ab6c24dadff29aea14357889fc0",
+      "bytes": 11947
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/validation.py",
+      "sha256": "855682276965902cea3ef15fe9c7a12a5761a82194cbce77315ba8e5055c1355",
+      "bytes": 6785
+    },
+    {
+      "path": "my_paper_coding/public_dataset_adapters/who_when_adapter.py",
+      "sha256": "b41e405a90e47de8f93da84faff1035f7a056d5d0d1bca0b19ee886cb8090dfc",
+      "bytes": 6319
+    }
+  ],
+  "attempts": [
+    {
+      "name": "results",
+      "status": "failed",
+      "reason": "TRAIL annotation a96c6811716c0473b86a23321db79c34 contains a trailing comma and is invalid strict JSON."
+    },
+    {
+      "name": "results_r2",
+      "status": "failed",
+      "reason": "TRAIL trace 72822db6e120878d916b515c2501246b repeats span_id b14646a5fcac02fd; initial adapter rejected duplicate unified IDs."
+    },
+    {
+      "name": "results_r3",
+      "status": "passed",
+      "records": 882
+    }
+  ],
+  "checks": [
+    {
+      "command": "python -m unittest discover -s my_paper_coding/trace_adapter -p 'test_*.py'",
+      "passed": 101,
+      "failed": 0
+    },
+    {
+      "command": "python -m unittest my_paper_coding.public_dataset_adapters.test_adapters",
+      "passed": 4,
+      "failed": 0
+    }
+  ],
+  "outputs": [
+    {
+      "path": "lab/experiment/experiment_20261016_16/results_r3/agenttrace.jsonl",
+      "sha256": "492639004df8abe9c0cb786d096b40c2aa04f3d783a50cf1d2156999cf0bad84",
+      "bytes": 8238077
+    },
+    {
+      "path": "lab/experiment/experiment_20261016_16/results_r3/compatibility-report.json",
+      "sha256": "a562095bdb131db5b5a28224f1351a306ca85a101ff69b54a13171a3000f9ccf",
+      "bytes": 6180
+    },
+    {
+      "path": "lab/experiment/experiment_20261016_16/results_r3/compatibility-report.md",
+      "sha256": "56de413c65fea29a62c9d0a914842808edccf7d6ea9483f3c4290a8db2eb8230",
+      "bytes": 2657
+    },
+    {
+      "path": "lab/experiment/experiment_20261016_16/results_r3/trail.jsonl",
+      "sha256": "55425cd09f1305fca0d10b75d16e736c7dceb8396330cce9aee0f48109f4d77f",
+      "bytes": 6746056
+    },
+    {
+      "path": "lab/experiment/experiment_20261016_16/results_r3/who-and-when.jsonl",
+      "sha256": "52e37c3795aec791f9d2223c771ca39a74059949310ac98522fd72a531f13754",
+      "bytes": 3911286
+    }
+  ],
+  "metrics": {
+    "records": 882,
+    "schema_valid_records": 882,
+    "schema_valid_rate": 1.0,
+    "relation_reconstruction_rate": 1.0,
+    "relation_reconstructed": 14697,
+    "relation_opportunities": 14697,
+    "evidence_completeness_rate": 1.0,
+    "evidence_complete_objects": 31132,
+    "evidence_objects": 31132,
+    "abstention_rate": 0.218594,
+    "abstention_slots": 964,
+    "truth_slots": 4410,
+    "adapter_warnings": 4
+  }
+}

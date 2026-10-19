@@ -1,0 +1,269 @@
+{
+  "generated_at": "2026-10-16T08:28:58.693795+00:00",
+  "schema": "attribution-benchmark-record-v0.1",
+  "datasets": [
+    {
+      "records": 184,
+      "schema_valid_records": 184,
+      "schema_valid_rate": 1.0,
+      "field_coverage": {
+        "run": {
+          "present": 184,
+          "rate": 1.0
+        },
+        "session": {
+          "present": 184,
+          "rate": 1.0
+        },
+        "agent": {
+          "present": 184,
+          "rate": 1.0
+        },
+        "step_span": {
+          "present": 184,
+          "rate": 1.0
+        },
+        "relation": {
+          "present": 184,
+          "rate": 1.0
+        }
+      },
+      "truth_coverage": {
+        "responsibility_agents": {
+          "present": 184,
+          "rate": 1.0,
+          "states": {
+            "direct": 184
+          }
+        },
+        "responsibility_steps": {
+          "present": 184,
+          "rate": 1.0,
+          "states": {
+            "direct": 184
+          }
+        },
+        "root_cause_nodes": {
+          "present": 184,
+          "rate": 1.0,
+          "states": {
+            "derived": 184
+          }
+        },
+        "propagation_edges": {
+          "present": 0,
+          "rate": 0.0,
+          "states": {
+            "abstain": 184
+          }
+        },
+        "causal_paths": {
+          "present": 0,
+          "rate": 0.0,
+          "states": {
+            "abstain": 184
+          }
+        }
+      },
+      "relation_reconstruction": {
+        "reconstructed": 3908,
+        "opportunities": 3908,
+        "rate": 1.0
+      },
+      "evidence_completeness": {
+        "complete": 8552,
+        "objects": 8552,
+        "rate": 1.0
+      },
+      "abstention": {
+        "slots": 368,
+        "total_truth_slots": 920,
+        "rate": 0.4
+      },
+      "adapter_warnings": 0,
+      "dataset": "Who&When",
+      "output": "who-and-when.jsonl"
+    },
+    {
+      "records": 148,
+      "schema_valid_records": 148,
+      "schema_valid_rate": 1.0,
+      "field_coverage": {
+        "run": {
+          "present": 148,
+          "rate": 1.0
+        },
+        "session": {
+          "present": 148,
+          "rate": 1.0
+        },
+        "agent": {
+          "present": 148,
+          "rate": 1.0
+        },
+        "step_span": {
+          "present": 148,
+          "rate": 1.0
+        },
+        "relation": {
+          "present": 148,
+          "rate": 1.0
+        }
+      },
+      "truth_coverage": {
+        "responsibility_agents": {
+          "present": 0,
+          "rate": 0.0,
+          "states": {
+            "abstain": 148
+          }
+        },
+        "responsibility_steps": {
+          "present": 144,
+          "rate": 0.972973,
+          "states": {
+            "abstain": 4,
+            "partial": 144
+          }
+        },
+        "root_cause_nodes": {
+          "present": 0,
+          "rate": 0.0,
+          "states": {
+            "abstain": 148
+          }
+        },
+        "propagation_edges": {
+          "present": 0,
+          "rate": 0.0,
+          "states": {
+            "abstain": 148
+          }
+        },
+        "causal_paths": {
+          "present": 0,
+          "rate": 0.0,
+          "states": {
+            "abstain": 148
+          }
+        }
+      },
+      "relation_reconstruction": {
+        "reconstructed": 4472,
+        "opportunities": 4472,
+        "rate": 1.0
+      },
+      "evidence_completeness": {
+        "complete": 9242,
+        "objects": 9242,
+        "rate": 1.0
+      },
+      "abstention": {
+        "slots": 596,
+        "total_truth_slots": 740,
+        "rate": 0.805405
+      },
+      "adapter_warnings": 3,
+      "dataset": "TRAIL",
+      "output": "trail.jsonl"
+    },
+    {
+      "records": 550,
+      "schema_valid_records": 550,
+      "schema_valid_rate": 1.0,
+      "field_coverage": {
+        "run": {
+          "present": 550,
+          "rate": 1.0
+        },
+        "session": {
+          "present": 550,
+          "rate": 1.0
+        },
+        "agent": {
+          "present": 550,
+          "rate": 1.0
+        },
+        "step_span": {
+          "present": 550,
+          "rate": 1.0
+        },
+        "relation": {
+          "present": 550,
+          "rate": 1.0
+        }
+      },
+      "truth_coverage": {
+        "responsibility_agents": {
+          "present": 550,
+          "rate": 1.0,
+          "states": {
+            "derived": 550
+          }
+        },
+        "responsibility_steps": {
+          "present": 550,
+          "rate": 1.0,
+          "states": {
+            "derived": 550
+          }
+        },
+        "root_cause_nodes": {
+          "present": 550,
+          "rate": 1.0,
+          "states": {
+            "direct": 550
+          }
+        },
+        "propagation_edges": {
+          "present": 550,
+          "rate": 1.0,
+          "states": {
+            "derived": 549,
+            "partial": 1
+          }
+        },
+        "causal_paths": {
+          "present": 550,
+          "rate": 1.0,
+          "states": {
+            "direct": 550
+          }
+        }
+      },
+      "relation_reconstruction": {
+        "reconstructed": 6317,
+        "opportunities": 6317,
+        "rate": 1.0
+      },
+      "evidence_completeness": {
+        "complete": 13338,
+        "objects": 13338,
+        "rate": 1.0
+      },
+      "abstention": {
+        "slots": 0,
+        "total_truth_slots": 2750,
+        "rate": 0.0
+      },
+      "adapter_warnings": 1,
+      "dataset": "AgentTrace",
+      "output": "agenttrace.jsonl"
+    }
+  ],
+  "overall": {
+    "records": 882,
+    "schema_valid_records": 882,
+    "schema_valid_rate": 1.0,
+    "relation_reconstruction_rate": 1.0,
+    "relation_reconstructed": 14697,
+    "relation_opportunities": 14697,
+    "evidence_completeness_rate": 1.0,
+    "evidence_complete_objects": 31132,
+    "evidence_objects": 31132,
+    "abstention_rate": 0.218594,
+    "abstention_slots": 964,
+    "truth_slots": 4410,
+    "adapter_warnings": 4
+  }
+}
