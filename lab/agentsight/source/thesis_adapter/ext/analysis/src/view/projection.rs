@@ -95,10 +95,32 @@ impl MaterializedView {
             request_id: event.request_id.clone(),
             body_json: body_json(&event.attributes),
         };
-        if req.body_json.is_none() && req.model.is_none() {
+        // HTTP/2 projection can surface a complete request and a second
+        // bodyless observation for the same request at the same timestamp.
+        // Do not materialize the latter as a separate orphan call.
+        if req.body_json.is_none()
+            && req.model.is_none()
+            && self.pending.get(&(pid, tid)).is_some_and(|requests| {
+                requests.iter().any(|existing| {
+                    (existing.body_json.is_some() || existing.model.is_some())
+                        && existing.timestamp_ms == req.timestamp_ms
+                        && existing.host == req.host
+                        && existing.path == req.path
+                        && existing.request_id == req.request_id
+                })
+            })
+        {
             return Ok(());
         }
-        self.insert_orphan_llm_request(&req)?;
+        // A recognized LLM endpoint is evidence of a call even when TLS/HTTP
+        // reconstruction lost the JSON body. Preserve it at low confidence so
+        // coverage diagnostics can distinguish incomplete data from no call.
+        let request_confidence = if req.body_json.is_none() && req.model.is_none() {
+            0.35
+        } else {
+            0.75
+        };
+        self.insert_orphan_llm_request(&req, request_confidence)?;
         let requests = self.pending.entry((pid, tid)).or_default();
         requests.push_back(req);
         while requests.len() > MAX_PENDING_REQUESTS_PER_STREAM {
@@ -245,7 +267,7 @@ impl MaterializedView {
         self.emit_llm_call(call_row)
     }
 
-    fn insert_orphan_llm_request(&mut self, req: &PendingRequest) -> ViewResult<()> {
+    fn insert_orphan_llm_request(&mut self, req: &PendingRequest, confidence: f32) -> ViewResult<()> {
         let llm_call_id = format!("llm-{}", req.event_id);
         let provider = req
             .provider
@@ -264,7 +286,7 @@ impl MaterializedView {
             None,
             req.body_json.as_ref(),
             None,
-            0.75,
+            confidence,
         );
         emit_llm_audit(
             self,
@@ -278,7 +300,7 @@ impl MaterializedView {
             "orphan_request",
             "LLM request",
             req.body_json.as_ref(),
-            0.75,
+            confidence,
         )?;
         self.emit_llm_call(call_row)
     }
@@ -565,18 +587,52 @@ impl MaterializedView {
         let Some(events) = event.attributes.get("sse_events").and_then(Value::as_array) else {
             return Ok(());
         };
-        for (idx, sse) in events.iter().enumerate() {
-            let Some(block) = sse.pointer("/parsed_data/content_block") else {
-                continue;
-            };
-            if block.get("type").and_then(Value::as_str) != Some("tool_use") {
-                continue;
+        // Anthropic streams commonly send an empty `input` in
+        // content_block_start and the actual arguments in one or more
+        // input_json_delta events. Aggregate by block index before emitting a
+        // row so the materialized tool call contains the complete input.
+        let mut anthropic_tools =
+            std::collections::BTreeMap::<u64, (Option<String>, String, Value, String)>::new();
+        for sse in events {
+            let parsed = &sse["parsed_data"];
+            if let Some(block) = parsed.get("content_block")
+                && block.get("type").and_then(Value::as_str) == Some("tool_use")
+            {
+                let index = parsed.get("index").and_then(Value::as_u64).unwrap_or(0);
+                anthropic_tools.insert(
+                    index,
+                    (
+                        block.get("id").and_then(Value::as_str).map(str::to_string),
+                        block
+                            .get("name")
+                            .and_then(Value::as_str)
+                            .unwrap_or("?")
+                            .to_string(),
+                        block.get("input").cloned().unwrap_or(Value::Null),
+                        String::new(),
+                    ),
+                );
             }
-            let name = block.get("name").and_then(Value::as_str).unwrap_or("?");
-            let tool_call_id = block.get("id").and_then(Value::as_str);
-            let input_json = block.get("input").map(Value::to_string);
+            if parsed.pointer("/delta/type").and_then(Value::as_str) == Some("input_json_delta") {
+                let index = parsed.get("index").and_then(Value::as_u64).unwrap_or(0);
+                if let Some((_, _, _, partial_json)) = anthropic_tools.get_mut(&index) {
+                    if let Some(partial) = parsed
+                        .pointer("/delta/partial_json")
+                        .and_then(Value::as_str)
+                    {
+                        partial_json.push_str(partial);
+                    }
+                }
+            }
+        }
+        for (idx, (tool_call_id, name, initial_input, partial_json)) in anthropic_tools {
+            let input = if partial_json.is_empty() {
+                initial_input
+            } else {
+                parse_json_str(&partial_json).unwrap_or(initial_input)
+            };
             let tool_id = tool_call_id
-                .map(str::to_string)
+                .clone()
                 .unwrap_or_else(|| format!("tool-{idx}"));
             let (observer_raw_boot_ns, observer_boot_epoch_ns, observer_clock_uncertainty_ns) =
                 observer_clock(event);
@@ -588,13 +644,13 @@ impl MaterializedView {
                 observer_raw_boot_ns,
                 observer_boot_epoch_ns,
                 observer_clock_uncertainty_ns,
-                tool_name: Some(name.to_string()),
-                tool_call_id: tool_call_id.map(str::to_string),
+                tool_name: Some(name),
+                tool_call_id,
                 start_timestamp_ms: Some(event.timestamp_ms),
                 end_timestamp_ms: None,
                 duration_ms: None,
                 status: Some("observed".to_string()),
-                input: parse_optional_json(input_json.as_deref()),
+                input,
                 output: Value::Null,
                 related_pid: Some(pid),
                 related_event_id: Some(event.event_id.clone()),
@@ -941,10 +997,25 @@ fn llm_call_row(
     response_body: Option<&Value>,
     confidence: f32,
 ) -> LlmCallRow {
-    let status = llm_call_status(end_timestamp_ms, status_code);
-    let error_type = status_code
-        .filter(|code| *code >= 400)
-        .map(|code| format!("http_{code}"));
+    let streaming_body_missing = request_body
+        .and_then(|body| body.get("stream"))
+        .and_then(Value::as_bool)
+        == Some(true)
+        && response_body.is_none()
+        && status_code.is_some_and(|code| (200..300).contains(&code))
+        && end_timestamp_ms.is_some();
+    let status = if streaming_body_missing {
+        "incomplete".to_string()
+    } else {
+        llm_call_status(end_timestamp_ms, status_code)
+    };
+    let error_type = if streaming_body_missing {
+        Some("stream_response_body_not_observed".to_string())
+    } else {
+        status_code
+            .filter(|code| *code >= 400)
+            .map(|code| format!("http_{code}"))
+    };
     let session_id = request_body
         .and_then(session_id_from_body)
         .or_else(|| response_body.and_then(session_id_from_body));
@@ -1042,6 +1113,7 @@ fn metadata_user_session_id(body: &Value) -> Option<String> {
 fn finish_reason_from_body(body: &Value) -> Option<String> {
     string_at(body, &["finish_reason"])
         .or_else(|| string_at(body, &["stop_reason"]))
+        .or_else(|| string_at(body, &["delta", "stop_reason"]))
         .or_else(|| string_at(body, &["choices", "0", "finish_reason"]))
         .or_else(|| string_at(body, &["candidates", "0", "finishReason"]))
         .or_else(|| finish_reason_from_sse(body))
@@ -1170,6 +1242,80 @@ mod tests {
                 .iter()
                 .all(|row| row.view_source == "view" && row.confidence == Some(0.75))
         );
+    }
+
+    #[test]
+    fn bodyless_llm_request_is_preserved_as_low_confidence_evidence() {
+        let mut view = MaterializedView::new();
+        let request = Event::new_with_timestamp(
+            1_000,
+            "http_parser".to_string(),
+            42,
+            "HTTP Client".to_string(),
+            json!({
+                "tid": 7,
+                "message_type": "request",
+                "method": "POST",
+                "path": "/anthropic/v1/messages?beta=true",
+                "headers": { "host": "api.deepseek.com" }
+            }),
+        );
+        view.ingest_event(&request).expect("ingest bodyless LLM request");
+
+        let calls = view.llm_call_rows(10);
+        assert_eq!(calls.len(), 1);
+        assert_eq!(calls[0].model, None);
+        assert_eq!(calls[0].confidence, Some(0.35));
+        assert_eq!(calls[0].path.as_deref(), Some("/anthropic/v1/messages?beta=true"));
+        let snapshot = view.export_snapshot(crate::model::SnapshotOptions { audit_limit: 10 });
+        assert_eq!(snapshot.network_targets.len(), 1);
+        assert!(snapshot.audit_events.iter().any(|row| {
+            row.audit_type == "llm"
+                && row.action.as_deref() == Some("request")
+                && row.confidence == Some(0.35)
+        }));
+    }
+
+    #[test]
+    fn successful_stream_request_without_observed_body_is_incomplete() {
+        let mut view = MaterializedView::new();
+        let req = Event::new_with_timestamp(
+            1_000,
+            "http_parser".to_string(),
+            42,
+            "agent".to_string(),
+            json!({
+                "tid": 7,
+                "message_type": "request",
+                "method": "POST",
+                "path": "/anthropic/v1/messages",
+                "headers": { "host": "api.deepseek.com" },
+                "body": "{\"model\":\"deepseek-flash\",\"stream\":true}"
+            }),
+        );
+        let resp = Event::new_with_timestamp(
+            2_000,
+            "http_parser".to_string(),
+            42,
+            "agent".to_string(),
+            json!({
+                "tid": 7,
+                "message_type": "response",
+                "status_code": 200,
+                "headers": { "host": "api.deepseek.com" }
+            }),
+        );
+        view.ingest_event(&req).expect("ingest streaming request");
+        view.ingest_event(&resp).expect("ingest bodyless response");
+
+        let calls = view.llm_call_rows(10);
+        assert_eq!(calls.len(), 1);
+        assert_eq!(calls[0].status, "incomplete");
+        assert_eq!(
+            calls[0].error_type.as_deref(),
+            Some("stream_response_body_not_observed")
+        );
+        assert_eq!(calls[0].response, Value::Null);
     }
 
     #[test]

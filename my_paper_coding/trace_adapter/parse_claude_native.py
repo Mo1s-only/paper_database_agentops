@@ -84,10 +84,12 @@ def convert_agent(run: Path, agent: str, output: Path):
                               "launch_sha256": sha256(launch_path)}
 
 
-def convert(run: Path, output: Path):
+def convert(run: Path, output: Path, agents=("agent_a", "agent_b")):
+    if not agents or len(set(agents)) != len(agents) or any(agent not in {"agent_a", "agent_b"} for agent in agents):
+        raise ValueError("agents must be a non-empty unique subset of agent_a and agent_b")
     output.mkdir(parents=True, exist_ok=False)
     events, mappings, reports = [], [], []
-    for agent in ("agent_a", "agent_b"):
+    for agent in agents:
         parsed, refs, report = convert_agent(run, agent, output)
         events.extend(parsed); mappings.extend(refs); reports.append(report)
     write_jsonl(output / "application-events.jsonl", events)
@@ -104,5 +106,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--agents", nargs="+", choices=("agent_a", "agent_b"),
+                        default=("agent_a", "agent_b"),
+                        help="agents captured in this run (defaults to both)")
     args = parser.parse_args()
-    print(json.dumps(convert(args.run, args.output), ensure_ascii=False))
+    print(json.dumps(convert(args.run, args.output, tuple(args.agents)), ensure_ascii=False))

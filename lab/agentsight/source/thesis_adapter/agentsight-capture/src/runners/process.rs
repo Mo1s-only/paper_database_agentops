@@ -48,8 +48,12 @@ impl ProcessRunner {
 
     fn parse_process_event(json_value: serde_json::Value, errors: &AtomicU64) -> Event {
         if json_value.get("event").and_then(|v| v.as_str()) == Some("CLOCK_SYNC") {
+            let timestamp = json_value
+                .get("mono_ns")
+                .and_then(|value| value.as_u64())
+                .unwrap_or_else(current_boot_time_ns);
             return Event::new_with_timestamp(
-                current_boot_time_ns(),
+                timestamp,
                 "diagnostic".to_string(),
                 0,
                 "process".to_string(),
@@ -78,6 +82,23 @@ impl Runner for ProcessRunner {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use serde_json::json;
+    use std::sync::atomic::AtomicU64;
+
+    #[test]
+    fn clock_sync_preserves_its_monotonic_anchor() {
+        let errors = AtomicU64::new(0);
+        let event = ProcessRunner::parse_process_event(
+            json!({
+                "event": "CLOCK_SYNC",
+                "mono_ns": 1_234_000_000u64,
+                "wall_time_ns": 1_700_000_000_000_000_000u64
+            }),
+            &errors,
+        );
+        assert_eq!(event.timestamp, 1_234_000_000);
+        assert_eq!(event.source, "diagnostic");
+    }
 
     #[tokio::test]
     #[ignore = "requires real binary and sudo"]

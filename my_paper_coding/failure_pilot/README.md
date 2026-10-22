@@ -30,3 +30,18 @@ python .\analyze_failure_pilot.py --run-dir .\results\pilot-01
 `capture_agentsight_attach.sh` 使用 WSL2 下已验证的 attach 模式记录真实 Claude 进程和本地假工具。不要使用 `agentsight record -- python3 ...` 代替它；当前环境的 launch 模式会出现目标成功但数据库为 0 的归因丢失。运行说明与本次结果见 `agentsight-attach-probe.md` 和 `agentsight-attach-report.md`。
 
 `run_fault_matrix.py` 进一步对三类确定性故障各重复 3 次，并输出 9 条独立 trace/真值/分析结果；汇总说明见 `fault-matrix-report.md`。
+
+## 盲测协议修正（2026-10-22）
+
+审计发现 `run_fault_matrix.py` 的旧预测器接收 `fault` 参数并按故障类别切换规则。因此旧 9/9 只可作为合成 harness / schema / 评分管线试跑，不能当成标签盲测准确率。`evaluation_gate/cross_task_counterfactual.py` 也把 `task_name` 传进预测、判据与反事实代码；其 9/9 同样不属于盲测归因或反事实结果。旧产物保留，不覆盖、不改写成新结果。
+
+新的 trace-only 预测器和后评分入口：
+
+```powershell
+python .\test_blind_attribution_eval.py
+python .\prepare_blind_fixtures.py --out-dir ..\..\lab\experiment\blind_attribution_protocol_20261022 --repetitions 3
+```
+
+对每个 fixture，先单独运行 `blind_attribution_eval.py predict --trace <trace.jsonl> --output <prediction.json>`，预测冻结后再单独运行 `blind_attribution_eval.py score --prediction <prediction.json> --truth <ground_truth.json> --output <score.json>`。输出文件使用独占创建，避免覆盖。该规则仅检查三类确定性合成形状能否被不知故障标签的通用规则识别，并在歧义/缺失时 abstain；即使 9/9，也不构成论文准确率、真实采集能力或归因优越性的证据。
+
+跨任务 repair/control 的隔离版本见 `../evaluation_gate/blind_counterfactual.py`；它使用预登记干预计划、检查 run ID 与候选目标，并用 trace 中的任务契约做通用 oracle。9 条合成协议检查见 `lab/experiment/blind_counterfactual_protocol_20261022/protocol-report.md`。它同样不能作为真实因果效果结论。

@@ -134,6 +134,38 @@ static inline void json_print_escaped_quoted(const char *buf, unsigned int len)
 	printf("\"");
 }
 
+/* Preserve arbitrary SSL plaintext bytes through JSON string parsing. Escaping
+ * every non-ASCII byte separately avoids ambiguity between valid UTF-8 (for
+ * example U+00E9) and a raw byte escaped as \u00e9. */
+static inline void json_print_escaped_bytes_quoted(const unsigned char *buf,
+													 unsigned int len)
+{
+	unsigned int i;
+
+	printf("\"");
+	for (i = 0; i < len; i++) {
+		unsigned char c = buf[i];
+
+		if (c == '"' || c == '\\')
+			printf("\\%c", c);
+		else if (c == '\n')
+			printf("\\n");
+		else if (c == '\r')
+			printf("\\r");
+		else if (c == '\t')
+			printf("\\t");
+		else if (c == '\b')
+			printf("\\b");
+		else if (c == '\f')
+			printf("\\f");
+		else if (c >= 32 && c <= 126)
+			printf("%c", c);
+		else
+			printf("\\u%04x", c);
+	}
+	printf("\"");
+}
+
 /*
  * Escape a NUL-terminated string into dst for embedding in a JSON string
  * (minimal set: backslash, quote, newline, tab). Used where output is

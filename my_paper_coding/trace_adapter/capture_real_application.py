@@ -9,6 +9,7 @@ import math
 import os
 from pathlib import Path
 import selectors
+import shlex
 import signal
 import socket
 import sqlite3
@@ -49,7 +50,8 @@ def process_views(pid):
     return values
 
 
-def capture_agent(output, agent, prompt, tools, budget, scope):
+def capture_agent(output, agent, prompt, tools, budget, scope, tool_id_bridge_events=None,
+                  allow_known_scenario_scripts=False):
     session = str(uuid.uuid4())
     command = ["claude", "-p", prompt, "--output-format", "stream-json", "--verbose",
                "--include-partial-messages", "--include-hook-events", "--session-id", session,
@@ -57,6 +59,27 @@ def capture_agent(output, agent, prompt, tools, budget, scope):
                "--tools", tools, "--allowedTools", tools, "--max-budget-usd", str(budget),
                "--setting-sources", "", "--strict-mcp-config", "--disable-slash-commands",
                "--no-session-persistence"]
+    if tool_id_bridge_events is not None:
+        hook_script = Path(__file__).with_name("claude_tool_id_bridge_hook.py").resolve()
+        hook_command = " ".join((
+            "python3", shlex.quote(str(hook_script)), "--events",
+            shlex.quote(str(Path(tool_id_bridge_events).resolve())),
+        ))
+        if allow_known_scenario_scripts:
+            hook_command += " --allow-known-scenario-scripts"
+        settings = {
+            "hooks": {
+                "PreToolUse": [{
+                    "matcher": "Bash",
+                    "hooks": [{"type": "command", "command": hook_command}],
+                }],
+                "PostToolUse": [{
+                    "matcher": "Bash",
+                    "hooks": [{"type": "command", "command": hook_command}],
+                }],
+            },
+        }
+        command.extend(["--settings", json.dumps(settings, separators=(",", ":"))])
     stderr = (output / f"{agent}-stderr.log").open("x")
     before_wall, before_mono = wall_ms(), time.monotonic_ns()
     process = subprocess.Popen(command, cwd=output / "workspace", stdout=subprocess.PIPE, stderr=stderr,

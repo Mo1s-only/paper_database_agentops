@@ -9,11 +9,15 @@ use async_trait::async_trait;
 use flate2::{Decompress, FlushDecompress};
 use futures::{stream, stream::StreamExt};
 use hpack::Decoder as HpackDecoder;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::hash::Hash;
+use std::sync::atomic::{AtomicU64, AtomicUsize, Ordering};
+use std::sync::Arc;
+use std::sync::Mutex;
 
 const MAX_HTTP2_STREAMS: usize = 1024;
 const MAX_HTTP2_PENDING_HEADERS: usize = 1024;
+const MAX_HTTP2_PENDING_BYTES: usize = MAX_HTTP_BODY_BYTES + MAX_HTTP2_HEADER_BLOCK_BYTES;
 const MAX_HTTP_BODY_BYTES: usize = 1024 * 1024;
 const MAX_HTTP2_HEADER_BLOCK_BYTES: usize = 64 * 1024;
 
@@ -27,13 +31,135 @@ pub struct HTTPParser {
 }
 
 #[derive(Default)]
+struct HTTPParserDiagnostics {
+    ssl_events: AtomicU64,
+    ssl_read_events: AtomicU64,
+    ssl_read_bytes: AtomicU64,
+    ssl_write_events: AtomicU64,
+    ssl_write_bytes: AtomicU64,
+    unknown_direction_events: AtomicU64,
+    http_responses: AtomicU64,
+    http_response_body_bytes: AtomicU64,
+    max_pending_http2_bytes: AtomicUsize,
+    max_pending_http2_streams: AtomicUsize,
+    max_pending_http2_header_blocks: AtomicUsize,
+    current_pending_http2_bytes: AtomicUsize,
+    current_pending_http2_buffers: AtomicUsize,
+    http2_need_more: AtomicU64,
+    http2_not_http2: AtomicU64,
+    http2_invocations: AtomicU64,
+    http1_pending_events: AtomicU64,
+    unparsed_ssl_events: AtomicU64,
+    max_pending_http1_bytes: AtomicUsize,
+    current_pending_http1_bytes: AtomicUsize,
+    current_pending_http1_buffers: AtomicUsize,
+    pending_http1_request_buffers: AtomicUsize,
+    pending_http1_response_buffers: AtomicUsize,
+    pending_http1_header_wait_buffers: AtomicUsize,
+    pending_http1_content_length_buffers: AtomicUsize,
+    pending_http1_chunked_buffers: AtomicUsize,
+    pending_http1_expected_body_bytes: AtomicUsize,
+    pending_http1_chunked_wait_stage: AtomicUsize,
+    pending_http1_chunked_completed_chunks: AtomicUsize,
+    pending_http1_chunked_progress_offset: AtomicUsize,
+    pending_http1_first_chunk_size: AtomicUsize,
+    pending_http1_first_chunk_boundary_class: AtomicUsize,
+    ssl_connection_id_missing_events: AtomicU64,
+    ssl_connection_ids: Mutex<HashSet<u64>>,
+    ssl_sequence_gaps: AtomicU64,
+    ssl_sequence_reorders: AtomicU64,
+    ssl_connection_sequences: Mutex<HashMap<u64, u64>>,
+    truncated_ssl_events: AtomicU64,
+    ssl_bytes_lost: AtomicU64,
+    request_header_frames: AtomicU64,
+    response_header_frames: AtomicU64,
+    continuation_frames: AtomicU64,
+    request_data_frames: AtomicU64,
+    response_data_frames: AtomicU64,
+    request_data_bytes: AtomicU64,
+    response_data_bytes: AtomicU64,
+    per_thread: Mutex<HashMap<(u32, u64), ThreadCaptureDiagnostics>>,
+}
+
+#[derive(Default)]
+struct ThreadCaptureDiagnostics {
+    read_events: u64,
+    write_events: u64,
+    http2_frames: u64,
+    data_frames: u64,
+    data_bytes: u64,
+}
+
+impl Drop for HTTPParserDiagnostics {
+    fn drop(&mut self) {
+        eprintln!(
+            "[HTTPParser capture diagnostics] ssl_events={} ssl_read_events={} ssl_read_bytes={} ssl_write_events={} ssl_write_bytes={} unknown_direction_events={} truncated_ssl_events={} ssl_bytes_lost={} http_responses={} http_response_body_bytes={} http2_invocations={} http2_need_more={} http2_not_http2={} http1_pending_events={} unparsed_ssl_events={} max_pending_http1_bytes={} final_pending_http1_bytes={} final_pending_http1_buffers={} pending_http1_requests={} pending_http1_responses={} pending_http1_header_wait={} pending_http1_content_length={} pending_http1_chunked={} pending_http1_expected_body_bytes={} pending_http1_chunked_wait_stage={} pending_http1_chunked_completed_chunks={} pending_http1_chunked_progress_offset={} pending_http1_first_chunk_size={} pending_http1_first_chunk_boundary_class={} ssl_connection_id_missing_events={} distinct_ssl_connection_ids={} ssl_sequence_gaps={} ssl_sequence_reorders={} request_header_frames={} response_header_frames={} continuation_frames={} request_data_frames={} response_data_frames={} request_data_bytes={} response_data_bytes={} max_pending_http2_bytes={} max_pending_http2_streams={} max_pending_http2_header_blocks={} final_pending_http2_bytes={} final_pending_http2_buffers={} per_thread={:?}",
+            self.ssl_events.load(Ordering::Relaxed),
+            self.ssl_read_events.load(Ordering::Relaxed),
+            self.ssl_read_bytes.load(Ordering::Relaxed),
+            self.ssl_write_events.load(Ordering::Relaxed),
+            self.ssl_write_bytes.load(Ordering::Relaxed),
+            self.unknown_direction_events.load(Ordering::Relaxed),
+            self.truncated_ssl_events.load(Ordering::Relaxed),
+            self.ssl_bytes_lost.load(Ordering::Relaxed),
+            self.http_responses.load(Ordering::Relaxed),
+            self.http_response_body_bytes.load(Ordering::Relaxed),
+            self.http2_invocations.load(Ordering::Relaxed),
+            self.http2_need_more.load(Ordering::Relaxed),
+            self.http2_not_http2.load(Ordering::Relaxed),
+            self.http1_pending_events.load(Ordering::Relaxed),
+            self.unparsed_ssl_events.load(Ordering::Relaxed),
+            self.max_pending_http1_bytes.load(Ordering::Relaxed),
+            self.current_pending_http1_bytes.load(Ordering::Relaxed),
+            self.current_pending_http1_buffers.load(Ordering::Relaxed),
+            self.pending_http1_request_buffers.load(Ordering::Relaxed),
+            self.pending_http1_response_buffers.load(Ordering::Relaxed),
+            self.pending_http1_header_wait_buffers.load(Ordering::Relaxed),
+            self.pending_http1_content_length_buffers.load(Ordering::Relaxed),
+            self.pending_http1_chunked_buffers.load(Ordering::Relaxed),
+            self.pending_http1_expected_body_bytes.load(Ordering::Relaxed),
+            self.pending_http1_chunked_wait_stage.load(Ordering::Relaxed),
+            self.pending_http1_chunked_completed_chunks.load(Ordering::Relaxed),
+            self.pending_http1_chunked_progress_offset.load(Ordering::Relaxed),
+            self.pending_http1_first_chunk_size.load(Ordering::Relaxed),
+            self.pending_http1_first_chunk_boundary_class.load(Ordering::Relaxed),
+            self.ssl_connection_id_missing_events.load(Ordering::Relaxed),
+            self.ssl_connection_ids.lock().map(|ids| ids.len()).unwrap_or_default(),
+            self.ssl_sequence_gaps.load(Ordering::Relaxed),
+            self.ssl_sequence_reorders.load(Ordering::Relaxed),
+            self.request_header_frames.load(Ordering::Relaxed),
+            self.response_header_frames.load(Ordering::Relaxed),
+            self.continuation_frames.load(Ordering::Relaxed),
+            self.request_data_frames.load(Ordering::Relaxed),
+            self.response_data_frames.load(Ordering::Relaxed),
+            self.request_data_bytes.load(Ordering::Relaxed),
+            self.response_data_bytes.load(Ordering::Relaxed),
+            self.max_pending_http2_bytes.load(Ordering::Relaxed),
+            self.max_pending_http2_streams.load(Ordering::Relaxed),
+            self.max_pending_http2_header_blocks.load(Ordering::Relaxed),
+            self.current_pending_http2_bytes.load(Ordering::Relaxed),
+            self.current_pending_http2_buffers.load(Ordering::Relaxed),
+            self.per_thread.lock().map(|threads| threads.iter().map(|(key, v)| (*key, v.read_events, v.write_events, v.http2_frames, v.data_frames, v.data_bytes)).collect::<Vec<_>>()).unwrap_or_default(),
+        );
+    }
+}
+
+#[derive(Default)]
 struct HTTP1State {
-    pending: HashMap<(u32, u64, HTTP2Direction), PendingHTTP1Message>,
+    pending: HashMap<(u32, u64, u64, HTTP2Direction), PendingHTTP1Message>,
 }
 
 struct PendingHTTP1Message {
     bytes: Vec<u8>,
-    expected_len: usize,
+    header_len: usize,
+    framing: HTTP1BodyFraming,
+}
+
+#[derive(Clone, Copy)]
+enum HTTP1BodyFraming {
+    Headers,
+    ContentLength(usize),
+    Chunked,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -41,6 +167,9 @@ enum HTTP2Direction {
     Request,
     Response,
 }
+
+type HTTP2StreamKey = (u32, u64, u32);
+type HTTP2ConnectionKey = (u32, u64, HTTP2Direction);
 
 #[derive(Default)]
 struct HTTP2StreamState {
@@ -67,8 +196,9 @@ struct HTTP2Frame<'a> {
 struct HTTP2State {
     request_decoder: HpackDecoder<'static>,
     response_decoder: HpackDecoder<'static>,
-    streams: HashMap<(u64, u32), HTTP2StreamState>,
-    pending_headers: HashMap<(u64, u32), PendingHTTP2Headers>,
+    streams: HashMap<HTTP2StreamKey, HTTP2StreamState>,
+    pending_headers: HashMap<HTTP2StreamKey, PendingHTTP2Headers>,
+    pending_bytes: HashMap<HTTP2ConnectionKey, Vec<u8>>,
 }
 
 #[derive(Default)]
@@ -89,6 +219,7 @@ impl Default for HTTP2State {
             response_decoder: HpackDecoder::new(),
             streams: HashMap::new(),
             pending_headers: HashMap::new(),
+            pending_bytes: HashMap::new(),
         }
     }
 }
@@ -106,6 +237,7 @@ pub struct HTTPMessage {
     pub first_line: String,
     pub headers: HashMap<String, String>,
     pub body: Option<String>,
+    pub body_bytes: Option<Vec<u8>>,
     pub raw_data: String,
     // Request-specific fields
     pub method: Option<String>,
@@ -166,7 +298,13 @@ impl HTTPParser {
 
     /// Parse HTTP message from accumulated data
     pub fn parse_http_message(data: &str) -> Option<HTTPMessage> {
-        let lines: Vec<&str> = data.split("\r\n").collect();
+        Self::parse_http_message_bytes(data.as_bytes())
+    }
+
+    fn parse_http_message_bytes(data: &[u8]) -> Option<HTTPMessage> {
+        let header_end = data.windows(4).position(|window| window == b"\r\n\r\n")?;
+        let header_text = String::from_utf8_lossy(&data[..header_end]);
+        let lines: Vec<&str> = header_text.split("\r\n").collect();
 
         if lines.is_empty() {
             return None;
@@ -174,7 +312,6 @@ impl HTTPParser {
 
         let first_line = lines[0];
         let mut headers = HashMap::new();
-        let mut body_start = None;
         let mut message_type = HTTPMessageType::Request;
         let mut method = None;
         let mut path = None;
@@ -214,11 +351,7 @@ impl HTTPParser {
         }
 
         // Parse headers
-        for (i, line) in lines.iter().enumerate().skip(1) {
-            if line.is_empty() {
-                body_start = Some(i + 1);
-                break;
-            }
+        for line in lines.iter().skip(1) {
             if let Some(colon_pos) = line.find(':') {
                 let key = line[..colon_pos].trim().to_lowercase();
                 let value = line[colon_pos + 1..].trim().to_string();
@@ -226,29 +359,21 @@ impl HTTPParser {
             }
         }
 
-        // Extract body if present
-        let body = if let Some(start) = body_start {
-            if start < lines.len() {
-                let body_lines: Vec<&str> = lines[start..].to_vec();
-                let body_content = body_lines.join("\r\n");
-                if !body_content.trim().is_empty() {
-                    Some(body_content)
-                } else {
-                    None
-                }
-            } else {
-                None
-            }
-        } else {
-            None
-        };
+        // Keep the entity bytes separately: a UTF-8 lossy conversion is fine
+        // for displaying SSE text, but it corrupts compressed/binary bodies
+        // before `body_hex` can preserve them for decompression.
+        let body_bytes = data.get(header_end + 4..).filter(|body| !body.is_empty()).map(<[u8]>::to_vec);
+        let body = body_bytes
+            .as_deref()
+            .map(|body| String::from_utf8_lossy(body).into_owned());
 
         Some(HTTPMessage {
             message_type,
             first_line: first_line.to_string(),
             headers,
             body,
-            raw_data: data.to_string(),
+            body_bytes,
+            raw_data: String::from_utf8_lossy(data).into_owned(),
             method,
             path,
             protocol,
@@ -280,16 +405,12 @@ impl HTTPParser {
             .map(|v| v.to_lowercase().contains("chunked"))
             .unwrap_or(false);
         let has_body = parsed_message.body.is_some();
-        let body_hex = parsed_message
-            .body
-            .as_deref()
-            .map(ssl_json_string_to_bytes)
-            .map(hex::encode);
+        let body_hex = parsed_message.body_bytes.as_deref().map(hex::encode);
 
         // Calculate total size from parsed components
         let total_size = parsed_message.first_line.len() +
             parsed_message.headers.iter().map(|(k, v)| k.len() + v.len() + 4).sum::<usize>() + // +4 for ": \r\n"
-            parsed_message.body.as_ref().map(|b| b.len()).unwrap_or(0) +
+            parsed_message.body_bytes.as_ref().map(|b| b.len()).unwrap_or(0) +
             4; // +4 for \r\n\r\n separator
 
         HTTPEvent {
@@ -321,6 +442,7 @@ impl HTTPParser {
         websocket: &mut WebSocketState,
         event: Event,
         include_raw_data: bool,
+        diagnostics: &HTTPParserDiagnostics,
     ) -> Vec<Event> {
         let ssl_data = &event.data;
 
@@ -366,7 +488,7 @@ impl HTTPParser {
         if let Some(events) = websocket.handle_event(&event, &data_bytes, include_raw_data) {
             return events;
         }
-        if let Some(events) = http2.handle_event(&event, &data_bytes, include_raw_data) {
+        if let Some(events) = http2.handle_event(&event, &data_bytes, include_raw_data, diagnostics) {
             return events;
         }
 
@@ -376,8 +498,13 @@ impl HTTPParser {
 }
 
 impl HTTP1State {
-    fn key(event: &Event) -> Option<(u32, u64, HTTP2Direction)> {
+    fn key(event: &Event) -> Option<(u32, u64, u64, HTTP2Direction)> {
         let tid = event.data.get("tid").and_then(|v| v.as_u64())?;
+        let connection_id = event
+            .data
+            .get("connection_id")
+            .and_then(|value| value.as_u64())
+            .unwrap_or(0);
         let direction = direction_from_function(
             event
                 .data
@@ -385,7 +512,7 @@ impl HTTP1State {
                 .and_then(|v| v.as_str())
                 .unwrap_or(""),
         )?;
-        Some((event.pid, tid, direction))
+        Some((event.pid, tid, connection_id, direction))
     }
 
     fn handle_fragment(&mut self, event: &Event, bytes: &[u8]) -> Option<HTTPMessage> {
@@ -396,25 +523,69 @@ impl HTTP1State {
                 return None;
             }
             pending.bytes.extend_from_slice(bytes);
-            if pending.bytes.len() < pending.expected_len {
+            if matches!(pending.framing, HTTP1BodyFraming::Headers) {
+                let Some((header_len, framing)) = http1_message_framing(&pending.bytes) else {
+                    if pending.bytes.windows(4).any(|window| window == b"\r\n\r\n") {
+                        let pending = self.pending.remove(&key)?;
+                        return HTTPParser::parse_http_message_bytes(&pending.bytes);
+                    }
+                    return None;
+                };
+                pending.header_len = header_len;
+                pending.framing = framing;
+            }
+            let complete = match pending.framing {
+                HTTP1BodyFraming::Headers => false,
+                HTTP1BodyFraming::ContentLength(body_len) => pending
+                    .header_len
+                    .checked_add(body_len)
+                    .is_some_and(|message_len| pending.bytes.len() >= message_len),
+                HTTP1BodyFraming::Chunked => {
+                    decode_http1_chunked_body(&pending.bytes, pending.header_len).is_some()
+                }
+            };
+            if !complete {
                 return None;
             }
             let pending = self.pending.remove(&key)?;
-            let complete = pending.bytes.get(..pending.expected_len)?;
-            return HTTPParser::parse_http_message(&String::from_utf8_lossy(complete));
+            return parse_pending_http1_message(pending);
         }
 
-        let expected_len = http1_content_length_message_size(bytes)?;
-        if bytes.len() >= expected_len || expected_len > MAX_HTTP_BODY_BYTES {
+        let Some((header_len, framing)) = http1_message_framing(bytes) else {
+            let direction = direction_from_function(
+                event.data.get("function").and_then(|value| value.as_str()).unwrap_or(""),
+            )?;
+            if !bytes.windows(4).any(|window| window == b"\r\n\r\n")
+                && starts_like_http1(bytes, direction)
+            {
+                self.pending.insert(key, PendingHTTP1Message {
+                    bytes: bytes.to_vec(),
+                    header_len: 0,
+                    framing: HTTP1BodyFraming::Headers,
+                });
+                evict_over_capacity(&mut self.pending, MAX_HTTP2_STREAMS);
+            }
             return None;
+        };
+        match framing {
+            HTTP1BodyFraming::Headers => return None,
+            HTTP1BodyFraming::ContentLength(expected_len) => {
+                let message_len = header_len.checked_add(expected_len)?;
+                if bytes.len() >= message_len || message_len > MAX_HTTP_BODY_BYTES {
+                    return None;
+                }
+            }
+            HTTP1BodyFraming::Chunked => {
+                if let Some((decoded, end)) = decode_http1_chunked_body(bytes, header_len) {
+                    return parse_http1_chunked_message(bytes, &decoded, end, header_len);
+                }
+            }
         }
-        self.pending.insert(
-            key,
-            PendingHTTP1Message {
-                bytes: bytes.to_vec(),
-                expected_len,
-            },
-        );
+        self.pending.insert(key, PendingHTTP1Message {
+            bytes: bytes.to_vec(),
+            header_len,
+            framing,
+        });
         evict_over_capacity(&mut self.pending, MAX_HTTP2_STREAMS);
         None
     }
@@ -424,7 +595,7 @@ impl HTTP1State {
     }
 }
 
-fn http1_content_length_message_size(bytes: &[u8]) -> Option<usize> {
+fn http1_message_framing(bytes: &[u8]) -> Option<(usize, HTTP1BodyFraming)> {
     let header_end = bytes.windows(4).position(|window| window == b"\r\n\r\n")?;
     let headers = String::from_utf8_lossy(&bytes[..header_end]);
     let first_line = headers.lines().next()?;
@@ -435,14 +606,217 @@ fn http1_content_length_message_size(bytes: &[u8]) -> Option<usize> {
     if !is_http1 {
         return None;
     }
-    let content_length = headers.lines().skip(1).find_map(|line| {
+    let mut content_length = None;
+    let mut is_chunked = false;
+    for line in headers.lines().skip(1) {
         let (name, value) = line.split_once(':')?;
-        name.trim()
-            .eq_ignore_ascii_case("content-length")
-            .then(|| value.trim().parse::<usize>().ok())
-            .flatten()
-    })?;
-    header_end.checked_add(4)?.checked_add(content_length)
+        if name.trim().eq_ignore_ascii_case("content-length") {
+            content_length = value.trim().parse::<usize>().ok();
+        } else if name.trim().eq_ignore_ascii_case("transfer-encoding")
+            && value.to_ascii_lowercase().contains("chunked")
+        {
+            is_chunked = true;
+        }
+    }
+    let header_len = header_end.checked_add(4)?;
+    if is_chunked {
+        Some((header_len, HTTP1BodyFraming::Chunked))
+    } else {
+        Some((header_len, HTTP1BodyFraming::ContentLength(content_length?)))
+    }
+}
+
+fn parse_pending_http1_message(pending: PendingHTTP1Message) -> Option<HTTPMessage> {
+    match pending.framing {
+        HTTP1BodyFraming::ContentLength(body_len) => {
+            let message_len = pending.header_len.checked_add(body_len)?;
+            if pending.bytes.len() < message_len {
+                return None;
+            }
+            HTTPParser::parse_http_message_bytes(&pending.bytes[..message_len])
+        }
+        HTTP1BodyFraming::Chunked => {
+            let (decoded, end) = decode_http1_chunked_body(&pending.bytes, pending.header_len)?;
+            parse_http1_chunked_message(&pending.bytes, &decoded, end, pending.header_len)
+        }
+        HTTP1BodyFraming::Headers => None,
+    }
+}
+
+fn starts_like_http1(bytes: &[u8], direction: HTTP2Direction) -> bool {
+    let prefixes: &[&[u8]] = match direction {
+        HTTP2Direction::Request => &[
+            b"GET ", b"POST ", b"PUT ", b"DELETE ", b"HEAD ", b"OPTIONS ", b"PATCH ",
+        ],
+        HTTP2Direction::Response => &[b"HTTP/1."],
+    };
+    prefixes.iter().any(|prefix| prefix.starts_with(bytes) || bytes.starts_with(prefix))
+}
+
+fn parse_http1_chunked_message(
+    raw: &[u8],
+    decoded_body: &[u8],
+    raw_end: usize,
+    header_len: usize,
+) -> Option<HTTPMessage> {
+    let mut normalized = raw.get(..header_len)?.to_vec();
+    normalized.extend_from_slice(decoded_body);
+    let raw_text = String::from_utf8_lossy(raw.get(..raw_end)?).into_owned();
+    let mut message = HTTPParser::parse_http_message_bytes(&normalized)?;
+    message.raw_data = raw_text;
+    Some(message)
+}
+
+fn decode_http1_chunked_body(bytes: &[u8], mut cursor: usize) -> Option<(Vec<u8>, usize)> {
+    let mut decoded = Vec::new();
+    loop {
+        let line_end = bytes.get(cursor..)?.windows(2).position(|pair| pair == b"\r\n")? + cursor;
+        let line = std::str::from_utf8(bytes.get(cursor..line_end)?).ok()?;
+        let size = usize::from_str_radix(line.split(';').next()?.trim(), 16).ok()?;
+        cursor = line_end.checked_add(2)?;
+        if size == 0 {
+            if bytes.get(cursor..cursor.saturating_add(2)) == Some(b"\r\n") {
+                return Some((decoded, cursor + 2));
+            }
+            if bytes.get(cursor) == Some(&b'\n') {
+                return Some((decoded, cursor + 1));
+            }
+            if let Some(relative_end) = bytes
+                .get(cursor..)?
+                .windows(4)
+                .position(|window| window == b"\r\n\r\n")
+            {
+                let trailer_end = relative_end + cursor;
+                return Some((decoded, trailer_end + 4));
+            }
+            let trailer_end = bytes.get(cursor..)?.windows(2).position(|window| window == b"\n\n")? + cursor;
+            return Some((decoded, trailer_end + 2));
+        }
+        if decoded.len().checked_add(size)? > MAX_HTTP_BODY_BYTES {
+            return None;
+        }
+        let data_end = cursor.checked_add(size)?;
+        decoded.extend_from_slice(bytes.get(cursor..data_end)?);
+        cursor = data_end.checked_add(http1_chunk_delimiter_len(bytes, data_end)?)?;
+    }
+}
+
+fn http1_chunk_delimiter_len(bytes: &[u8], offset: usize) -> Option<usize> {
+    if bytes.get(offset..offset.checked_add(2)?)? == b"\r\n" {
+        Some(2)
+    } else if bytes.get(offset) == Some(&b'\n') {
+        Some(1)
+    } else {
+        None
+    }
+}
+
+// Diagnostic codes are intentionally content-free: 0=complete, 1=waiting for
+// a chunk-size line, 2=invalid UTF-8 size line, 3=invalid hex size, 4=waiting
+// for payload, 5=waiting for payload CRLF, 6=invalid payload CRLF,
+// 7=waiting for terminating chunk/trailers, 8=arithmetic overflow.
+fn http1_chunked_wait_stage(bytes: &[u8], mut cursor: usize) -> usize {
+    loop {
+        let Some(relative_end) = bytes.get(cursor..).and_then(|tail| {
+            tail.windows(2).position(|pair| pair == b"\r\n")
+        }) else {
+            return 1;
+        };
+        let line_end = cursor + relative_end;
+        let Ok(line) = std::str::from_utf8(&bytes[cursor..line_end]) else {
+            return 2;
+        };
+        let Some(size_text) = line.split(';').next() else {
+            return 3;
+        };
+        let Ok(size) = usize::from_str_radix(size_text.trim(), 16) else {
+            return 3;
+        };
+        cursor = line_end + 2;
+        if size == 0 {
+            if bytes.get(cursor..cursor.saturating_add(2)) == Some(b"\r\n")
+                || bytes.get(cursor) == Some(&b'\n')
+                || bytes.get(cursor..).is_some_and(|tail| tail.windows(4).any(|w| w == b"\r\n\r\n"))
+                || bytes.get(cursor..).is_some_and(|tail| tail.windows(2).any(|w| w == b"\n\n"))
+            {
+                return 0;
+            }
+            return 7;
+        }
+        let Some(data_end) = cursor.checked_add(size) else {
+            return 8;
+        };
+        if bytes.len() < data_end {
+            return 2;
+        }
+        let Some(delimiter_len) = http1_chunk_delimiter_len(bytes, data_end) else {
+            if bytes.len() == data_end || bytes.get(data_end) == Some(&b'\r') && bytes.len() == data_end + 1 {
+                return 5;
+            }
+            return 6;
+        };
+        cursor = data_end + delimiter_len;
+    }
+}
+
+fn http1_chunked_progress(bytes: &[u8], mut cursor: usize) -> (usize, usize) {
+    let mut completed_chunks = 0;
+    loop {
+        let Some(relative_end) = bytes.get(cursor..).and_then(|tail| {
+            tail.windows(2).position(|pair| pair == b"\r\n")
+        }) else {
+            return (completed_chunks, cursor);
+        };
+        let line_end = cursor + relative_end;
+        let Ok(line) = std::str::from_utf8(&bytes[cursor..line_end]) else {
+            return (completed_chunks, cursor);
+        };
+        let Ok(size) = usize::from_str_radix(line.split(';').next().unwrap_or("").trim(), 16) else {
+            return (completed_chunks, cursor);
+        };
+        cursor = line_end + 2;
+        if size == 0 {
+            return (completed_chunks, cursor);
+        }
+        let Some(data_end) = cursor.checked_add(size) else {
+            return (completed_chunks, cursor);
+        };
+        let Some(delimiter_len) = http1_chunk_delimiter_len(bytes, data_end) else {
+            return (completed_chunks, data_end);
+        };
+        cursor = data_end + delimiter_len;
+        completed_chunks += 1;
+    }
+}
+
+fn http1_first_chunk_metadata(bytes: &[u8], header_len: usize) -> (usize, usize) {
+    let Some(relative_end) = bytes.get(header_len..).and_then(|tail| {
+        tail.windows(2).position(|pair| pair == b"\r\n")
+    }) else {
+        return (0, 0);
+    };
+    let line_end = header_len + relative_end;
+    let Ok(line) = std::str::from_utf8(&bytes[header_len..line_end]) else {
+        return (0, 0);
+    };
+    let Ok(size) = usize::from_str_radix(line.split(';').next().unwrap_or("").trim(), 16) else {
+        return (0, 0);
+    };
+    let payload_start = line_end + 2;
+    let Some(boundary_start) = payload_start.checked_add(size) else {
+        return (size, 0);
+    };
+    let class = |byte: Option<&u8>| match byte.copied() {
+        Some(b'\r') => 1,
+        Some(b'\n') => 2,
+        Some(b' ' | b'\t') => 3,
+        Some(0x20..=0x7e) => 4,
+        Some(_) => 5,
+        None => 0,
+    };
+    let first = class(bytes.get(boundary_start));
+    let second = class(boundary_start.checked_add(1).and_then(|index| bytes.get(index)));
+    (size, first * 10 + second)
 }
 
 impl WebSocketState {
@@ -586,7 +960,9 @@ impl HTTP2State {
         original_event: &Event,
         bytes: &[u8],
         include_raw_data: bool,
+        diagnostics: &HTTPParserDiagnostics,
     ) -> Option<Vec<Event>> {
+        diagnostics.http2_invocations.fetch_add(1, Ordering::Relaxed);
         let tid = original_event
             .data
             .get("tid")
@@ -599,11 +975,69 @@ impl HTTP2State {
                 .and_then(|v| v.as_str())
                 .unwrap_or(""),
         )?;
-        let frames = parse_http2_frames(bytes)?;
+        let connection_key = (original_event.pid, tid, direction);
+        let mut buffered = self
+            .pending_bytes
+            .remove(&connection_key)
+            .unwrap_or_default();
+        let had_buffered_bytes = !buffered.is_empty();
+        buffered.extend_from_slice(bytes);
+        if buffered.len() > MAX_HTTP2_PENDING_BYTES {
+            return had_buffered_bytes
+                .then(|| vec![ssl_event_with_bytes(original_event, &buffered)]);
+        }
+        let (frames, consumed) = match parse_http2_frames_prefix(&buffered, direction) {
+            HTTP2ParseResult::NotHttp2 => {
+                diagnostics.http2_not_http2.fetch_add(1, Ordering::Relaxed);
+                return had_buffered_bytes
+                    .then(|| vec![ssl_event_with_bytes(original_event, &buffered)]);
+            }
+            HTTP2ParseResult::NeedMore => {
+                diagnostics.http2_need_more.fetch_add(1, Ordering::Relaxed);
+                self.pending_bytes.insert(connection_key, buffered);
+                evict_over_capacity(&mut self.pending_bytes, MAX_HTTP2_STREAMS);
+                return Some(Vec::new());
+            }
+            HTTP2ParseResult::Parsed { frames, consumed } => (frames, consumed),
+        };
         let mut events = Vec::new();
 
         for frame in frames {
-            let key = (tid, frame.stream_id);
+            if let Ok(mut per_thread) = diagnostics.per_thread.lock() {
+                let stats = per_thread.entry((original_event.pid, tid)).or_default();
+                stats.http2_frames += 1;
+                if frame.frame_type == 0x0 {
+                    stats.data_frames += 1;
+                    stats.data_bytes += data_payload(frame.flags, frame.payload).len() as u64;
+                }
+            }
+            match (direction, frame.frame_type) {
+                (HTTP2Direction::Request, 0x1) => {
+                    diagnostics.request_header_frames.fetch_add(1, Ordering::Relaxed);
+                }
+                (HTTP2Direction::Response, 0x1) => {
+                    diagnostics.response_header_frames.fetch_add(1, Ordering::Relaxed);
+                }
+                (_, 0x9) => {
+                    diagnostics.continuation_frames.fetch_add(1, Ordering::Relaxed);
+                }
+                (HTTP2Direction::Request, 0x0) => {
+                    diagnostics.request_data_frames.fetch_add(1, Ordering::Relaxed);
+                    diagnostics.request_data_bytes.fetch_add(
+                        data_payload(frame.flags, frame.payload).len() as u64,
+                        Ordering::Relaxed,
+                    );
+                }
+                (HTTP2Direction::Response, 0x0) => {
+                    diagnostics.response_data_frames.fetch_add(1, Ordering::Relaxed);
+                    diagnostics.response_data_bytes.fetch_add(
+                        data_payload(frame.flags, frame.payload).len() as u64,
+                        Ordering::Relaxed,
+                    );
+                }
+                _ => {}
+            }
+            let key = (original_event.pid, tid, frame.stream_id);
             match frame.frame_type {
                 0x0 => {
                     if frame.stream_id == 0 {
@@ -725,6 +1159,14 @@ impl HTTP2State {
             evict_over_capacity(&mut self.streams, MAX_HTTP2_STREAMS);
         }
 
+        let remaining = buffered[consumed..].to_vec();
+        if remaining.is_empty() {
+            self.pending_bytes.remove(&connection_key);
+        } else {
+            self.pending_bytes.insert(connection_key, remaining);
+            evict_over_capacity(&mut self.pending_bytes, MAX_HTTP2_STREAMS);
+        }
+
         Some(if events.is_empty() {
             Vec::new()
         } else {
@@ -777,18 +1219,65 @@ fn direction_from_function(function: &str) -> Option<HTTP2Direction> {
     }
 }
 
-fn parse_http2_frames(mut bytes: &[u8]) -> Option<Vec<HTTP2Frame<'_>>> {
+enum HTTP2ParseResult<'a> {
+    NotHttp2,
+    NeedMore,
+    Parsed {
+        frames: Vec<HTTP2Frame<'a>>,
+        consumed: usize,
+    },
+}
+
+fn parse_http2_frames_prefix(bytes: &[u8], direction: HTTP2Direction) -> HTTP2ParseResult<'_> {
     const PREFACE: &[u8] = b"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n";
-    if bytes.starts_with(PREFACE) {
-        bytes = &bytes[PREFACE.len()..];
+    const HTTP1_REQUEST_PREFIXES: &[&[u8]] = &[
+        b"GET ",
+        b"POST ",
+        b"PUT ",
+        b"DELETE ",
+        b"HEAD ",
+        b"OPTIONS ",
+        b"PATCH ",
+        b"CONNECT ",
+        b"TRACE ",
+    ];
+    let mut offset = 0usize;
+    if direction == HTTP2Direction::Request && !bytes.is_empty() {
+        let compared = bytes.len().min(PREFACE.len());
+        if bytes[..compared] == PREFACE[..compared] {
+            if bytes.len() < PREFACE.len() {
+                return HTTP2ParseResult::NeedMore;
+            }
+            offset = PREFACE.len();
+        }
     }
-    if bytes.len() < 9 {
-        return None;
+
+    let remaining = &bytes[offset..];
+    let http1_prefixes = match direction {
+        HTTP2Direction::Request => HTTP1_REQUEST_PREFIXES,
+        HTTP2Direction::Response => &[b"HTTP/1.".as_slice()],
+    };
+    if !remaining.is_empty()
+        && http1_prefixes
+            .iter()
+            .any(|prefix| remaining.starts_with(prefix) || prefix.starts_with(remaining))
+    {
+        return HTTP2ParseResult::NotHttp2;
+    }
+    if remaining.len() < 9 {
+        return if offset > 0 {
+            HTTP2ParseResult::Parsed {
+                frames: Vec::new(),
+                consumed: offset,
+            }
+        } else {
+            HTTP2ParseResult::NeedMore
+        };
     }
 
     let mut frames = Vec::new();
-    let mut offset = 0usize;
     while offset + 9 <= bytes.len() {
+        let frame_start = offset;
         let length = ((bytes[offset] as usize) << 16)
             | ((bytes[offset + 1] as usize) << 8)
             | bytes[offset + 2] as usize;
@@ -799,8 +1288,24 @@ fn parse_http2_frames(mut bytes: &[u8]) -> Option<Vec<HTTP2Frame<'_>>> {
             | ((bytes[offset + 7] as u32) << 8)
             | bytes[offset + 8] as u32;
         offset += 9;
+        if length > MAX_HTTP2_PENDING_BYTES {
+            return HTTP2ParseResult::NotHttp2;
+        }
         if length > bytes.len().saturating_sub(offset) {
-            return None;
+            offset = frame_start;
+            break;
+        }
+        let stream_id_valid = match frame_type {
+            0x4 | 0x6 | 0x7 => stream_id == 0,
+            0x0 | 0x1 | 0x3 | 0x5 | 0x8 | 0x9 => stream_id != 0,
+            _ => true,
+        };
+        if !stream_id_valid {
+            if frames.is_empty() && frame_start == 0 {
+                return HTTP2ParseResult::NotHttp2;
+            }
+            offset = frame_start;
+            break;
         }
         let payload = &bytes[offset..offset + length];
         offset += length;
@@ -816,10 +1321,13 @@ fn parse_http2_frames(mut bytes: &[u8]) -> Option<Vec<HTTP2Frame<'_>>> {
         });
     }
 
-    if frames.is_empty() || offset != bytes.len() {
-        None
+    if offset == 0 && frames.is_empty() {
+        HTTP2ParseResult::NeedMore
     } else {
-        Some(frames)
+        HTTP2ParseResult::Parsed {
+            frames,
+            consumed: offset,
+        }
     }
 }
 
@@ -974,6 +1482,22 @@ fn ssl_json_string_to_bytes(data: &str) -> Vec<u8> {
     bytes
 }
 
+fn ssl_event_with_bytes(original_event: &Event, bytes: &[u8]) -> Event {
+    let mut event = original_event.clone();
+    if let Some(data) = event.data.as_object_mut() {
+        data.insert(
+            "data".to_string(),
+            bytes
+                .iter()
+                .map(|byte| char::from(*byte))
+                .collect::<String>()
+                .into(),
+        );
+        data.insert("data_hex".to_string(), hex::encode(bytes).into());
+    }
+    event
+}
+
 #[async_trait]
 impl Analyzer for HTTPParser {
     async fn process(&mut self, stream: EventStream) -> Result<EventStream, AnalyzerError> {
@@ -981,8 +1505,80 @@ impl Analyzer for HTTPParser {
         let mut http1 = std::mem::take(&mut self.http1);
         let mut http2 = std::mem::take(&mut self.http2);
         let mut websocket = std::mem::take(&mut self.websocket);
+        let diagnostics = Arc::new(HTTPParserDiagnostics::default());
 
         let processed_stream = stream.flat_map(move |event| {
+            if event.source == "ssl" {
+                diagnostics.ssl_events.fetch_add(1, Ordering::Relaxed);
+                if let Some(connection_id) = event
+                    .data
+                    .get("connection_id")
+                    .and_then(|value| value.as_u64())
+                    .filter(|value| *value != 0)
+                {
+                    if let Ok(mut ids) = diagnostics.ssl_connection_ids.lock() {
+                        ids.insert(connection_id);
+                    }
+                    if let Some(sequence) = event
+                        .data
+                        .get("event_sequence")
+                        .and_then(|value| value.as_u64())
+                        .filter(|value| *value != 0)
+                    {
+                        if let Ok(mut sequences) = diagnostics.ssl_connection_sequences.lock() {
+                            let previous = sequences.entry(connection_id).or_insert(0);
+                            if *previous != 0 && sequence > previous.saturating_add(1) {
+                                diagnostics.ssl_sequence_gaps.fetch_add(sequence - *previous - 1, Ordering::Relaxed);
+                            } else if sequence <= *previous {
+                                diagnostics.ssl_sequence_reorders.fetch_add(1, Ordering::Relaxed);
+                            }
+                            *previous = (*previous).max(sequence);
+                        }
+                    }
+                } else {
+                    diagnostics.ssl_connection_id_missing_events.fetch_add(1, Ordering::Relaxed);
+                }
+                let tid = event.data.get("tid").and_then(|value| value.as_u64()).unwrap_or(0);
+                let function = event
+                    .data
+                    .get("function")
+                    .and_then(|value| value.as_str())
+                    .unwrap_or("");
+                let captured_bytes = event
+                    .data
+                    .get("buf_size")
+                    .and_then(|value| value.as_u64())
+                    .or_else(|| {
+                        event
+                            .data
+                            .get("data")
+                            .and_then(|value| value.as_str())
+                            .map(|value| value.len() as u64)
+                    })
+                    .unwrap_or(0);
+                if function.contains("READ") || function.contains("RECV") {
+                    diagnostics.ssl_read_events.fetch_add(1, Ordering::Relaxed);
+                    diagnostics.ssl_read_bytes.fetch_add(captured_bytes, Ordering::Relaxed);
+                    if let Ok(mut per_thread) = diagnostics.per_thread.lock() {
+                        per_thread.entry((event.pid, tid)).or_default().read_events += 1;
+                    }
+                } else if function.contains("WRITE") || function.contains("SEND") {
+                    diagnostics.ssl_write_events.fetch_add(1, Ordering::Relaxed);
+                    diagnostics.ssl_write_bytes.fetch_add(captured_bytes, Ordering::Relaxed);
+                    if let Ok(mut per_thread) = diagnostics.per_thread.lock() {
+                        per_thread.entry((event.pid, tid)).or_default().write_events += 1;
+                    }
+                } else {
+                    diagnostics.unknown_direction_events.fetch_add(1, Ordering::Relaxed);
+                }
+                if event.data.get("truncated").and_then(|value| value.as_bool()) == Some(true) {
+                    diagnostics.truncated_ssl_events.fetch_add(1, Ordering::Relaxed);
+                    diagnostics.ssl_bytes_lost.fetch_add(
+                        event.data.get("bytes_lost").and_then(|value| value.as_u64()).unwrap_or(0),
+                        Ordering::Relaxed,
+                    );
+                }
+            }
             let events = if event.source == "ssl" {
                 Self::handle_ssl_event(
                     &mut http1,
@@ -990,10 +1586,95 @@ impl Analyzer for HTTPParser {
                     &mut websocket,
                     event,
                     include_raw_data,
+                    &diagnostics,
                 )
             } else {
                 vec![event]
             };
+            for output in &events {
+                if output.source == "ssl" {
+                    diagnostics.unparsed_ssl_events.fetch_add(1, Ordering::Relaxed);
+                }
+                if output.source == "http_parser"
+                    && output
+                        .data
+                        .get("message_type")
+                        .and_then(|value| value.as_str())
+                        == Some("response")
+                {
+                    diagnostics.http_responses.fetch_add(1, Ordering::Relaxed);
+                    diagnostics.http_response_body_bytes.fetch_add(output
+                        .data
+                        .get("body")
+                        .and_then(|value| value.as_str())
+                        .map(|body| body.len() as u64)
+                        .unwrap_or(0), Ordering::Relaxed);
+                }
+            }
+            let pending_http1_bytes = http1.pending.values().map(|message| message.bytes.len()).sum();
+            diagnostics.max_pending_http1_bytes.fetch_max(pending_http1_bytes, Ordering::Relaxed);
+            diagnostics.current_pending_http1_bytes.store(pending_http1_bytes, Ordering::Relaxed);
+            diagnostics.current_pending_http1_buffers.store(http1.pending.len(), Ordering::Relaxed);
+            let mut request_buffers = 0;
+            let mut response_buffers = 0;
+            let mut header_wait_buffers = 0;
+            let mut content_length_buffers = 0;
+            let mut chunked_buffers = 0;
+            let mut expected_body_bytes = 0usize;
+            let mut chunked_wait_stage = 0usize;
+            let mut chunked_completed_chunks = 0usize;
+            let mut chunked_progress_offset = 0usize;
+            let mut first_chunk_size = 0usize;
+            let mut first_chunk_boundary_class = 0usize;
+            for ((_, _, _, direction), pending) in &http1.pending {
+                match direction {
+                    HTTP2Direction::Request => request_buffers += 1,
+                    HTTP2Direction::Response => response_buffers += 1,
+                }
+                match pending.framing {
+                    HTTP1BodyFraming::Headers => header_wait_buffers += 1,
+                    HTTP1BodyFraming::ContentLength(length) => {
+                        content_length_buffers += 1;
+                        expected_body_bytes = expected_body_bytes.saturating_add(length);
+                    }
+                    HTTP1BodyFraming::Chunked => {
+                        chunked_buffers += 1;
+                        chunked_wait_stage = http1_chunked_wait_stage(&pending.bytes, pending.header_len);
+                        (chunked_completed_chunks, chunked_progress_offset) =
+                            http1_chunked_progress(&pending.bytes, pending.header_len);
+                        (first_chunk_size, first_chunk_boundary_class) =
+                            http1_first_chunk_metadata(&pending.bytes, pending.header_len);
+                    }
+                }
+            }
+            diagnostics.pending_http1_request_buffers.store(request_buffers, Ordering::Relaxed);
+            diagnostics.pending_http1_response_buffers.store(response_buffers, Ordering::Relaxed);
+            diagnostics.pending_http1_header_wait_buffers.store(header_wait_buffers, Ordering::Relaxed);
+            diagnostics.pending_http1_content_length_buffers.store(content_length_buffers, Ordering::Relaxed);
+            diagnostics.pending_http1_chunked_buffers.store(chunked_buffers, Ordering::Relaxed);
+            diagnostics.pending_http1_expected_body_bytes.store(expected_body_bytes, Ordering::Relaxed);
+            diagnostics.pending_http1_chunked_wait_stage.store(chunked_wait_stage, Ordering::Relaxed);
+            diagnostics.pending_http1_chunked_completed_chunks.store(chunked_completed_chunks, Ordering::Relaxed);
+            diagnostics.pending_http1_chunked_progress_offset.store(chunked_progress_offset, Ordering::Relaxed);
+            diagnostics.pending_http1_first_chunk_size.store(first_chunk_size, Ordering::Relaxed);
+            diagnostics.pending_http1_first_chunk_boundary_class.store(first_chunk_boundary_class, Ordering::Relaxed);
+            if !http1.pending.is_empty() {
+                diagnostics.http1_pending_events.fetch_add(1, Ordering::Relaxed);
+            }
+            diagnostics.max_pending_http2_bytes.fetch_max(
+                http2.pending_bytes.values().map(Vec::len).sum(),
+                Ordering::Relaxed,
+            );
+            diagnostics.max_pending_http2_streams.fetch_max(http2.streams.len(), Ordering::Relaxed);
+            diagnostics.max_pending_http2_header_blocks.fetch_max(
+                http2.pending_headers.len(),
+                Ordering::Relaxed,
+            );
+            diagnostics.current_pending_http2_bytes.store(
+                http2.pending_bytes.values().map(Vec::len).sum(),
+                Ordering::Relaxed,
+            );
+            diagnostics.current_pending_http2_buffers.store(http2.pending_bytes.len(), Ordering::Relaxed);
             stream::iter(events)
         });
 
@@ -1050,6 +1731,21 @@ mod tests {
 
     fn bytes_to_ssl_json_string(bytes: &[u8]) -> String {
         bytes.iter().map(|b| char::from(*b)).collect()
+    }
+
+    #[test]
+    fn preserves_binary_body_bytes_after_http1_chunked_reassembly() {
+        let binary_body = [0x28, 0xb5, 0x2f, 0xfd, 0x00, 0xff, 0x19];
+        let mut raw = b"HTTP/1.1 200 OK\r\nTransfer-Encoding: chunked\r\nContent-Encoding: zstd\r\n\r\n".to_vec();
+        let header_len = raw.len();
+        raw.extend_from_slice(format!("{:X}\r\n", binary_body.len()).as_bytes());
+        raw.extend_from_slice(&binary_body);
+        raw.extend_from_slice(b"\r\n0\r\n\r\n");
+
+        let (decoded, raw_end) = decode_http1_chunked_body(&raw, header_len).unwrap();
+        let message = parse_http1_chunked_message(&raw, &decoded, raw_end, header_len).unwrap();
+
+        assert_eq!(message.body_bytes.as_deref(), Some(binary_body.as_slice()));
     }
 
     fn frame(frame_type: u8, flags: u8, stream_id: u32, payload: &[u8]) -> Vec<u8> {
@@ -1195,6 +1891,72 @@ sec-websocket-extensions: permessage-deflate\r\n\r\n"
     }
 
     #[tokio::test]
+    async fn reassembles_fragmented_http1_chunked_sse_response_before_materializing_tool_call() {
+        let request_body = br#"{"model":"claude-test","stream":true,"messages":[{"role":"user","content":"run a command"}]}"#;
+        let request_head = format!(
+            "POST /v1/messages HTTP/1.1\r\nHost: api.example.test\r\nContent-Type: application/json\r\nContent-Length: {}\r\n\r\n",
+            request_body.len()
+        );
+        let mut request = request_head.as_bytes().to_vec();
+        request.extend_from_slice(request_body);
+
+        let response_body = concat!(
+            "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_1\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"claude-test\",\"content\":[],\"usage\":{\"input_tokens\":12,\"output_tokens\":0}}}\n\n",
+            "event: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"toolu_chunked_1\",\"name\":\"Bash\",\"input\":{}}}\n\n",
+            "event: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"python3 x.py\\\"}\"}}\n\n",
+            "event: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\n",
+            "event: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"tool_use\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":5}}\n\n",
+            "event: message_stop\ndata: {\"type\":\"message_stop\"}\n\n"
+        )
+        .as_bytes();
+
+        let mut chunked_body = format!("{:X}\r\n", response_body.len()).into_bytes();
+        chunked_body.extend_from_slice(response_body);
+        chunked_body.extend_from_slice(b"\n0\r\n\n");
+        let response_head = b"HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nTransfer-Encoding: chunked\r\n\r\n";
+        let mut response = response_head.to_vec();
+        response.extend_from_slice(&chunked_body);
+
+        let mut ssl_events = vec![ssl_event(1, "WRITE/SEND", request)];
+        for (index, fragment) in response.chunks(19).enumerate() {
+            ssl_events.push(ssl_event(
+                (index + 2) as u64,
+                "READ/RECV",
+                fragment.to_vec(),
+            ));
+        }
+        let input: EventStream = Box::pin(stream::iter(ssl_events));
+        let mut parser = HTTPParser::new().disable_raw_data();
+        let parsed = parser.process(input).await.unwrap();
+        let mut decompressor = HTTPDecompressor::new();
+        let decompressed = decompressor.process(parsed).await.unwrap();
+        let mut sse = SSEProcessor::new();
+        let output: Vec<Event> = sse.process(decompressed).await.unwrap().collect().await;
+
+        assert_eq!(output.len(), 2);
+        assert_eq!(output[0].data["message_type"], "request");
+        assert_eq!(output[1].source, "sse_processor");
+        assert_eq!(output[1].data["status_code"], 200);
+
+        let mut view = MaterializedView::new();
+        for event in output {
+            view.ingest_event(&event).unwrap();
+        }
+        let snapshot = view.export_snapshot(crate::model::SnapshotOptions { audit_limit: 0 });
+        assert_eq!(snapshot.summary.llm_calls, 1);
+        assert_eq!(snapshot.summary.token_usage_rows, 1);
+        assert_eq!(snapshot.summary.input_tokens, 12);
+        assert_eq!(snapshot.summary.output_tokens, 5);
+        assert_eq!(snapshot.tool_calls.len(), 1);
+        assert_eq!(snapshot.tool_calls[0].tool_name.as_deref(), Some("Bash"));
+        assert_eq!(
+            snapshot.tool_calls[0].tool_call_id.as_deref(),
+            Some("toolu_chunked_1")
+        );
+        assert_eq!(snapshot.tool_calls[0].input["command"], "python3 x.py");
+    }
+
+    #[tokio::test]
     async fn parses_http2_gemini_usage_into_http_events() {
         let mut request_encoder = HpackEncoder::new();
         let mut response_encoder = HpackEncoder::new();
@@ -1263,7 +2025,7 @@ sec-websocket-extensions: permessage-deflate\r\n\r\n"
     }
 
     #[tokio::test]
-    async fn http2_gzip_sse_capture_pipeline_reaches_materialized_view() {
+    async fn http2_gzip_sse_capture_pipeline_reaches_materialized_view_across_byte_boundaries() {
         let mut request_encoder = HpackEncoder::new();
         let mut response_encoder = HpackEncoder::new();
         let request_headers = [
@@ -1280,7 +2042,7 @@ sec-websocket-extensions: permessage-deflate\r\n\r\n"
         let request_body = br#"{"model":"gpt-test","metadata":{"session_id":"sess-h2"}}"#;
         let mut gzip = GzEncoder::new(Vec::new(), Compression::default());
         gzip.write_all(
-            b"data: {\"choices\":[{\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":2,\"completion_tokens\":5}}\n\ndata: [DONE]\n\n",
+            b"data: {\"id\":\"chatcmpl-tool\",\"object\":\"chat.completion.chunk\",\"model\":\"gpt-test\",\"choices\":[{\"index\":0,\"delta\":{\"tool_calls\":[{\"index\":0,\"id\":\"call_1\",\"type\":\"function\",\"function\":{\"name\":\"lookup\",\"arguments\":\"{\\\"q\\\":\\\"x\\\"}\"}}]},\"finish_reason\":null}]}\n\ndata: {\"id\":\"chatcmpl-tool\",\"object\":\"chat.completion.chunk\",\"model\":\"gpt-test\",\"choices\":[{\"index\":0,\"delta\":{},\"finish_reason\":\"tool_calls\"}],\"usage\":{\"prompt_tokens\":2,\"completion_tokens\":5}}\n\ndata: [DONE]\n\n",
         )
         .unwrap();
         let response_body = gzip.finish().unwrap();
@@ -1297,6 +2059,84 @@ sec-websocket-extensions: permessage-deflate\r\n\r\n"
             &response_encoder.encode(response_headers),
         ));
         response_bytes.extend(frame(0x0, 0x1, 1, &response_body));
+
+        let mut input_events = vec![ssl_event(1, "WRITE/SEND", request_bytes)];
+        input_events.extend(
+            response_bytes
+                .into_iter()
+                .enumerate()
+                .map(|(index, byte)| ssl_event(index as u64 + 2, "READ/RECV", vec![byte])),
+        );
+        let input: EventStream = Box::pin(stream::iter(input_events));
+        let mut parser = HTTPParser::new().disable_raw_data();
+        let parsed = parser.process(input).await.unwrap();
+        let mut decompressor = HTTPDecompressor::new();
+        let decompressed = decompressor.process(parsed).await.unwrap();
+        let mut sse = SSEProcessor::new();
+        let output: Vec<Event> = sse.process(decompressed).await.unwrap().collect().await;
+
+        assert_eq!(output.len(), 2);
+        assert_eq!(output[0].data["message_type"], "request");
+        assert_eq!(output[1].source, "sse_processor");
+        assert_eq!(output[1].data["status_code"], 200);
+
+        let mut view = MaterializedView::new();
+        for event in output {
+            view.ingest_event(&event).unwrap();
+        }
+        let snapshot = view.export_snapshot(crate::model::SnapshotOptions { audit_limit: 0 });
+        assert_eq!(snapshot.summary.llm_calls, 1);
+        assert_eq!(snapshot.summary.token_usage_rows, 1);
+        assert_eq!(snapshot.summary.input_tokens, 2);
+        assert_eq!(snapshot.summary.output_tokens, 5);
+        assert_eq!(snapshot.summary.total_tokens, 7);
+        assert_eq!(snapshot.tool_calls.len(), 1);
+        assert_eq!(snapshot.tool_calls[0].tool_name.as_deref(), Some("lookup"));
+        assert_eq!(snapshot.tool_calls[0].input["q"], "x");
+        let calls = view.llm_call_rows(10);
+        assert_eq!(calls[0].status, "complete");
+        assert_eq!(calls[0].session_id.as_deref(), Some("sess-h2"));
+        assert_eq!(calls[0].call_kind.as_deref(), Some("chat"));
+        assert_eq!(calls[0].finish_reason.as_deref(), Some("tool_calls"));
+    }
+
+    #[tokio::test]
+    async fn http2_anthropic_sse_tool_input_delta_reaches_materialized_view() {
+        let mut request_encoder = HpackEncoder::new();
+        let mut response_encoder = HpackEncoder::new();
+        let request_headers = [
+            (&b":method"[..], &b"POST"[..]),
+            (&b":scheme"[..], &b"https"[..]),
+            (&b":authority"[..], &b"api.deepseek.com"[..]),
+            (&b":path"[..], &b"/anthropic/v1/messages?beta=true"[..]),
+            (&b"content-type"[..], &b"application/json"[..]),
+        ];
+        let response_headers = [
+            (&b":status"[..], &b"200"[..]),
+            (&b"content-type"[..], &b"text/event-stream"[..]),
+        ];
+        let request_body = br#"{"model":"deepseek-flash","stream":true,"messages":[{"role":"user","content":"run a command"}]}"#;
+        let response_body = concat!(
+            "event: message_start\ndata: {\"type\":\"message_start\",\"message\":{\"id\":\"msg_1\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"deepseek-flash\",\"content\":[],\"usage\":{\"input_tokens\":12,\"output_tokens\":0}}}\n\n",
+            "event: content_block_start\ndata: {\"type\":\"content_block_start\",\"index\":0,\"content_block\":{\"type\":\"tool_use\",\"id\":\"toolu_1\",\"name\":\"Bash\",\"input\":{}}}\n\n",
+            "event: content_block_delta\ndata: {\"type\":\"content_block_delta\",\"index\":0,\"delta\":{\"type\":\"input_json_delta\",\"partial_json\":\"{\\\"command\\\":\\\"python3 x.py\\\"}\"}}\n\n",
+            "event: content_block_stop\ndata: {\"type\":\"content_block_stop\",\"index\":0}\n\n",
+            "event: message_delta\ndata: {\"type\":\"message_delta\",\"delta\":{\"stop_reason\":\"tool_use\",\"stop_sequence\":null},\"usage\":{\"output_tokens\":5}}\n\n",
+            "event: message_stop\ndata: {\"type\":\"message_stop\"}\n\n"
+        );
+
+        let mut request_bytes = b"PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n".to_vec();
+        request_bytes.extend(frame(0x1, 0x4, 1, &request_encoder.encode(request_headers)));
+        request_bytes.extend(frame(0x0, 0x1, 1, request_body));
+
+        let mut response_bytes = Vec::new();
+        response_bytes.extend(frame(
+            0x1,
+            0x4,
+            1,
+            &response_encoder.encode(response_headers),
+        ));
+        response_bytes.extend(frame(0x0, 0x1, 1, response_body.as_bytes()));
 
         let input: EventStream = Box::pin(stream::iter(vec![
             ssl_event(1, "WRITE/SEND", request_bytes),
@@ -1321,18 +2161,42 @@ sec-websocket-extensions: permessage-deflate\r\n\r\n"
         let snapshot = view.export_snapshot(crate::model::SnapshotOptions { audit_limit: 0 });
         assert_eq!(snapshot.summary.llm_calls, 1);
         assert_eq!(snapshot.summary.token_usage_rows, 1);
-        assert_eq!(snapshot.summary.input_tokens, 2);
+        assert_eq!(snapshot.summary.input_tokens, 12);
         assert_eq!(snapshot.summary.output_tokens, 5);
-        assert_eq!(snapshot.summary.total_tokens, 7);
+        assert_eq!(snapshot.tool_calls.len(), 1);
+        assert_eq!(snapshot.tool_calls[0].tool_name.as_deref(), Some("Bash"));
+        assert_eq!(
+            snapshot.tool_calls[0].tool_call_id.as_deref(),
+            Some("toolu_1")
+        );
+        assert_eq!(snapshot.tool_calls[0].input["command"], "python3 x.py");
         let calls = view.llm_call_rows(10);
         assert_eq!(calls[0].status, "complete");
-        assert_eq!(calls[0].session_id.as_deref(), Some("sess-h2"));
-        assert_eq!(calls[0].call_kind.as_deref(), Some("chat"));
-        assert_eq!(calls[0].finish_reason.as_deref(), Some("stop"));
+        assert_eq!(calls[0].finish_reason.as_deref(), Some("tool_use"));
     }
 
     #[test]
     fn rejects_non_http2_frames() {
-        assert!(parse_http2_frames(b"GET / HTTP/1.1\r\n\r\n").is_none());
+        assert!(matches!(
+            parse_http2_frames_prefix(b"GET / HTTP/1.1\r\n\r\n", HTTP2Direction::Request),
+            HTTP2ParseResult::NotHttp2
+        ));
+    }
+
+    #[test]
+    fn decodes_http1_chunked_payload_with_lf_only_delimiters() {
+        let encoded = b"4\r\nWiki\n0\r\n\n";
+        let (decoded, end) = decode_http1_chunked_body(encoded, 0).unwrap();
+        assert_eq!(decoded, b"Wiki");
+        assert_eq!(end, encoded.len());
+        assert_eq!(http1_chunked_wait_stage(encoded, 0), 0);
+    }
+
+    #[test]
+    fn restores_json_escaped_ssl_bytes_without_utf8_ambiguity() {
+        let escaped_latin1_byte = "\u{00e9}";
+        let utf8_e_acute_as_byte_escapes = "\u{00c3}\u{00a9}";
+        assert_eq!(ssl_json_string_to_bytes(escaped_latin1_byte), [0xe9]);
+        assert_eq!(ssl_json_string_to_bytes(utf8_e_acute_as_byte_escapes), [0xc3, 0xa9]);
     }
 }

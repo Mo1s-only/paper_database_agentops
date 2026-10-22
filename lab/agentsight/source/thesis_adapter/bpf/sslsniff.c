@@ -614,6 +614,8 @@ void print_event(struct probe_SSL_data_t *event, const char *evt) {
 	// Always include extra fields (UID, TID)
 	printf("\"uid\":%d,", event->uid);
 	printf("\"tid\":%d,", event->tid);
+	printf("\"connection_id\":%llu,", event->connection_id);
+	printf("\"event_sequence\":%llu,", event->event_sequence);
 
 	// Always include latency field
 	if (event->delta_ns) {
@@ -629,7 +631,7 @@ void print_event(struct probe_SSL_data_t *event, const char *evt) {
 	if (buf_size > 0) {
 		// Text data
 		printf("\"data\":");
-		json_print_escaped_quoted(event_buf, buf_size);
+		json_print_escaped_bytes_quoted((const unsigned char *)event_buf, buf_size);
 		printf(",");
 		if (buf_size >= 2 && (event_buf[0] & 0x80) && !(event_buf[0] & 0x30)
 		    && (event_buf[0] & 0x0f) <= 2 && (event_buf[1] & 0x80)) {

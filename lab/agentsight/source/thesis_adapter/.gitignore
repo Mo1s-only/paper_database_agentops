@@ -4,6 +4,8 @@
 !.env.example
 /build
 output
+!/collector/src/output/
+!/collector/src/output/**
 target/
 /agentsight-capture/Cargo.lock
 /agentsight-protocol/Cargo.lock

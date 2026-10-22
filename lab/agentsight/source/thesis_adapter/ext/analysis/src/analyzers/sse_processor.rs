@@ -858,11 +858,63 @@ impl Analyzer for SSEProcessor {
             let buffers = Arc::clone(&sse_buffers);
 
             async move {
+                if event.source == "http_parser"
+                    && event.data.get("message_type").and_then(|v| v.as_str()) == Some("response")
+                {
+                    let body = event.data.get("body").and_then(|v| v.as_str());
+                    let content_type_sse = Self::http_content_type_is_sse(&event.data);
+                    let body_len = body.map(str::len).unwrap_or(0);
+                    let has_event_marker = body.is_some_and(|v| v.contains("event:"));
+                    let has_data_marker = body.is_some_and(|v| v.contains("data:"));
+                    let body_is_json = body
+                        .and_then(|value| serde_json::from_str::<Value>(value).ok())
+                        .is_some();
+                    let body_starts_with_gzip = body.is_some_and(|value| {
+                        value.as_bytes().starts_with(&[0x1f, 0x8b])
+                    });
+                    let has_anthropic_event_name = body.is_some_and(|value| {
+                        [
+                            "message_start",
+                            "content_block_start",
+                            "content_block_delta",
+                            "message_delta",
+                            "message_stop",
+                        ]
+                        .iter()
+                        .any(|marker| value.contains(marker))
+                    });
+                    let content_encoding_present = event
+                        .data
+                        .get("headers")
+                        .and_then(Value::as_object)
+                        .is_some_and(|headers| {
+                            headers.keys().any(|key| key.eq_ignore_ascii_case("content-encoding"))
+                        });
+                    let decompressed = event
+                        .data
+                        .get("decompressed")
+                        .and_then(Value::as_bool)
+                        .unwrap_or(false);
+                    eprintln!(
+                        "[SSEProcessor diagnostics] response body_bytes={} content_type_sse={} has_event_marker={} has_data_marker={} body_is_json={} gzip_magic={} anthropic_event_name={} content_encoding_present={} decompressed={}",
+                        body_len,
+                        content_type_sse,
+                        has_event_marker,
+                        has_data_marker,
+                        body_is_json,
+                        body_starts_with_gzip,
+                        has_anthropic_event_name,
+                        content_encoding_present,
+                        decompressed
+                    );
+                }
+
                 let Some((data_str, allow_json_fragment)) = Self::sse_payload(&event) else {
                     return Some(event);
                 };
 
-                let sse_events = if Self::is_sse_data(data_str) {
+                let is_http_sse = !allow_json_fragment && Self::http_content_type_is_sse(&event.data);
+                let sse_events = if Self::is_sse_data(data_str) || is_http_sse {
                     Self::parse_sse_events(data_str)
                 } else if allow_json_fragment
                     && let Some(event) = Self::parse_usage_metadata_fragment(data_str)
@@ -871,6 +923,37 @@ impl Analyzer for SSEProcessor {
                 } else {
                     return Some(event);
                 };
+                let mut event_type_counts = BTreeMap::<String, usize>::new();
+                for event_type in sse_events.iter().filter_map(|sse_event| sse_event.event.as_deref()) {
+                    *event_type_counts.entry(event_type.to_string()).or_default() += 1;
+                }
+                let parsed_event_types = event_type_counts
+                    .iter()
+                    .map(|(event_type, count)| format!("{event_type}:{count}"))
+                    .collect::<Vec<_>>()
+                    .join(",");
+                let has_usage = sse_events.iter().any(Self::sse_event_has_usage);
+                let has_tool_use = sse_events.iter().any(|sse_event| {
+                    let Some(data) = sse_event.parsed_data.as_ref() else {
+                        return false;
+                    };
+                    data.get("content_block")
+                        .and_then(|block| block.get("type"))
+                        .and_then(Value::as_str)
+                        == Some("tool_use")
+                        || data
+                            .get("content")
+                            .and_then(Value::as_array)
+                            .is_some_and(|content| {
+                                content.iter().any(|block| {
+                                    block.get("type").and_then(Value::as_str) == Some("tool_use")
+                                })
+                            })
+                });
+                eprintln!(
+                    "[SSEProcessor diagnostics] parsed_events={} event_type_counts={} has_usage={} has_tool_use={}",
+                    sse_events.len(), parsed_event_types, has_usage, has_tool_use
+                );
                 if sse_events.is_empty() {
                     return Some(event);
                 }
@@ -967,6 +1050,14 @@ impl Analyzer for SSEProcessor {
                     } else {
                         None
                     };
+
+                    eprintln!(
+                        "[SSEProcessor diagnostics] stream_complete=true emitted_semantic_event={} accumulated_events={} accumulated_openai_tool_calls={} accumulated_usage={}",
+                        result_event.is_some(),
+                        accumulator.events.len(),
+                        accumulator.openai_tool_calls.len(),
+                        accumulator.events.iter().any(Self::sse_event_has_usage)
+                    );
 
                     buffers_lock.remove(&final_connection_id);
                     drop(buffers_lock);

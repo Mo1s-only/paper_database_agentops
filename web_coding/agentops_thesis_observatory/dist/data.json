@@ -2,9 +2,9 @@
   "meta": {
     "title": "AgentOps Thesis Observatory",
     "subtitle": "Pre-attribution telemetry · evidence first",
-    "generatedAt": "2026-10-13T14:00:00+08:00",
+    "generatedAt": "2026-10-19T20:27:29+08:00",
     "timezone": "Asia/Shanghai",
-    "currentExperiments": 7,
+    "currentExperiments": 9,
     "historicalRuns": 40,
     "evidenceMode": "runtime observed + controlled local fixture"
   },
@@ -24,9 +24,15 @@
     "clockFloorNs": 1,
     "budget": {
       "spent": 2.183708,
-      "limit": 2.0,
-      "projected": 2.283708,
-      "status": "BLOCKED"
+      "limit": 2.363708,
+      "projected": 2.363708,
+      "status": "PARTIAL",
+      "batchCapCny": 2.0,
+      "plannedBatchCny": 1.8,
+      "ledgerReconciled": false,
+      "sourceStatus": "CLI_reported_increment_only; historical_baseline_unverified",
+      "reportedIncrementalUsd": 0.1147568,
+      "reportedIncrementalCnyAtRate": 1.1475680000000001
     }
   },
   "capabilities": [
@@ -62,9 +68,9 @@
     },
     {
       "name": "真实并发验证",
-      "status": "blocked",
-      "score": 0.35,
-      "detail": "budget preflight blocked"
+      "status": "partial",
+      "score": 0.4,
+      "detail": "2 real agent sessions; 4 native tools, 0 AgentSight tool records"
     },
     {
       "name": "因果归因",
@@ -440,6 +446,69 @@
       }
     }
   },
+  "captureIntegrity": {
+    "status": "reported_with_unresolved_root_cause",
+    "evidenceStatus": "VERIFIED_IN_LOCAL_REPORT",
+    "reproducedFromRawRuns": false,
+    "aggregate": {
+      "runs": 4,
+      "nativeToolCalls": 15,
+      "capturedToolCalls": 12,
+      "missingToolCalls": 3,
+      "coverage": 0.8,
+      "missingIdsInSqlite": 0,
+      "matchingIdsInDebugStream": 0
+    },
+    "observations": [
+      "3 个缺失调用分别涉及 Read、Bash、Write；不是单一工具类型。",
+      "缺失出现在批次全局第 1 或第 2 个工具位置；当前样本不足以证明位置导致漏采。",
+      "缺失调用 ID 未出现在 SQLite 任一表，debug stream 也不能提供调用 ID 旁路证据。"
+    ],
+    "scenarios": [
+      {
+        "scenario": "error-propagation-v1",
+        "missingStep": "agent_a.bash_1",
+        "systemAlignment": "abstain",
+        "nativeCalls": 4,
+        "systemCalls": 3
+      },
+      {
+        "scenario": "routing-error-v1",
+        "missingStep": "agent_a.write_1",
+        "systemAlignment": "accepted",
+        "nativeCalls": 4,
+        "systemCalls": 3
+      }
+    ],
+    "inference": "更可能是事件进入 SQLite 之前或写入过程中丢失；尚不能区分 SSE 解析、启动时序、数据库写入或版本组合。",
+    "futureInstrumentation": "真实采集脚本现在会写 observer-lifecycle.jsonl，记录 recorder/debug 的启动、就绪、每个 Agent 会话前后及退出状态；这只能排查进程存活和时序，不能单独定位 SSE 解析或 SQLite 写入故障。",
+    "nextGate": "先用无 API 可重放输入验证生命周期记录，再增加 AgentSight 上游 SSE/网络原始帧留存，以定位事件在哪个采集阶段消失。",
+    "sources": [
+      "my_paper_coding/trace_adapter/README.md",
+      "my_paper_coding/trace_adapter/真实跨故障扩展实验报告_2026-10-10.md"
+    ],
+    "rawEvidenceNote": "本工作区未包含对应的 real_application_runs 原始目录；此面板展示本地报告中的诊断结果，不能替代原始数据复核。"
+  },
+  "datasetExpansion": {
+    "status": "synthetic_stress_set_ready_real_api_blocked_by_cumulative_budget",
+    "syntheticFixtureCount": 1000,
+    "syntheticFixtureEvidenceKind": "synthetic_fixture",
+    "syntheticFixtureApiCalls": 0,
+    "syntheticFixtureProductionAlignerExercised": false,
+    "publicAdapterRecords": 882,
+    "realFaultClasses": 3,
+    "existingRealRepeatsPerClass": 1,
+    "plannedAdditionalRepeatsPerClass": 3,
+    "plannedAdditionalRuns": 9,
+    "perExperimentCapCny": 2.0,
+    "perExperimentPlannedUpperCny": 1.92,
+    "plannedBatchUpperCny": 17.28,
+    "planningUsdCnyRate": 8.0,
+    "historicalSpendUsd": 2.183708,
+    "existingHardStopUsd": 2.0,
+    "networkCallsMade": 0,
+    "note": "计划尚未执行；单次上限已进采集脚本，累计预算仍超原硬停止线。"
+  },
   "testSuites": [
     {
       "name": "Trace Adapter",
@@ -568,6 +637,151 @@
       "summary": "双 PID 与非零时钟下界本地通过；真实 API 阶段受预算阻止",
       "networkCalls": 0,
       "metric": "1791 → 34"
+    },
+    {
+      "id": "experiment_20261016_16",
+      "time": "10-16 16:00",
+      "status": "verified",
+      "stage": "公开数据适配",
+      "summary": "三套公开数据的 schema/标签兼容性，不含配对系统事件",
+      "networkCalls": 0,
+      "metric": "882 records",
+      "datasetIds": [
+        "who-when",
+        "trail",
+        "agenttrace"
+      ],
+      "datasetEvidence": "verified_input"
+    },
+    {
+      "id": "experiment_20261019_18",
+      "time": "10-19 20:15",
+      "status": "partial",
+      "stage": "真实 API 小样本",
+      "summary": "两会话与 AgentRx 已执行；AgentSight 工具捕获 0/4，系统侧归因拒判",
+      "networkCalls": "3 CLI 会话",
+      "metric": "3 CLI sessions · 0/4 system tools",
+      "datasetIds": [
+        "error-propagation-v1",
+        "agentrx-tau12"
+      ],
+      "datasetEvidence": "runtime_observed_partial"
+    }
+  ],
+  "datasetModes": [
+    {
+      "id": "cross_layer_live",
+      "label": "真实跨层采集",
+      "description": "Claude Code 原生事件 + AgentSight 系统观测；需 WSL、凭据和预算预检"
+    },
+    {
+      "id": "semantic_diagnosis",
+      "label": "公开轨迹语义诊断",
+      "description": "模型分析已有轨迹；不产生配对的系统侧观测"
+    },
+    {
+      "id": "adapter_compatibility",
+      "label": "公开数据适配",
+      "description": "离线检查 schema、标签与证据定位；不调用 API"
+    },
+    {
+      "id": "synthetic_stress",
+      "label": "合成压力校验",
+      "description": "确定性 fixture；不代表真实捕获率"
+    }
+  ],
+  "datasetCatalog": [
+    {
+      "id": "error-propagation-v1",
+      "name": "error-propagation-v1",
+      "mode": "cross_layer_live",
+      "recordCount": 1,
+      "inputPath": "my_paper_coding/trace_adapter/capture_real_scenarios.py",
+      "selector": "error-propagation-v1",
+      "available": true,
+      "apiRequired": true,
+      "pairedSystemObservations": "on_new_run",
+      "evidenceBoundary": "受控任务定义；只有真实运行后才能评估跨层捕获与对齐",
+      "executionNote": "真实调用仅在本地控制器预检全部通过后启动；当前授权批次只含 error-propagation-v1 与后续 AgentRx #12。"
+    },
+    {
+      "id": "routing-error-v1",
+      "name": "routing-error-v1",
+      "mode": "cross_layer_live",
+      "recordCount": 1,
+      "inputPath": "my_paper_coding/trace_adapter/capture_real_scenarios.py",
+      "selector": "routing-error-v1",
+      "available": true,
+      "apiRequired": true,
+      "pairedSystemObservations": "on_new_run",
+      "evidenceBoundary": "受控任务定义；只有真实运行后才能评估跨层捕获与对齐",
+      "executionNote": "真实调用仅在本地控制器预检全部通过后启动；当前授权批次只含 error-propagation-v1 与后续 AgentRx #12。"
+    },
+    {
+      "id": "agentrx-tau12",
+      "name": "AgentRx · Tau Retail #12",
+      "mode": "semantic_diagnosis",
+      "recordCount": 1,
+      "stepCount": 26,
+      "inputPath": "lab/AgentRx/trajectories/tau-retail/instruction_adherence_failure.json",
+      "selector": "task_id=12; traj only",
+      "available": true,
+      "apiRequired": true,
+      "pairedSystemObservations": "none",
+      "evidenceBoundary": "公开单条轨迹；仅能验证语义诊断，不能验证 AgentSight 跨层采集",
+      "executionNote": "模型输入必须排除 task.actions、reward_info 与独立真值；本批次仅在 error-propagation-v1 成功后顺序执行。"
+    },
+    {
+      "id": "who-when",
+      "name": "Who&When",
+      "mode": "adapter_compatibility",
+      "recordCount": 184,
+      "inputPath": "lab/experiment/experiment_20261016_16/results_r3/who-and-when.jsonl",
+      "selector": "all normalized records",
+      "available": true,
+      "apiRequired": false,
+      "pairedSystemObservations": "none",
+      "evidenceBoundary": "责任 Agent/Step 标签可用；传播边与因果路径缺失时必须拒判",
+      "executionNote": "只检查公开数据适配与兼容性；不能作为真实跨层采集结果。"
+    },
+    {
+      "id": "trail",
+      "name": "TRAIL",
+      "mode": "adapter_compatibility",
+      "recordCount": 148,
+      "inputPath": "lab/experiment/experiment_20261016_16/results_r3/trail.jsonl",
+      "selector": "all normalized records",
+      "available": true,
+      "apiRequired": false,
+      "pairedSystemObservations": "none",
+      "evidenceBoundary": "步骤标签部分可用；责任 Agent/边/路径不能补造",
+      "executionNote": "只检查公开数据适配与兼容性；不能作为真实跨层采集结果。"
+    },
+    {
+      "id": "agenttrace",
+      "name": "AgentTrace",
+      "mode": "adapter_compatibility",
+      "recordCount": 550,
+      "inputPath": "lab/experiment/experiment_20261016_16/results_r3/agenttrace.jsonl",
+      "selector": "all normalized records",
+      "available": true,
+      "apiRequired": false,
+      "pairedSystemObservations": "none",
+      "evidenceBoundary": "公开轨迹标签适配；没有本地配对的 AgentSight 系统事件",
+      "executionNote": "只检查公开数据适配与兼容性；不能作为真实跨层采集结果。"
+    },
+    {
+      "id": "alignment-stress-1000",
+      "name": "Alignment stress · 1,000 fixtures",
+      "mode": "synthetic_stress",
+      "recordCount": 1000,
+      "inputPath": "my_paper_coding/trace_adapter/fixtures/alignment_stress_1000.jsonl",
+      "selector": "all fixtures",
+      "available": true,
+      "apiRequired": false,
+      "pairedSystemObservations": "synthetic_only",
+      "evidenceBoundary": "合成 oracle；当前尚未运行生产对齐器",
+      "executionNote": "零 API 离线输入，不能推断真实 AgentSight 捕获率。"
     }
   ],
   "sources": [
@@ -593,6 +807,50 @@
     },
     {
       "path": "lab/experiment/experiment_20261013_13/budget-preflight.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "my_paper_coding/experiment_control/real-api-error-agentrx-20261019.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "my_paper_coding/trace_adapter/真实跨故障扩展实验报告_2026-10-10.md",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "my_paper_coding/trace_adapter/README.md",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "lab/experiment/experiment_20261016_16/results_r3/compatibility-report.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "lab/experiment/experiment_20261019_18/preflight.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "lab/experiment/experiment_20261019_18/wsl-diagnosis.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "my_paper_coding/trace_adapter/fixtures/alignment_stress_1000.jsonl",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "lab/AgentRx/trajectories/tau-retail/instruction_adherence_failure.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "lab/experiment/experiment_20261019_18/results/run-dff396441f6a/state.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "lab/experiment/experiment_20261019_18/results/run-dff396441f6a/error-propagation/scenario-validation-report.json",
+      "kind": "local_experiment_artifact"
+    },
+    {
+      "path": "lab/experiment/experiment_20261019_18/results/run-dff396441f6a/agentrx-tau12/score.json",
       "kind": "local_experiment_artifact"
     }
   ]

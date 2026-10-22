@@ -12,7 +12,7 @@ fn main() {
     for name in ["process", "sslsniff", "stdiocap"] {
         let source = source_dir.join(name);
         let vendor = vendor_dir.join(name);
-        if env_flag("AGENTSIGHT_SYNC_VENDOR") {
+        if env_flag("AGENTSIGHT_SYNC_VENDOR") || env_flag("AGENTSIGHT_SYNC_BPF") {
             if !source.exists() {
                 panic!(
                     "missing BPF loader {}. Run `make -C ../bpf` before packaging.",
@@ -39,6 +39,7 @@ fn main() {
 
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-env-changed=AGENTSIGHT_SYNC_VENDOR");
+    println!("cargo:rerun-if-env-changed=AGENTSIGHT_SYNC_BPF");
 }
 
 fn env_flag(name: &str) -> bool {

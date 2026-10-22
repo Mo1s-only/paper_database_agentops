@@ -38,6 +38,14 @@
 | R28 | RCACopilot | 工业RCA | EuroSys 2024 | 顶级系统会议；`VERIFIED` | 用incident handler收集多源证据并由LLM预测根因类别和解释 | 工业流程、证据收集和弱分类基线 | `03_diagnosis_localization/RCACopilot_Automatic_Root_Cause_Analysis_EuroSys2024.pdf` |
 | R29 | OpenRCA | RCA基准 | ICLR 2025 | 国际机器学习顶会主会；`VERIFIED` | 用335个企业故障和68.5GB多模态遥测评价LLM根因定位 | 任务定义、结构化输出与程序化证据检索 | `03_diagnosis_localization/OpenRCA_ICLR2025.pdf` |
 | R30 | OpenRCA 2.0 | 因果路径评测 | arXiv 2026 | 预印本；`VERIFIED` | 用故障注入和前向验证构造逐步传播路径真值 | 边级归因、路径验证与指标的核心相邻工作 | `03_diagnosis_localization/OpenRCA_2.0_Causal_Process_Supervision_2026.pdf` |
+| R31 | DCFA | 故障归因 | arXiv 2026 | 预印本；`VERIFIED` | 全局依赖图 + 局部 counterfactual-inspired refinement 定位多 Agent decisive step | Who&When trace-only 强基线与反事实方法边界 | 原 PDF 待补；`99_cross_cutting/归因方向新增文献与论文增量点_2026-10-22.md` |
+| R32 | Who Broke the System? / AgentLocate | 故障归因 | arXiv 2026 | 预印本；`VERIFIED` | 多视角 evaluator 与 judge adaptation 定位 Agent 和 decisive step | 多 Agent trace-only attribution baseline | 原 PDF 待补；同上 |
+| R33 | VerifyMAS | 故障归因 | arXiv 2026 | 预印本；`VERIFIED` | 先对完整轨迹验证错误假设，再定位责任 Agent | hypothesis-verification baseline；挑战“候选后验证”泛化创新 | 原 PDF 待补；同上 |
+| R34 | CausalFlow | 归因/反事实修复 | arXiv 2026 | 预印本；`VERIFIED` | 步骤级介入重执行并生成最小 outcome-flipping repair | 必须对照的干预式 attribution 邻近工作 | 原 PDF 待补；同上 |
+| R35 | TelemetrySuffBench | 归因评价 | arXiv 2026 | 预印本；`VERIFIED` | 区分故障检测、origin 定位及证据不足下的安全 abstention | telemetry completeness 与 provenance-aware abstention 的直接对照 | 原 PDF 待补；同上 |
+| R36 | Agent-Warden | 系统观测/provenance | arXiv 2026 | 预印本；`VERIFIED` | eBPF 跟踪 Agent process/file 状态并重建跨进程 provenance | 限定 eBPF novelty；需证明 system effect 对责任边定位的增量 | 原 PDF 待补；同上 |
+| R37 | AgentTelemetry | Agent 观测/故障检测 | AIware '26 | ACM 正式论文；`VERIFIED` | Agent-specific span taxonomy、七个框架 adapter 与 fault-detection benchmark | 标准化 telemetry / fault detection 对照，非根因因果归因 | DOI 10.1145/3805760.3814931；原 PDF 待补 |
+| R38 | ALTEDA / Beyond the prompt | 安全检测/归因 | Information Processing & Management 63(7), 104768 (2026) | 期刊论文；`VERIFIED` | 同步应用、网络、系统日志构图，检测并解释多 Agent 攻击行为 | 与跨层 Agent attribution 最接近的强竞争工作；全文核对后收窄贡献 | DOI 10.1016/j.ipm.2026.104768；全文/PDF 待补 |
 
 ## Claim–Evidence视图
 

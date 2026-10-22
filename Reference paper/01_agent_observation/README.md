@@ -10,3 +10,8 @@
 | Understanding the Information Propagation Effects of Communication Topologies in LLM-based Multi-Agent Systems | `Understanding the Information.pdf` | [arXiv](https://arxiv.org/abs/2505.23352) | arXiv 2025 | 预印本 | `VERIFIED`：截至检索日未核验到正式会议页面 |
 
 辅助文件：`AgentMonitor(Chain).pdf`、`AgentSight(Chain).pdf`、`AgentoOps(Chain).pdf` 以及对应精读笔记不作为独立论文计数。
+
+## 2026-10-22 新增来源（原 PDF 待补）
+
+- Agent-Warden：eBPF-based LLM agent process/file provenance，arXiv 预印本；来源与边界见 `../99_cross_cutting/归因方向新增文献与论文增量点_2026-10-22.md`。
+- AgentTelemetry：AIware '26 正式论文，定义 Agent 专属 telemetry spans 并评估 fault detection；官方 DOI：[10.1145/3805760.3814931](https://doi.org/10.1145/3805760.3814931)。本轮未下载原 PDF。

@@ -61,7 +61,13 @@ def native_tools(run: Path) -> list[dict]:
 
 
 def alignment_by_tool(run: Path) -> dict[str, dict]:
-    path = run / "alignment-session-and-tool" / "application-alignments.jsonl"
+    candidates = [
+        run / "alignment-session-and-tool" / "application-alignments.jsonl",
+        run / "alignment-inputs" / "alignment-session-and-tool" / "application-alignments.jsonl",
+        *(folder / "alignment-session-and-tool" / "application-alignments.jsonl"
+          for folder in sorted(run.glob("alignment-inputs-*"))),
+    ]
+    path = next((candidate for candidate in candidates if candidate.exists()), candidates[0])
     rows = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
     return {row["tool_call_id"]: {"status": row["status"], "target_ref": row.get("target_ref")}
             for row in rows}
@@ -156,7 +162,13 @@ def validate(run: Path) -> dict:
                   truth_created_before_api=truth.get("created_before_api"),
                   truth_excluded_from_alignment=truth.get("excluded_from_alignment"))
     write_new_json(run / "scenario-score.json", scored)
-    alignment = json.loads((run / "real-alignment-comparison.json").read_text(encoding="utf-8"))
+    alignment_candidates = [run / "real-alignment-comparison.json",
+                            run / "alignment-inputs" / "real-alignment-comparison.json",
+                            *(folder / "real-alignment-comparison.json"
+                              for folder in sorted(run.glob("alignment-inputs-*")))]
+    alignment_path = next((candidate for candidate in alignment_candidates if candidate.exists()),
+                          alignment_candidates[0])
+    alignment = json.loads(alignment_path.read_text(encoding="utf-8"))
     capture = json.loads((run / "capture-summary.json").read_text(encoding="utf-8"))
     gate = capture_gate(alignment)
     report = {"run_id": run.name, "scenario": capture["scenario"], "api_sessions": capture["actual_cli_sessions"],

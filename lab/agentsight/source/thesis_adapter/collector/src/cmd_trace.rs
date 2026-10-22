@@ -60,6 +60,7 @@ pub(crate) struct TraceConfig {
     pub(crate) ssl_http: bool,
     pub(crate) ssl_raw_data: bool,
     pub(crate) process: bool,
+    pub(crate) trace_fs: bool,
     pub(crate) process_seed_pids: Vec<PidSeed>,
     pub(crate) stdio: bool,
     pub(crate) stdio_uid: Option<u32>,
@@ -89,6 +90,7 @@ impl TraceConfig {
             ssl_filter: Vec::new(),
             ssl_http: true,
             process: true,
+            trace_fs: true,
             stdio_max_bytes: DEFAULT_RECORD_STDIO_MAX_BYTES,
             system: true,
             system_interval: 2,
@@ -304,6 +306,9 @@ fn build_process_args(cfg: &TraceConfig) -> Vec<String> {
     }
     if let Some(mode) = cfg.mode {
         args.extend(["-m".to_string(), mode.to_string()]);
+    }
+    if cfg.trace_fs {
+        args.push("--trace-fs".to_string());
     }
     args
 }
@@ -627,7 +632,7 @@ pub(crate) fn add_http_analyzers(
     http_filter: &[String],
     disable_auth_removal: bool,
 ) -> BinaryRunner {
-    let mut runner = runner.add_analyzer(Box::new(SSEProcessor::new_with_timeout(30000)));
+    let mut runner = runner;
     let parser = if include_raw_data {
         HTTPParser::new()
     } else {
@@ -635,6 +640,9 @@ pub(crate) fn add_http_analyzers(
     };
     runner = runner.add_analyzer(Box::new(parser));
     runner = runner.add_analyzer(Box::new(HTTPDecompressor::new()));
+    // Parse TLS plaintext into complete HTTP messages before looking for SSE.
+    // Running SSE first can consume DATA-frame fragments before HTTP/2 has a
+    // chance to reassemble them, leaving the HTTP response projection empty.
     runner = runner.add_analyzer(Box::new(SSEProcessor::new_with_timeout(30000)));
     if !http_filter.is_empty() {
         runner = runner.add_analyzer(Box::new(HTTPFilter::with_patterns(http_filter.to_vec())));
@@ -668,6 +676,13 @@ pub(crate) async fn run_debug_runner<R: Runner>(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn record_enables_filesystem_write_observation() {
+        let args = build_process_args(&TraceConfig::for_record());
+
+        assert!(args.iter().any(|arg| arg == "--trace-fs"));
+    }
 
     #[test]
     fn saved_capture_server_does_not_enable_live_host_apis() {

@@ -41,6 +41,61 @@ struct {
     __type(value, __u64);
 } start_ns SEC(".maps");
 
+struct ssl_connection_key {
+    __u32 tgid;
+    __u32 pad;
+    __u64 ssl;
+};
+
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __uint(max_entries, MAX_ENTRIES);
+    __type(key, __u32);
+    __type(value, __u64);
+} ssl_ptrs SEC(".maps");
+
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __uint(max_entries, MAX_ENTRIES);
+    __type(key, struct ssl_connection_key);
+    __type(value, __u64);
+} connection_ids SEC(".maps");
+
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __uint(max_entries, MAX_ENTRIES);
+    __type(key, __u64);
+    __type(value, __u64);
+} connection_sequences SEC(".maps");
+
+static __always_inline __u64 connection_id_for(__u32 tgid, __u64 ssl)
+{
+    struct ssl_connection_key key = {.tgid = tgid, .pad = 0, .ssl = ssl};
+    __u64 *existing = bpf_map_lookup_elem(&connection_ids, &key);
+    __u64 generated;
+
+    if (existing)
+        return *existing;
+    generated = ((__u64)bpf_get_prandom_u32() << 32) | bpf_get_prandom_u32();
+    if (!generated)
+        generated = 1;
+    bpf_map_update_elem(&connection_ids, &key, &generated, BPF_NOEXIST);
+    existing = bpf_map_lookup_elem(&connection_ids, &key);
+    return existing ? *existing : generated;
+}
+
+static __always_inline __u64 next_connection_sequence(__u64 connection_id)
+{
+    __u64 initial = 0;
+    __u64 *sequence;
+
+    if (!connection_id)
+        return 0;
+    bpf_map_update_elem(&connection_sequences, &connection_id, &initial, BPF_NOEXIST);
+    sequence = bpf_map_lookup_elem(&connection_sequences, &connection_id);
+    return sequence ? __sync_fetch_and_add(sequence, 1) + 1 : 0;
+}
+
 struct {
     __uint(type, BPF_MAP_TYPE_HASH);
     __uint(max_entries, MAX_ENTRIES);
@@ -300,6 +355,8 @@ int BPF_UPROBE(probe_SSL_rw_enter, void *ssl, void *buf, int num) {
     /* store arg info for later lookup */
     bpf_map_update_elem(&bufs, &tid, &buf, BPF_ANY);
     bpf_map_update_elem(&start_ns, &tid, &ts, BPF_ANY);
+    u64 ssl_value = (u64)ssl;
+    bpf_map_update_elem(&ssl_ptrs, &tid, &ssl_value, BPF_ANY);
     return 0;
 }
 
@@ -329,6 +386,10 @@ static int SSL_exit(struct pt_regs *ctx, int rw) {
     if (len <= 0)  // no data
         return 0;
 
+    u64 *ssl_value = bpf_map_lookup_elem(&ssl_ptrs, &tid);
+    u64 connection_id = ssl_value ? connection_id_for(pid, *ssl_value) : 0;
+    u64 event_sequence = next_connection_sequence(connection_id);
+
     /* reserve space in ring buffer */
     struct probe_SSL_data_t *data = bpf_ringbuf_reserve(&rb, sizeof(*data), 0);
     if (!data)
@@ -344,6 +405,8 @@ static int SSL_exit(struct pt_regs *ctx, int rw) {
     data->buf_size = 0;
     data->rw = rw;
     data->is_handshake = false;
+    data->connection_id = connection_id;
+    data->event_sequence = event_sequence;
     u32 buf_copy_size = min((size_t)MAX_BUF_SIZE, (size_t)len);
 
     bpf_get_current_comm(&data->comm, sizeof(data->comm));
@@ -353,6 +416,7 @@ static int SSL_exit(struct pt_regs *ctx, int rw) {
 
     bpf_map_delete_elem(&bufs, &tid);
     bpf_map_delete_elem(&start_ns, &tid);
+    bpf_map_delete_elem(&ssl_ptrs, &tid);
 
     if (!ret) {
         data->buf_filled = 1;
@@ -393,6 +457,8 @@ int BPF_UPROBE(probe_SSL_write_ex_enter, void *ssl, void *buf, size_t num, size_
     bpf_map_update_elem(&start_ns, &tid, &ts, BPF_ANY); 
     
     bpf_map_update_elem(&readbytes_ptrs, &tid, &readbytes, BPF_ANY);
+    u64 ssl_value = (u64)ssl;
+    bpf_map_update_elem(&ssl_ptrs, &tid, &ssl_value, BPF_ANY);
 
     return 0;
 }
@@ -413,6 +479,8 @@ int BPF_UPROBE(probe_SSL_read_ex_enter, void *ssl, void *buf, size_t num, size_t
     bpf_map_update_elem(&start_ns, &tid, &ts, BPF_ANY); 
 
     bpf_map_update_elem(&readbytes_ptrs, &tid, &readbytes, BPF_ANY);
+    u64 ssl_value = (u64)ssl;
+    bpf_map_update_elem(&ssl_ptrs, &tid, &ssl_value, BPF_ANY);
 
     return 0;
 }
@@ -442,6 +510,10 @@ static int ex_SSL_exit(struct pt_regs *ctx, int rw, int len) {
     if (len <= 0)  // no data
         return 0;
 
+    u64 *ssl_value = bpf_map_lookup_elem(&ssl_ptrs, &tid);
+    u64 connection_id = ssl_value ? connection_id_for(pid, *ssl_value) : 0;
+    u64 event_sequence = next_connection_sequence(connection_id);
+
     /* reserve space in ring buffer */
     struct probe_SSL_data_t *data = bpf_ringbuf_reserve(&rb, sizeof(*data), 0);
     if (!data)
@@ -457,6 +529,8 @@ static int ex_SSL_exit(struct pt_regs *ctx, int rw, int len) {
     data->buf_size = 0;
     data->rw = rw;
     data->is_handshake = false;
+    data->connection_id = connection_id;
+    data->event_sequence = event_sequence;
     
     /* Explicit bounds clamping to satisfy eBPF verifier
      * Use bitmask first to ensure value range, then clamp to actual max */
@@ -471,6 +545,7 @@ static int ex_SSL_exit(struct pt_regs *ctx, int rw, int len) {
 
     bpf_map_delete_elem(&bufs, &tid);
     bpf_map_delete_elem(&start_ns, &tid);
+    bpf_map_delete_elem(&ssl_ptrs, &tid);
 
     if (!ret) {
         data->buf_filled = 1;

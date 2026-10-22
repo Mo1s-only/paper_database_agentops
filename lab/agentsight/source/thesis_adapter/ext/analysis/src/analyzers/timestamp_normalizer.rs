@@ -36,11 +36,34 @@ impl Analyzer for TimestampNormalizer {
         &mut self,
         stream: EventStream,
     ) -> Result<EventStream, Box<dyn std::error::Error + Send + Sync>> {
-        let normalized_stream = stream.map(|mut event| {
+        // The process BPF runner supplies a CLOCK_SYNC sample from the same
+        // monotonic domain as its events. Prefer that fresh sample to the
+        // process-wide cached boot epoch, which can drift after a WSL clock
+        // adjustment. Other runners retain the existing fallback conversion.
+        let mut process_clock_anchor: Option<(u64, u64)> = None;
+        let normalized_stream = stream.map(move |mut event| {
+            if event.source == "diagnostic"
+                && event.data.get("event").and_then(|value| value.as_str()) == Some("CLOCK_SYNC")
+                && let (Some(mono_ns), Some(wall_time_ns)) = (
+                    event.data.get("mono_ns").and_then(|value| value.as_u64()),
+                    event.data.get("wall_time_ns").and_then(|value| value.as_u64()),
+                )
+            {
+                process_clock_anchor = Some((mono_ns, wall_time_ns));
+            }
             // Convert timestamp from nanoseconds since boot to milliseconds since UNIX epoch
             let raw_boot_ns = event.timestamp;
-            let boot_epoch_ns = get_boot_time_ns();
-            let timestamp_ms = boot_ns_to_epoch_ms(raw_boot_ns);
+            let (boot_epoch_ns, timestamp_ms, uncertainty_ns, conversion) =
+                if let Some((mono_ns, wall_time_ns)) =
+                    process_clock_anchor.filter(|_| event.source == "process" || event.source == "diagnostic") {
+                    let epoch_ns = wall_time_ns.saturating_sub(mono_ns);
+                    (epoch_ns, epoch_ns.saturating_add(raw_boot_ns) / 1_000_000,
+                     get_boot_time_uncertainty_ns().max(1_000_000),
+                     "clock_sync_epoch_ns_plus_bpf_ktime_ns")
+                } else {
+                    (get_boot_time_ns(), boot_ns_to_epoch_ms(raw_boot_ns),
+                     get_boot_time_uncertainty_ns(), "boot_epoch_ns_plus_bpf_ktime_ns")
+                };
             if let Some(data) = event.data.as_object_mut() {
                 data.insert(
                     "_agentsight_clock".to_string(),
@@ -48,8 +71,8 @@ impl Analyzer for TimestampNormalizer {
                         "raw_boot_ns": raw_boot_ns,
                         "boot_epoch_ns": boot_epoch_ns,
                         "epoch_ms": timestamp_ms,
-                        "anchor_uncertainty_ns": get_boot_time_uncertainty_ns(),
-                        "conversion": "boot_epoch_ns_plus_bpf_ktime_ns"
+                        "anchor_uncertainty_ns": uncertainty_ns,
+                        "conversion": conversion
                     }),
                 );
             }
@@ -149,5 +172,50 @@ mod tests {
         for result in &results {
             assert!(result.timestamp > 1_000_000_000_000); // > year 2001
         }
+    }
+
+    #[tokio::test]
+    async fn process_clock_sync_reanchors_subsequent_kernel_events() {
+        let mut normalizer = TimestampNormalizer::new();
+        let sync = Event::new_with_timestamp(
+            1_000_000_000,
+            "diagnostic".to_string(),
+            0,
+            "process".to_string(),
+            json!({
+                "event": "CLOCK_SYNC",
+                "mono_ns": 1_000_000_000u64,
+                "wall_time_ns": 1_700_000_001_000_000_000u64
+            }),
+        );
+        let exec = Event::new_with_timestamp(
+            2_000_000_000,
+            "process".to_string(),
+            42,
+            "claude".to_string(),
+            json!({"event": "EXEC"}),
+        );
+        let ssl = Event::new_with_timestamp(
+            2_000_000_000,
+            "ssl".to_string(),
+            42,
+            "claude".to_string(),
+            json!({"tid": 7}),
+        );
+        let output = normalizer
+            .process(Box::pin(stream::iter(vec![sync, exec, ssl])))
+            .await
+            .unwrap();
+        let events: Vec<Event> = output.collect().await;
+        assert_eq!(events[0].timestamp, 1_700_000_001_000);
+        assert_eq!(events[1].timestamp, 1_700_000_002_000);
+        assert_eq!(
+            events[1].data.pointer("/_agentsight_clock/conversion"),
+            Some(&json!("clock_sync_epoch_ns_plus_bpf_ktime_ns"))
+        );
+        assert_eq!(
+            events[2].data.pointer("/_agentsight_clock/conversion"),
+            Some(&json!("boot_epoch_ns_plus_bpf_ktime_ns"))
+        );
     }
 }

@@ -12,3 +12,7 @@
 | Towards Self-Improving Error Diagnosis in Multi-Agent Systems / ErrorProbe | `ErrorProbe_Self_Improving_Error_Diagnosis_ACL2026.pdf` | [ACL Anthology](https://aclanthology.org/2026.findings-acl.98/) | Findings ACL 2026 | Findings | `VERIFIED` |
 
 辅助文件：`Which Agent Causes Task Failures and When(Chain).pdf`、`*_text.txt` 与精读笔记不作为独立论文计数。
+
+## 2026-10-22 新增来源（原 PDF 待补）
+
+近期候选论文及状态见 `../99_cross_cutting/归因方向新增文献与论文增量点_2026-10-22.md`：DCFA、AgentLocate、VerifyMAS、CausalFlow、TelemetrySuffBench（arXiv 预印本）及 ALTEDA（IP&M 2026）。本机出站下载受限，本轮未复制这些新论文 PDF；来源页和出版状态已登记，不能把网页摘要当作本地全文。

@@ -10,6 +10,8 @@
 !.env.template
 *.pem
 *.key
+# Local API-key vault: values are DPAPI-encrypted and machine/user-bound.
+my_paper_coding/experiment_control/.secrets/
 
 # Dependencies, caches and generated output
 __pycache__/
@@ -17,6 +19,9 @@ __pycache__/
 .venv/
 venv/
 node_modules/
+.pnpm-store/
+tmp/
+*.tsbuildinfo
 target/
 .pytest_cache/
 # Local real API captures can contain prompts, transport data and machine metadata.

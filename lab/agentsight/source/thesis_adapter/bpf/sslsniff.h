@@ -35,6 +35,10 @@ struct probe_SSL_data_t {
     char comm[TASK_COMM_LEN];
     __u8 buf[MAX_BUF_SIZE];
     int is_handshake;
+    // Opaque per-process TLS connection identifier; never exposes user pointers.
+    __u64 connection_id;
+    // Increments before ring-buffer reservation so dropped events leave a gap.
+    __u64 event_sequence;
 };
 
 #endif /* __SSLSNIFF_H */

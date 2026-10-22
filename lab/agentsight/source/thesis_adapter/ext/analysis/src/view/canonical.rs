@@ -103,6 +103,20 @@ pub fn normalize_event(event: &Event, raw_event_id: String) -> CanonicalEvent {
     let mut severity = Severity::Info;
 
     let path_is_llm = path.as_deref().map(is_llm_path).unwrap_or(false);
+    let is_websocket_upgrade = method
+        .as_deref()
+        .is_some_and(|method| method.eq_ignore_ascii_case("GET"))
+        && data
+            .get("headers")
+            .and_then(Value::as_object)
+            .is_some_and(|headers| {
+                headers.iter().any(|(key, value)| {
+                    key.eq_ignore_ascii_case("upgrade")
+                        && value
+                            .as_str()
+                            .is_some_and(|value| value.eq_ignore_ascii_case("websocket"))
+                })
+            });
     let body_is_llm = body
         .as_ref()
         .is_some_and(|body| extract_model(body).is_some() || !extract_token_usage(body).is_empty());
@@ -110,7 +124,7 @@ pub fn normalize_event(event: &Event, raw_event_id: String) -> CanonicalEvent {
     if source == "http_parser" {
         match message_type {
             Some("request") => {
-                kind = if path_is_llm {
+                kind = if path_is_llm && !is_websocket_upgrade {
                     EventKind::LlmRequest
                 } else {
                     EventKind::HttpRequest
@@ -325,5 +339,46 @@ mod tests {
         assert_eq!(canonical.kind, EventKind::LlmRequest);
         assert_eq!(canonical.provider.as_deref(), Some("anthropic"));
         assert_eq!(canonical.model.as_deref(), Some("claude-sonnet-4-20250514"));
+    }
+
+    #[test]
+    fn websocket_upgrade_to_llm_path_is_not_an_llm_request() {
+        let handshake = Event::new_with_timestamp(
+            1,
+            "http_parser".to_string(),
+            42,
+            "agent".to_string(),
+            json!({
+                "tid": 7,
+                "message_type": "request",
+                "method": "GET",
+                "path": "/backend-api/codex/responses",
+                "headers": { "host": "chatgpt.com", "upgrade": "websocket" }
+            }),
+        );
+        let websocket_message = Event::new_with_timestamp(
+            2,
+            "http_parser".to_string(),
+            42,
+            "agent".to_string(),
+            json!({
+                "tid": 7,
+                "message_type": "request",
+                "method": "POST",
+                "protocol": "WebSocket",
+                "path": "/backend-api/codex/responses",
+                "headers": { "host": "chatgpt.com", "upgrade": "websocket" },
+                "body": "{\"model\":\"gpt-test\"}"
+            }),
+        );
+
+        assert_eq!(
+            normalize_event(&handshake, "handshake".to_string()).kind,
+            EventKind::HttpRequest
+        );
+        assert_eq!(
+            normalize_event(&websocket_message, "message".to_string()).kind,
+            EventKind::LlmRequest
+        );
     }
 }

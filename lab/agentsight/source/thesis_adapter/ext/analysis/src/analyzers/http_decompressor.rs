@@ -32,17 +32,35 @@ impl HTTPDecompressor {
         let Some(compressed) = http_body_bytes(&event.data) else {
             return event;
         };
-        let payload = if is_chunked(&event.data) {
-            decode_chunked(&compressed).unwrap_or(compressed)
-        } else {
-            compressed
-        };
+        // HTTPParser emits a normalized entity body: HTTP/1 chunk framing has
+        // already been removed before this analyzer sees the event. The
+        // `is_chunked` flag is retained as protocol metadata only; attempting
+        // to decode the body as chunks here corrupts compressed (e.g. zstd)
+        // payloads.
+        let payload = compressed;
 
-        let Ok(decompressed) = decompress_body(&encoding, &payload) else {
-            return event;
+        let decompressed = match decompress_body(&encoding, &payload) {
+            Ok(decompressed) => decompressed,
+            Err(error) => {
+                eprintln!(
+                    "[HTTPDecompressor diagnostics] encoding={} body_bytes={} chunked={} outcome=error error_kind={:?}",
+                    encoding,
+                    payload.len(),
+                    is_chunked(&event.data),
+                    error.kind()
+                );
+                return event;
+            }
         };
         let decompressed_len = decompressed.len();
         let decompressed_body = String::from_utf8_lossy(&decompressed).to_string();
+        eprintln!(
+            "[HTTPDecompressor diagnostics] encoding={} input_bytes={} output_bytes={} chunked={} outcome=ok",
+            encoding,
+            payload.len(),
+            decompressed_len,
+            is_chunked(&event.data)
+        );
 
         event.data["body"] = Value::String(decompressed_body);
         event.data["body_hex"] = Value::String(hex::encode(&decompressed));
@@ -110,14 +128,6 @@ fn is_chunked(data: &Value) -> bool {
                 .as_str()
                 .is_some_and(|v| v.to_ascii_lowercase().contains("chunked"))
     })
-}
-
-fn decode_chunked(bytes: &[u8]) -> Option<Vec<u8>> {
-    let cursor = Cursor::new(bytes);
-    let mut decoder = chunked_transfer::Decoder::new(cursor);
-    let mut out = Vec::new();
-    decoder.read_to_end(&mut out).ok()?;
-    Some(out)
 }
 
 fn http_body_bytes(data: &Value) -> Option<Vec<u8>> {
@@ -240,6 +250,21 @@ mod tests {
         let zstd = zstd::stream::encode_all(Cursor::new(b"zstd-body"), 1).unwrap();
         let event = HTTPDecompressor::process_event(http_response(zstd, "zstd"));
         assert_eq!(event.data["body"].as_str().unwrap(), "zstd-body");
+    }
+
+    #[test]
+    fn decompresses_zstd_after_http_parser_removed_chunk_framing() {
+        let expected = "event: message_stop\ndata: {\"type\":\"message_delta\",\"usage\":{\"input_tokens\":7,\"output_tokens\":3}}\n\n";
+        let zstd = zstd::stream::encode_all(Cursor::new(expected.as_bytes()), 1).unwrap();
+        let mut event = http_response(zstd, "zstd");
+        event.data["is_chunked"] = Value::Bool(true);
+        event.data["headers"]["transfer-encoding"] = Value::String("chunked".to_string());
+
+        let decompressed = HTTPDecompressor::process_event(event);
+
+        assert_eq!(decompressed.data["decompressed"], true);
+        assert_eq!(decompressed.data["body"], expected);
+        assert!(decompressed.data["headers"].get("content-encoding").is_none());
     }
 
     #[test]

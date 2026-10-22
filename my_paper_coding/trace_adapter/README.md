@@ -1,5 +1,13 @@
 # Trace Adapter 输入索引与候选对齐（v0.6）
 
+2026-10-22 当前实验进展：`error-propagation-v1` 与 `routing-error-v1` 各完成一个真实双 Agent run，Claude/AgentSight 工具 ID 均 4/4 精确匹配，通用 `session-and-tool` 对齐均 accepted 4/4；受控 hook ID→eBPF 进程谱系只对两次 Bash 调用/场景提供直接插桩证据，Write 工具没有 hook PID 桥。两个单例 scenario attribution 均命中预冻结真值，但不能据 n=1 宣称泛化。新增独立 `controlled_instrumentation` Adapter profile：run45/run46 各为 Bash 2/2 accepted、Write 2/2 abstain；通用 `process-and-tool` 仍 4/4 abstain，默认规则未改变。profile 保留 hook/native/AgentSight SQLite/eBPF 行号与 SHA-256，不宣称被动 AgentSight 自带 tool ID，也不作责任/因果判断。零 API shell/eBPF 边界探针发现嵌套 Bash 会丢失外层非导出函数与 `pipefail`/`errexit`，hook 继续限制到独立白名单 Python 命令。详见[阶段实验报告](../../lab/experiment/experiment_20261021_24_agentsight_candidate_mock/AgentSight_tool_calls_缺失修复验证_2026-10-21.md)。
+
+公开数据小样本兼容性检查见 [`public_dataset_generalization_20261022`](../../lab/experiment/public_dataset_generalization_20261022/数据集选择与适配性说明.md)：只读抽取 AgentTrace、Who&When、TRAIL 共 5 个实例，验证图结构、Agent/step 标签和 span 多错误标注三种输入形态。它不包含本项目的 Claude tool ID/AgentSight/eBPF 运行数据，不能作为端到端关联泛化结果。
+
+公开数据集离线标签映射评估由 [`evaluate_public_dataset_mapping.py`](evaluate_public_dataset_mapping.py) 执行，证据边界见 [`public_dataset_generalization_20261022_trace_join`](../../lab/experiment/public_dataset_generalization_20261022_trace_join/数据集选择与适配边界.md)：AgentTrace 3/3 路径节点和 2/2 路径边可解析；Who&When 两例 gold 字段齐全但缺稳定 turn/step ID；TRAIL 的 GAIA 3/3、SWE-bench 8/8 标注位置命中 span ID，43/43 条历史 span 被规范化。现有 `align_candidates` 按设计拒绝这 43 条历史记录作为当前运行观测（0 admitted / 43 excluded），因此这些结果只支持隔离的公开语义数据兼容性检查，不含 OS PID/eBPF，也不是本项目的当前运行采集或归因准确率。
+
+预算审计发现 run13–46 共 34 次运行报告费用 $0.7774680，未进入 through-run12 账本；本轮 API 调用为 0。逐次费用、摘要哈希及对账边界见[费用审计](../../lab/experiment/public_dataset_generalization_20261022_trace_join/real-api-budget-reconciliation-20261022.json)。
+
 原生 PID namespace 身份实测见 [`experiment_20261013_13`](../../lab/experiment/experiment_20261013_13/README.md)：同一 EXEC 事件记录 initial namespace PID 1791 与 collector namespace PID 34，用户态 PID 也是 34，因此映射由间接 `inferred` 提升为内核直接 `accepted`。同一事件保存 1 ns 的非零时钟不确定度下界。分析器、统一事件 v0.2 和 schema 已接入该证据，Trace Adapter 101/101 测试通过。真实双 Agent API 阶段受 2.00 USD 硬停止线阻止，本轮网络调用为 0。
 
 归因前可查询证据包见 [`experiment_20261013_10`](../../lab/experiment/experiment_20261013_10/README.md)：吸收 RCACopilot 的可组合 handler、OpenRCA 的程序化查询、Watson 的调用条件检查和 OpenRCA 2.0 的逐关系收据。一次真实六事件流生成 5 个可重放查询和 3 条观察关系，5/5 查询哈希一致；PID 关系保持 inferred，严格时间关系和所有归因结论保持关闭。新增 model invocation context v0.1，只保存模型参数、请求/响应配对和提示词/schema 哈希，缺字段时拒绝重建。
@@ -10,11 +18,17 @@
 
 最新真实闭环见 [`experiment_20261012_14`](../../lab/experiment/experiment_20261012_14/README.md)：修复 SSE 对 `_agentsight_clock` 的透传后，真实工具记录保存了 observer boot-relative 时间、boot epoch 锚点和不确定度字段；协议 v0.2 生成 6 条闭合事件并通过严格读取校验。应用 PID 81 与观测器 PID 1758 的对应关系仍标为 `INFERRED`。全仓去重成本为 2.183708 USD，后续停止 API 调用，使用这条真实事件流做离线 provenance/responsibility graph 构建。
 
+离线扩样首版由 [`generate_alignment_stress_fixtures.py`](generate_alignment_stress_fixtures.py) 生成 1,000 条确定性合成身份关联 fixture，落盘于 [`fixtures/alignment_stress_1000.jsonl`](fixtures/alignment_stress_1000.jsonl)。它用于验证 fail-closed fixture oracle，不运行生产对齐器，也不能用来报告真实捕获率或归因准确率；API 调用为 0。新增测试覆盖生成结果和类别分布。
+
 框架原生事件、进程和时钟的真实联合实测已记录到 [`lab/experiment/experiment_20261010_14`](../../lab/experiment/experiment_20261010_14/README.md)：原生工具与 AgentSight 1/1 对齐；620 次锚点显示墙钟—单调钟范围宽度 30 微秒；应用 PID 81 和 eBPF 观测 PID 341 为两套命名空间视图。按本地源码的整数秒 boot epoch 转换规则，本次需补偿 413.555968 ms，补偿后的进程开始时间落入 Popen 边界。
 
-4 次真实运行的零 API 聚合诊断已完成：15 次原生工具调用中 AgentSight 捕获 12 次，3 个缺失 ID 均未出现在 SQLite 任一表。新增 `capture_incomplete` 门控，跨层工具不能一一覆盖时禁止系统层 Edge 完整性结论。证据与边界见 [工具捕获完整性诊断](capture_diagnostics/20261010/工具捕获完整性诊断_2026-10-10.md)。
+4 次真实运行的零 API 聚合诊断已有报告摘要：15 次原生工具调用中 AgentSight 捕获 12 次，3 个缺失 ID 均未出现在 SQLite 任一表。新增 `capture_incomplete` 门控，跨层工具不能一一覆盖时禁止系统层 Edge 完整性结论。摘要说明当前原始运行目录未随工作区提供，结论尚不能从原始日志重算，见 [工具捕获完整性诊断摘要](工具捕获完整性诊断摘要_2026-10-19.md)。
 
 真实跨故障扩展实验已完成：错误传播与路由角色错误各运行一个真实双 Agent case，共 4 个 API 会话。两个单例场景的 fault type、责任 Agent、责任 Step、责任边和传播边均与 API 调用前冻结的真值一致；每个场景原生工具 4 次、AgentSight 工具 3 次，跨层捕获仍有 1 条缺失。当前 50 项测试通过，结论边界与下一闸门见 [真实跨故障扩展实验报告](真实跨故障扩展实验报告_2026-10-10.md)。
+
+后续真实场景采集会额外生成 `observer-lifecycle.jsonl`：记录 AgentSight recorder/debug 的启动、就绪、每个 Agent 会话前后和停止状态，使用墙钟与单调时钟并记录子进程退出码，不保存凭据。它用于区分 observer 生命周期/时序问题；在没有 SSE 原始帧或上游事件记录时，不能据此断言具体解析或 SQLite 写入根因。新增采集逻辑尚未通过真实 API 运行验证。
+
+扩样执行器现以每个双 Agent 场景 2 CNY 为硬上限；默认两次 CLI session 各最多 0.12 USD，按保守规划率 8 CNY/USD 计算，上界为 1.92 CNY。每次运行会记录 CLI 报告成本及规划汇率折算值；这不是供应商最终账单保证。扩样方案和累计预算边界见 [数据链扩样实验计划](../experiment_control/数据链扩样实验计划_2026-10-19.md)。
 
 完整真实进度实验已完成：两个真实 Agent 会话、3 次原生工具调用和 3 条 AgentSight 工具记录全部通过 `session-and-tool` 模式建立关系；失败触发候选为 Agent B 的 Bash 步骤，Agent 级与运行前真值一致。报告、边界和后续闸门见 [完整真实进度实验报告](完整真实进度实验报告_2026-10-10.md)。
 
@@ -137,3 +151,7 @@ python -m unittest discover -s my_paper_coding/trace_adapter -p 'test_*.py' -v
 `accepted` 表示规则接受观测关联，不表示真实责任已确认；`uncertain` 表示候选无法唯一确认，`abstain` 表示没有可接受候选。未校准的置信度保持 `null`。同 PID 和相同时间只能作为工具—LLM 的弱候选；响应中结构化工具 ID 可支持更强关联，PID 冲突或重复候选会阻止接受。
 
 审计仅验证进程关联与原始字段一致，不是独立人工标注；Precision/Recall 保持为空。P0 的 HTTP 记录可保留和追溯，本版没有实现 HTTP 请求—响应匹配算法。完整消息缺失时不得从系统记录补造 B1 消息基线。
+
+## 2026-10-22 公开数据集派生任务运行时跨层验证
+
+AgentTrace、Who&When、TRAIL 各 1 个标签隔离样本完成真实 Claude Code/DeepSeek + AgentSight/eBPF 回放。每条均采集原生 tool event、AgentSight LLM/tool/token rows 和 eBPF process events；`session-and-tool` adapter 关联 3/3 accepted。另启用独立的 controlled hook profile，将工具 ID 标记到 Bash wrapper 并沿 eBPF PID 谱系连接 probe 子进程，3/3 accepted。该 PID 桥是显式受控插桩，不是 AgentSight 被动语义。三个真实 session 的 CLI 报价合计 `$0.0638544`（规划汇率约 `¥0.638544`），均在本批次新增 `¥1` 上限内。该实验是三类公开数据派生输入上的捕获/关联 smoke test，不是原 benchmark 重放或因果归因准确率。详见[实验报告](../../lab/experiment/public_dataset_cross_layer_20261022/跨层数据链真实API验证报告.md)。
