@@ -1,0 +1,43 @@
+{
+  "schema_version": "agentops-public-dataset-subset-v0.1",
+  "selected_dataset_families": [
+    "AgentTrace",
+    "TRAIL",
+    "WhoAndWhen"
+  ],
+  "selected_case_count": 5,
+  "cases_by_dataset": {
+    "AgentTrace": 1,
+    "WhoAndWhen": 2,
+    "TRAIL": 2
+  },
+  "sources": [
+    {
+      "path": "shared_data/AgentTrace_ICLR2026_data/traces/cod_034b23_trace.json",
+      "sha256": "5cda9eaa31c554a260f6404372b0d3973f259b40e6b9ccc5fdef460cd0e1e741"
+    },
+    {
+      "path": "shared_data/WhoAndWhen_184/Algorithm-Generated/99.json",
+      "sha256": "a8e7dec2ba70fb676e6fbc1fe5b861b75401604f49f13594ddb40402be4b5605"
+    },
+    {
+      "path": "shared_data/WhoAndWhen_184/Hand-Crafted/9.json",
+      "sha256": "85b57194dd9689b465c61aba1a9391628b627a3ce64126602c1e27059e255e79"
+    },
+    {
+      "path": "shared_data/TRAIL_benchmarking_148_traces.zip",
+      "sha256": "518875332ffb616aa7d56c369821b30399531e2549049a9563f708c6a4c94ddc"
+    }
+  ],
+  "input_policy": "Read-only source datasets; no API calls; labels never enter runtime-evidence inputs.",
+  "what_this_validates": [
+    "heterogeneous public annotation parsing",
+    "label provenance and schema capability inventory"
+  ],
+  "what_this_does_not_validate": [
+    "Claude/AgentSight/eBPF capture",
+    "tool-ID-to-PID linkage",
+    "causal attribution accuracy"
+  ],
+  "next_runtime_gate": "Select executable tasks and create separately captured runs before claiming end-to-end generalization."
+}

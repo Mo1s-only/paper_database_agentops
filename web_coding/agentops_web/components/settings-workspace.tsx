@@ -1,89 +1,54 @@
 'use client';
 
-import { Check, Clipboard, ExternalLink, KeyRound, Plus, PlugZap, ServerCog, ShieldCheck, Trash2, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { Database, FileJson, History, RefreshCcw, ShieldCheck } from 'lucide-react';
 import { PageHeader } from './ui';
+import { ConnectionStatus } from './connection-status';
+import { useDashboard } from './dashboard-context';
 
-const snippets = {
-  python: `pip install agentops
-
-import agentops
-
-agentops.init(
-    api_key=os.environ["AGENTOPS_API_KEY"],
-    endpoint=os.environ.get("AGENTOPS_ENDPOINT")
-)
-
-# your agent workflow
-agentops.end_session("Success")`,
-  typescript: `npm install agentops @openai/agents
-
-import AgentOps from "agentops";
-
-const agentops = new AgentOps({
-  apiKey: process.env.AGENTOPS_API_KEY!,
-  endpoint: process.env.AGENTOPS_ENDPOINT,
-});
-
-await agentops.startSession();`,
-  otel: `export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
-export OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
-export OTEL_SERVICE_NAME=my-agent-service`,
-};
+type AuditEvent = { id: number; action: string; entity: string; createdAt: string };
+const actionNames: Record<string, string> = { 'project.saved': '项目已保存', 'alerts.saved': '告警策略已保存', 'traces.imported': 'Trace 批次已导入', 'label.saved': '人工标签已保存' };
 
 export function SettingsWorkspace() {
-  const [language, setLanguage] = useState<keyof typeof snippets>('python');
-  const [copied, setCopied] = useState(false);
-  const [mode, setMode] = useState('mock');
-  const [keys, setKeys] = useState([
-    { id: 'key-1', name: 'Production ingest', hint: 'aop_••••7F2A', scope: 'ingest + read', used: '8 分钟前' },
-    { id: 'key-2', name: 'Local development', hint: 'aop_••••3B80', scope: 'read', used: '2 天前' },
-  ]);
-  const [keyDialog, setKeyDialog] = useState(false);
-  const [keyName, setKeyName] = useState('Thesis experiment');
-  const [createdKey, setCreatedKey] = useState('');
-  const copy = async () => { await navigator.clipboard.writeText(snippets[language]); setCopied(true); window.setTimeout(() => setCopied(false), 1200); };
-  const createDemoKey = () => {
-    const suffix = crypto.randomUUID().replaceAll('-', '').slice(0, 20);
-    const token = `aop_demo_${suffix}`;
-    setKeys((current) => [...current, { id: crypto.randomUUID(), name: keyName || 'Untitled key', hint: `aop_••••${suffix.slice(-4).toUpperCase()}`, scope: 'read', used: '尚未使用' }]);
-    setCreatedKey(token);
-  };
-  const closeKeyDialog = () => { setKeyDialog(false); setCreatedKey(''); setKeyName('Thesis experiment'); };
-
+  const { dataMode } = useDashboard();
+  const [events, setEvents] = useState<AuditEvent[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  async function refreshAudit() {
+    setLoading(true); setError('');
+    try {
+      const response = await fetch('/api/v1/audit', { cache: 'no-store', signal: AbortSignal.timeout(12000) });
+      const body = await response.json();
+      if (!response.ok) throw new Error(body.error?.message ?? '操作记录加载失败');
+      setEvents(body.data);
+    } catch (error) { setError(error instanceof Error ? error.message : '操作记录加载失败'); }
+    finally { setLoading(false); }
+  }
+  useEffect(() => { if (dataMode === 'mock') void refreshAudit(); }, [dataMode]);
   return <>
-    <PageHeader eyebrow="Workspace / Settings" title="设置与接入" description="配置数据源、SDK 和部署边界。" />
+    <PageHeader eyebrow="Workspace / Settings" title="设置与接入" description="查看真实连接、数据持久化和当前系统的能力边界。" />
+    <ConnectionStatus />
     <section className="settings-grid">
-      <article className="panel settings-panel">
-        <div className="panel-head"><div><span className="eyebrow">Data source</span><h2>数据源模式</h2></div><ServerCog size={20} /></div>
-        <div className="mode-options">
-          <button className={mode === 'mock' ? 'active' : ''} onClick={() => setMode('mock')}><span><PlugZap size={18} /></span><div><strong>演示数据</strong><small>内置、确定性数据集，适合 UI 开发和答辩演示。</small></div><i /></button>
-          <button className={mode === 'remote' ? 'active' : ''} onClick={() => setMode('remote')}><span><ServerCog size={18} /></span><div><strong>远程 API</strong><small>连接 FastAPI / ClickHouse 服务，适合正式环境。</small></div><i /></button>
+      <article className="panel settings-panel"><div className="panel-head"><div><span className="eyebrow">Storage</span><h2>{dataMode === 'mock' ? '本机 SQLite 存储' : '远程只读 API'}</h2></div><Database size={20} /></div>
+        <div className="settings-copy"><p>{dataMode === 'mock' ? '项目、告警配置、导入 Trace 与人工标签保存到服务端数据库。同一服务地址更换浏览器也能读取；内置示例仅供功能演示。' : '服务端从配置的 API 获取数据。写入由远程后端管理，当前控制台不提供远程配置变更。'}</p>
+          <dl><div><dt>当前模式</dt><dd><code>AGENTOPS_DATA_MODE={dataMode}</code></dd></div><div><dt>默认数据库</dt><dd><code>.data/agentops.sqlite</code></dd></div><div><dt>可选路径配置</dt><dd><code>AGENTOPS_DB_PATH</code></dd></div><div><dt>运行环境</dt><dd>Node.js 24+ · 单实例本地部署</dd></div></dl>
+          <p>备份前先正常停止服务，再复制整个 <code>.data</code> 目录（包含 WAL 文件）。不要把数据库、日志或凭据提交到 Git。容器重建前需配置持久化卷。</p>
         </div>
-        <div className="config-preview"><span>环境变量</span><code>AGENTOPS_DATA_MODE={mode}</code>{mode === 'remote' && <code>AGENTOPS_API_URL=https://api.example.com</code>}</div>
       </article>
-
-      <article className="panel settings-panel">
-        <div className="panel-head"><div><span className="eyebrow">Security</span><h2>密钥与访问</h2></div><ShieldCheck size={20} /></div>
-        <div className="security-list"><div><KeyRound size={18} /><p><strong>服务端密钥</strong><span>只通过环境变量读取，不暴露到浏览器 bundle。</span></p><span className="status status-ok"><i />安全</span></div><div><ShieldCheck size={18} /><p><strong>API 边界</strong><span>前端只访问同源 Route Handler，可替换为鉴权网关。</span></p><span className="status status-ok"><i />就绪</span></div></div>
+      <article className="panel settings-panel"><div className="panel-head"><div><span className="eyebrow">Access boundary</span><h2>访问与上线边界</h2></div><ShieldCheck size={20} /></div>
+        <div className="settings-copy"><p>本地启动脚本绑定 <code>127.0.0.1</code>。写入校验同源、回环 Host 和请求标头，远程数据模式禁用写入。</p><p>这不是用户身份认证。当前没有登录、租户隔离、真实 API Key、告警调度或通知投递；请勿直接暴露到公网。</p><p>正式上线需增加身份认证与权限校验、租户数据隔离、部署级网络限制和备份恢复方案。当前版本未进行生产负载或安全验收。</p></div>
       </article>
     </section>
-
-    <section className="panel api-key-panel">
-      <div className="panel-head"><div><span className="eyebrow">API Keys</span><h2>访问密钥</h2></div><button className="button secondary" onClick={() => setKeyDialog(true)}><Plus size={15} />生成演示密钥</button></div>
-      <div className="key-table-head"><span>名称</span><span>Key</span><span>权限</span><span>最近使用</span><span /></div>
-      <div className="api-key-list">{keys.map((key) => <div key={key.id}><p><strong>{key.name}</strong><small>仅服务端使用</small></p><code>{key.hint}</code><span>{key.scope}</span><span>{key.used}</span><button onClick={() => setKeys((current) => current.filter((item) => item.id !== key.id))} aria-label={`删除 ${key.name}`}><Trash2 size={15} /></button></div>)}</div>
-      <div className="api-key-foot"><ShieldCheck size={16} /><span>列表仅保存演示元数据；真实密钥应由后端加密存储，并在生成后只展示一次。</span></div>
-    </section>
-
-    <section className="panel sdk-panel">
-      <div className="panel-head"><div><span className="eyebrow">Instrumentation</span><h2>接入你的智能体</h2></div><a className="text-link" href="https://docs.agentops.ai" target="_blank" rel="noreferrer">官方文档 <ExternalLink size={14} /></a></div>
-      <div className="sdk-layout">
-        <div className="sdk-steps"><div className="active"><i>1</i><p><strong>安装采集 SDK</strong><span>选择现有框架对应的接入方式。</span></p></div><div><i>2</i><p><strong>配置环境变量</strong><span>API Key 与 endpoint 只放在服务端。</span></p></div><div><i>3</i><p><strong>运行一次工作流</strong><span>新的 Trace 会出现在探索器中。</span></p></div></div>
-        <div className="code-card"><div className="code-tabs">{(Object.keys(snippets) as Array<keyof typeof snippets>).map((item) => <button key={item} className={language === item ? 'active' : ''} onClick={() => setLanguage(item)}>{item === 'otel' ? 'OpenTelemetry' : item}</button>)}<button className="copy-code" onClick={copy}>{copied ? <Check size={15} /> : <Clipboard size={15} />}{copied ? '已复制' : '复制'}</button></div><pre><code>{snippets[language]}</code></pre></div>
-      </div>
-    </section>
-
-    {keyDialog && <div className="dialog-backdrop" onMouseDown={closeKeyDialog}><section className="modal-card" onMouseDown={(event) => event.stopPropagation()} role="dialog" aria-modal="true" aria-label="生成演示密钥"><div className="modal-head"><div><span className="eyebrow">Local demo only</span><h2>{createdKey ? '复制演示密钥' : '新建 API Key'}</h2></div><button className="icon-button" onClick={closeKeyDialog}><X size={18} /></button></div>{createdKey ? <><div className="created-key"><code>{createdKey}</code><button onClick={() => navigator.clipboard.writeText(createdKey)}><Clipboard size={16} />复制</button></div><p className="form-note">只会显示这一次。该值仅用于 UI 演示，不能连接任何真实服务。</p><div className="modal-actions"><button className="button primary" onClick={closeKeyDialog}>完成</button></div></> : <><label className="field"><span>密钥名称</span><input value={keyName} onChange={(event) => setKeyName(event.target.value)} /></label><label className="field"><span>权限</span><select defaultValue="read"><option value="read">只读</option><option value="ingest">写入 Trace</option><option value="admin">管理</option></select></label><p className="form-note">生成动作仅更新当前浏览器内存，不会创建真实凭据。</p><div className="modal-actions"><button className="button secondary" onClick={closeKeyDialog}>取消</button><button className="button primary" onClick={createDemoKey}><KeyRound size={15} />生成演示密钥</button></div></>}</section></div>}
+    <section className="panel sdk-panel"><div className="panel-head"><div><span className="eyebrow">Data onboarding</span><h2>接入你的 Trace 数据</h2></div><FileJson size={20} /></div><div className="settings-copy">
+      <ol><li>在“项目管理”创建项目，为不同应用或实验设置独立归属。</li><li>将采集结果转换为本项目的 Trace JSON：每条执行包含唯一 ID、时间、状态、成本、Tokens 和 Span 父子关系。</li><li>进入 Trace 探索器，选择“导入 Trace”。上传或粘贴 JSON，选择目标项目，先校验再确认导入。</li><li>进入详情查看执行树与输入输出；失败记录可添加人工根因标签，在评测页对照和导出。</li></ol>
+      <p>支持数组、<code>{'{ traces: [...] }'}</code> 和 <code>{'{ data: [...] }'}</code>。单批最多 5 MiB / 100 Traces / 2000 Spans。重复 ID 整批拒绝；示例文件始终保留演示来源标记。用户导入仅表示输入渠道，不表示数据真实性已验证。</p>
+      <p>此 JSON 契约不是官方 AgentOps SDK 或 OTLP 协议，不能将 SDK endpoint 直接指向本控制台。</p>
+      <div className="settings-actions"><Link href="/traces" className="button primary">打开 Trace 导入</Link><a href="/examples/trace-import.json" download className="button secondary">下载结构示例</a></div>
+    </div></section>
+    {dataMode === 'mock' && <section className="panel audit-panel"><div className="panel-head"><div><span className="eyebrow">Local operation history</span><h2>最近操作记录</h2></div><button className="button secondary" onClick={refreshAudit} disabled={loading}><RefreshCcw size={15} className={loading ? 'spin' : ''} />刷新记录</button></div>
+      <p className="policy-note">最近 100 条本机操作；不含输入 / 输出正文。当前无用户身份与防篡改机制，不是合规审计系统。</p>
+      {error ? <p className="form-error" role="alert">{error}</p> : events.length ? <div className="table-scroll"><table className="data-table"><thead><tr><th>操作</th><th>对象 ID</th><th>时间（UTC）</th></tr></thead><tbody>{events.map((event) => <tr key={event.id}><td>{actionNames[event.action] ?? event.action}</td><td><code>{event.entity}</code></td><td>{event.createdAt.replace('T', ' ').slice(0, 19)}</td></tr>)}</tbody></table></div> : <p className="audit-empty"><History size={18} />{loading ? '正在加载…' : '暂无操作。保存项目、策略、标签或导入数据后会在这里留痕。'}</p>}
+    </section>}
   </>;
 }

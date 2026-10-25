@@ -1,0 +1,2802 @@
+[
+    {
+        "trajectory_id": "5f982798-16b9-4051-ab57-cfc7ebdb2a91",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 13,
+                "step_reason": "Websurfer could not  download a PDF file and search throught it which was an instruction given by Orchestrator.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction not followed, the agent did not download and search through the PDF file as instructed",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 17,
+                "step_reason": "Websurfer could not  download a PDF file and search throught it which was an instruction given by Orchestrator",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer could not  download a PDF file and search throught it which was an instruction given by Orchestrator",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 33,
+                "step_reason": "FileSurfer hallucinated. It downloaded the file at '/workspace/workspace/http:/export.arxiv.org/pdf/2007.xx' but later attempted to read a non-existent file 'file:///workspace/path_to_july_2020_paper.pdf'.",
+                "failure_category": "Invention of new information",
+                "category_reason": "FileSurfer hallucinated. It downloaded the file at '/workspace/workspace/http:/export.arxiv.org/pdf/2007.xx' but later attempted to read a non-existent file 'file:///workspace/path_to_july_2020_paper.pdf'.",
+                "failed_agent": "FileSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 3,
+            "reason_for_root_cause": "The Orchestrator could tried to recover from earlier errors but the FileSurfer hallucination was a critical failure that prevented further progress."
+        },
+        "failure_summary": "The agent could not download and read the specified PDF file due to a hallucination by the FileSurfer agent."
+    },
+    {
+        "trajectory_id": "c7afe00869f98cf363fd83677ac41757ed5e57f03eacc3d1304feb0a92084bd1",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 9,
+                "step_reason": "The websurfer was asked to give full list of Daniel Craig movies on Netflix US with their IMDB ratings and durations. However it worked over 18% of the webpage",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The websurfer was asked to give full list of Daniel Craig movies on Netflix US with their IMDB ratings and durations. However it worked over 18% of the webpage",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 10,
+                "step_reason": "Even though the websurfer told it had only 18% of the information, it went ahead and tried to search on limited set of movies that websurfer had collected",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Even though the websurfer told it had only 18% of the information, it went ahead and tried to search on limited set of movies that websurfer had collected",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The Orchestrator failed to properly assess the page coverage reported by the Websurfer agent and proceeded with incomplete data."
+        },
+        "failure_summary": "The Orchestrator did not adequately handle the limited data provided by the Websurfer agent, leading to an incomplete response."
+    },
+    {
+        "trajectory_id": "ebbc1f13-d24d-40df-9068-adcf735b4240",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 17,
+                "step_reason": "WebSurfer could not get past Cloudflare 'verify you are not a robot' check on Collins Dictionary website.",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "WebSurfer could not get past Cloudflare 'verify you are not a robot' check on Collins Dictionary website.",
+                "failed_agent": "Websurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The Websurfer agent was unable to bypass the Cloudflare protection, which is a common barrier for automated agents."
+        },
+        "failure_summary": "The Websurfer agent was blocked by Cloudflare's anti-bot measures, preventing it from accessing the required information."
+    },
+    {
+        "trajectory_id": "52f7224e9c79431e7926afe317782711a0028750693e7456cde22ef6f4bd8bd5",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "Worked over 9% of the webpage despite orchestrator asking for complete information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Worked over 9% of the webpage despite orchestrator asking for complete information",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 9,
+                "step_reason": "Worked over 42% of the webpage despite orchestrator asking for complete information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Worked over 42% of the webpage despite orchestrator asking for complete information",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 11,
+                "step_reason": "Searched with incomplete information",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Searched with incomplete information although the websurfer had worked on partial webpage",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 3,
+            "reason_for_root_cause": "The orchestrator could have asked websurfer to get more information through scrolling instead of going ahead with incomplete information"
+        },
+        "failure_summary": "The orchestrator failed to ensure complete data collection by the websurfer before proceeding with the search, leading to an incomplete response."
+    },
+    {
+        "trajectory_id": "3af8028c2a59e28ca88baff0e6d91f2a9f170c5ef91003f1c8406755a2760ad4",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 4,
+                "step_reason": "The orchestrator failed to capture user intent. The user had given two different Magic: The Gathering Standard cards (Oko, Thief of Crowns and another) and asked which had the highest price decrease from its all-time high to its all-time low. However, the orchestrator instead searched for the date when Oko, Thief of Crowns was banned in the Standard format.",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "The orchestrator failed to capture user intent. The user had given two different Magic: The Gathering Standard cards (Oko, Thief of Crowns and another) and asked which had the highest price decrease from its all-time high to its all-time low. However, the orchestrator instead searched for the date when Oko, Thief of Crowns was banned in the Standard format.",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "Orchestrator misinterpreted the user's request, focusing on a specific card's ban date rather than comparing price decreases between two cards."
+        },
+        "failure_summary": "The orchestrator misinterpreted the user's intent, leading to an incorrect focus in the search and ultimately an irrelevant response."
+    },
+    {
+        "trajectory_id": "e6bc98089608217e45b6956a46518fe3cce64a799b3ac43c6974c449ae14c408",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "Webusurfer worked on 35% of the webpage",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer worked on 35% of the webpage despite orchestrator asking for complete information",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 7,
+                "step_reason": "Orchestrator said request satisfied on incomplete information",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator said request satisfied without on incomplete information even though websurfer had worked on partial webpage",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The orchestrator failed to ensure that the websurfer had gathered complete information before concluding that the request was satisfied."
+        },
+        "failure_summary": "The orchestrator prematurely concluded that the user's request was satisfied based on incomplete data provided by the websurfer agent."
+    },
+    {
+        "trajectory_id": "a1e91b78-d3d8-4675-bb8d-62741b4b68a6",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failure_category": "Intent not supported",
+                "category_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 9,
+                "step_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failure_category": "Intent not supported",
+                "category_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 13,
+                "step_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failure_category": "Intent not supported",
+                "category_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 17,
+                "step_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failure_category": "Intent not supported",
+                "category_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 21,
+                "step_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failure_category": "Intent not supported",
+                "category_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failed_agent": "Websurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 25,
+                "step_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failure_category": "Intent not supported",
+                "category_reason": "Websurfer was asked to take snapshot in youtube video but it could not do such actions",
+                "failed_agent": "Websurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The first error occurred when the Websurfer agent was asked to take a snapshot in a YouTube video, which is beyond its capabilities. Subsequent failures were repetitions of this unsupported intent."
+        },
+        "failure_summary": "The Websurfer agent was repeatedly asked to perform an action (taking snapshots in a YouTube video) that it is not capable of executing, leading to failure."
+    },
+    {
+        "trajectory_id": "08cae58d-4084-4616-b6dd-dd6534e4825b",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 7,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 10,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 12,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 14,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 16,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 18,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 20,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 22,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 10,
+                "step_number": 24,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 11,
+                "step_number": 26,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 12,
+                "step_number": 28,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 13,
+                "step_number": 30,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 14,
+                "step_number": 32,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 15,
+                "step_number": 37,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 16,
+                "step_number": 39,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 17,
+                "step_number": 41,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 18,
+                "step_number": 44,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 19,
+                "step_number": 46,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 20,
+                "step_number": 48,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 21,
+                "step_number": 50,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 22,
+                "step_number": 52,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 23,
+                "step_number": 54,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 24,
+                "step_number": 56,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 25,
+                "step_number": 58,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 26,
+                "step_number": 60,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 27,
+                "step_number": 62,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 28,
+                "step_number": 64,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 29,
+                "step_number": 66,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 30,
+                "step_number": 71,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 31,
+                "step_number": 73,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 32,
+                "step_number": 75,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 33,
+                "step_number": 77,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 34,
+                "step_number": 79,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 35,
+                "step_number": 81,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 36,
+                "step_number": 83,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 37,
+                "step_number": 85,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 38,
+                "step_number": 87,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 39,
+                "step_number": 89,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 40,
+                "step_number": 91,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 41,
+                "step_number": 93,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 42,
+                "step_number": 98,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 43,
+                "step_number": 100,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 44,
+                "step_number": 102,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 45,
+                "step_number": 104,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 46,
+                "step_number": 106,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 47,
+                "step_number": 108,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 48,
+                "step_number": 110,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 49,
+                "step_number": 112,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 50,
+                "step_number": 114,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 51,
+                "step_number": 116,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 52,
+                "step_number": 118,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 53,
+                "step_number": 120,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 54,
+                "step_number": 126,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 55,
+                "step_number": 128,
+                "step_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able to search for historical stock prices of apple when it first went above $50",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": "1",
+            "reason_for_root_cause": "The Websurfer was not able to find historical stock prices of Apple when it first went above $50, leading to repeated failures in adhering to the instruction throughout the trajectory. The first failure set the precedent for subsequent failures."
+        },
+        "failure_summary": "The Websurfer agent consistently failed to retrieve historical stock prices of Apple when it first exceeded $50, resulting in multiple instruction adherence failures throughout the trajectory."
+    },
+    {
+        "trajectory_id": "ccec2229ced20a4b0cb4897e3a99120a3017ea030903e01c9bda6b13d40b0b14",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 7,
+                "step_reason": "User's intent was to find closest eatery open at 11pm on Wednesdays, but the Orchestrator just searched for eateries nearby and forgot to give word 'closest' to the Websurfer.",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "User's intent was to find closest eatery open at 11pm on Wednesdays, but the Orchestrator just searched for eateries nearby and forgot to give word 'closest' to the Websurfer.",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 9,
+                "step_reason": "WebSurfer failed to follow the instruction and did not give exhaustive list of eateries.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer failed to follow the instruction and did not give exhaustive list of eateries.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 10,
+                "step_reason": "Orchestrator worked on incomplete information on whatever the list was given by WebSurfer.",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator worked on incomplete information on whatever the list was given by WebSurfer.",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 3,
+            "reason_for_root_cause": "Though earlier mistakes were made by both Orchestrator and WebSurfer, the root cause of the overall failure was the Orchestrator's misinterpretation of the incomplete output provided by WebSurfer, leading to an unsatisfactory final response to the user. As it could have asked WebSurfer to refine its search or provide more details."
+        },
+        "failure_summary": "The orchestrator misinterpeted the information provided by WebSurfer which was incomplete due to WebSurfer not following the instruction properly and Orchestrator not recovering from earlier mistake of not asking WebSurfer to find the closest eatery."
+    },
+    {
+        "trajectory_id": "6b06d186921b8b390c65aebd0d16f09f60a47d2f1288ebe36953f734e84c0a3c",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 17,
+                "step_reason": "jailbreak=true. Error code: 40. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "jailbreak=true. Error code: 40. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The failure was caused by the WebSurfer agent triggering Azure OpenAI's content management policy due to a jailbreak attempt in the prompt, leading to the response being filtered and resulting in an inability to complete the task."
+        },
+        "failure_summary": "The WebSurfer agent's response was filtered due to a jailbreak attempt in the prompt, which triggered Azure OpenAI's content management policy, preventing task completion."
+    },
+    {
+        "trajectory_id": "8b3379c0-0981-4f5b-8407-6444610cb212",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 4,
+                "step_reason": "keyword Monterey Bay Aquarium was not used in the search query given by Orchestrator to Websufer to find the relevant National Geographic short on YouTube",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "keyword Monterey Bay Aquarium was not used in the search query given by Orchestrator to Websufer to find the relevant National Geographic short on YouTube",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The Orchestrator failed to include the specific keyword 'Monterey Bay Aquarium' in the search query it provided to the WebSurfer agent. This omission led to the WebSurfer being unable to locate the relevant National Geographic short on YouTube, resulting in a failure to meet the user's intent."
+        },
+        "failure_summary": "The Orchestrator agent did not include the specific keyword 'Monterey Bay Aquarium' in the search query to the WebSurfer agent, leading to a failure in locating the relevant National Geographic short on YouTube."
+    },
+    {
+        "trajectory_id": "840bfca7-4f7b-481a-8794-c560c340185d",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 25,
+                "step_reason": "ResponsibleAIPolicyViolation (jailbreak=true), Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "ResponsibleAIPolicyViolation (jailbreak=true), Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The failure occurred because the WebSurfer agent's response triggered Azure OpenAI's content management policy due to a jailbreak attempt in the prompt. This led to the response being filtered, preventing the agent from completing the task as intended."
+        },
+        "failure_summary": "The WebSurfer agent's response was filtered due to a jailbreak attempt in the prompt, which triggered Azure OpenAI's content management policy, preventing task completion."
+    },
+    {
+        "trajectory_id": "8ad84bd6fe38481ba49e7ad1f6fbd43219a999074e5c6fc940003281f55ec65b",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 9,
+                "step_reason": "Websurfer did not give complete list of supermarkets within 2 blocks of Lincoln Park in Chicago with ready-to-eat salad for under $15.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not give complete list of supermarkets within 2 blocks of Lincoln Park in Chicago with ready-to-eat salad for under $15.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 10,
+                "step_reason": "Orchestrator worked on incomplete information on whatever the list was given by WebSurfer.",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator worked on incomplete information on whatever the list was given by WebSurfer.",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 13,
+                "step_reason": "Websurfer clicked on Whole Foods website but did not search for ready-to-eat salad under $15.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer clicked on Whole Foods website but did not search for ready-to-eat salad under $15.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 14,
+                "step_reason": "Orchestrator assumed that Whole foods doesn't have salad under $15",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator assumed that Whole foods doesn't have salad under $15",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 17,
+                "step_reason": "Websurfer clicked on Trader Joes webiste but did not search for ready-to-eat salad under $15",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer clicked on Trader Joes webiste but did not search for ready-to-eat salad under $15",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 18,
+                "step_reason": "Orchestrator assumed that Trader Joe doesn't have salad under $15",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator assumed that Trader Joe doesn't have salad under $15",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 44,
+                "step_reason": "Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The root cause of the overall failure was the Orchestrator's misinterpretation of the incomplete output provided by WebSurfer. The WebSurfer agent failed to adhere to instructions by not providing a complete list of supermarkets and not searching for ready-to-eat salads under $15 at the specified stores. Consequently, the Orchestrator made incorrect assumptions based on this incomplete information, leading to an unsatisfactory final response to the user."
+        },
+        "failure_summary": "The orchestrator misinterpeted the information provided by WebSurfer which was incomplete due to WebSurfer not following the instruction properly and Orchestrator not recovering from earlier mistakes of assuming certain stores did not have salads under $15."
+    },
+    {
+        "trajectory_id": "1f975693-876d-457b-a649-393859e79bf3",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 4,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 12,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 16,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 51,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 55,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 57,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to listen to audio file.",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 62,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 66,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 70,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 10,
+                "step_number": 74,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 11,
+                "step_number": 78,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 12,
+                "step_number": 82,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 13,
+                "step_number": 86,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 14,
+                "step_number": 90,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 15,
+                "step_number": 96,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to find a text transcript of an audio file.",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it incorrect instructions to find a text transcript of an audio file.",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 16,
+                "step_number": 104,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 17,
+                "step_number": 108,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 18,
+                "step_number": 110,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 19,
+                "step_number": 116,
+                "step_reason": "Instruction/Plan Adherence Failure",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Instruction/Plan Adherence Failure",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The Orchestrator consistently misunderstood the capabilities of the FileSurfer agent, repeatedly assigning it tasks that it was not designed to perform, such as listening to audio files and finding text transcripts. This fundamental misalignment between the Orchestrator's instructions and the FileSurfer's intended functionality led to multiple failures throughout the trajectory."
+        },
+        "failure_summary": "The Orchestrator agent consistently misunderstood the capabilities of the FileSurfer agent, leading to repeated failures as it assigned tasks that FileSurfer was not designed to perform."
+    },
+    {
+        "trajectory_id": "114d5fd0-e2ae-4b6d-a65a-870da2d19c08",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 19,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 23,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 27,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 31,
+                "step_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failure_category": "Intent not supported",
+                "category_reason": "Orchestrator misunderstood the role of FileSurfer and gave it to read the content of a PDF file",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 33,
+                "step_reason": "Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failed_agent": "FileSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The Orchestrator consistently misunderstood the capabilities of the FileSurfer agent, repeatedly assigning it tasks that it was not designed to perform, such as reading the content of PDF files. This fundamental misalignment between the Orchestrator's instructions and the FileSurfer's intended functionality led to multiple failures throughout the trajectory."
+        },
+        "failure_summary": "The Orchestrator agent consistently misunderstood the capabilities of the FileSurfer agent, leading to repeated failures as it assigned tasks that FileSurfer was not designed to perform."
+    },
+    {
+        "trajectory_id": "2ddae3b7a208e3c25f14d82d7a1faaaa1832fbf950b4dac345e755c4c361f294",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 9,
+                "step_reason": "Failed to follow price listings on the webpage and did not extract the lowest price for a Single Family house sold in Queen Anne in January 2023. Maybe the webpage did not have the information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to follow price listings on the webpage and did not extract the lowest price for a Single Family house sold in Queen Anne in January 2023. Maybe the webpage did not have the information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 13,
+                "step_reason": "Failed to perform refined search on zillow",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search on zillow",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 17,
+                "step_reason": "Failed to perform relevant search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform relevant search",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 25,
+                "step_reason": "Failed to perform refined search on realtor",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search on realtor",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 36,
+                "step_reason": "Failed to perform refined search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 40,
+                "step_reason": "Failed to perform refined search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 52,
+                "step_reason": "Failed to perform refined search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 59,
+                "step_reason": "Failed to perform refined search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 63,
+                "step_reason": "Verify you are not a bot error",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Verify you are not a bot error",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 10,
+                "step_number": 75,
+                "step_reason": "Failed to perform refined search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 11,
+                "step_number": 79,
+                "step_reason": "Failed to perform refined search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 12,
+                "step_number": 92,
+                "step_reason": "Asked websurfer to email",
+                "failure_category": "Intent not supported",
+                "category_reason": "Asked websurfer to email",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 13,
+                "step_number": 96,
+                "step_reason": "Asked websurfer to email",
+                "failure_category": "Intent not supported",
+                "category_reason": "Asked websurfer to email",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 14,
+                "step_number": 100,
+                "step_reason": "Asked websurfer to email",
+                "failure_category": "Intent not supported",
+                "category_reason": "Asked websurfer to email",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 15,
+                "step_number": 104,
+                "step_reason": "Asked websurfer to email",
+                "failure_category": "Intent not supported",
+                "category_reason": "Asked websurfer to email",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 16,
+                "step_number": 108,
+                "step_reason": "Asked websurfer to email",
+                "failure_category": "Intent not supported",
+                "category_reason": "Asked websurfer to email",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 17,
+                "step_number": 112,
+                "step_reason": "Asked websurfer to email",
+                "failure_category": "Intent not supported",
+                "category_reason": "Asked websurfer to email",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 18,
+                "step_number": 118,
+                "step_reason": "Failed to perform refined search",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Failed to perform refined search",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The root cause of the overall failure was the WebSurfer agent's repeated inability to perform refined searches effectively. This led to multiple instances where it failed to retrieve the necessary information about single-family house prices in Queen Anne for January 2023. Additionally, the Orchestrator's requests for the WebSurfer to send emails, which is beyond its intended capabilities, further compounded the failures."
+        },
+        "failure_summary": "The WebSurfer agent repeatedly failed to perform refined searches to retrieve necessary information, and the Orchestrator made unsupported requests for emailing, leading to multiple failures throughout the trajectory."
+    },
+    {
+        "trajectory_id": "0ec4371851b96837b0a81b3dd3df401415061bb532fbafeb4609f3337c358508",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 9,
+                "step_reason": "Websurfer did not give a full list of gyms within 5 miles of the Mothman Museum. Provided partial l ist",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not give a full list of gyms within 5 miles of the Mothman Museum. Provided partial l ist",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 10,
+                "step_reason": "Orchestrator started verification on incomplete information from Websurfer",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator started verification on incomplete information from Websurfer",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The root cause of the overall failure was the Orchestrator's misinterpretation of the incomplete output provided by WebSurfer. The WebSurfer agent failed to adhere to instructions by not providing a complete list of gyms within the specified distance. Consequently, the Orchestrator made decisions based on this incomplete information, leading to an unsatisfactory final response to the user."
+        },
+        "failure_summary": "The orchestrator misinterpeted the information provided by WebSurfer which was incomplete due to WebSurfer not following the instruction properly."
+    },
+    {
+        "trajectory_id": "5d0080cb-90d7-4712-bc33-848150e917d3",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 13,
+                "step_reason": "Was not able download paper PDF",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Was not able download paper PDF",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 15,
+                "step_reason": "Hallucinated that PDF is downloaded",
+                "failure_category": "Invention of new information",
+                "category_reason": "Hallucinated that PDF is downloaded",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 17,
+                "step_reason": "Websurfer was to examine content of PDF (wrongly assumed to be downloaded) to find volume of fish bag but did some other random stuff. It could have said PDF not available",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer was to examine content of PDF (wrongly assumed to be downloaded) to find volume of fish bag but did some other random stuff. It could have said PDF not available",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 19,
+                "step_reason": "Hallucinated that PDF is downloaded",
+                "failure_category": "Invention of new information",
+                "category_reason": "Hallucinated that PDF is downloaded",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 21,
+                "step_reason": "Filesurfer was asked to examine content of PDF (wrongly assumed to be downloaded), it said file not found",
+                "failure_category": "Intent not supported",
+                "category_reason": "Filesurfer was asked to examine content of PDF (wrongly assumed to be downloaded), it said file not found",
+                "failed_agent": "FileSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 34,
+                "step_reason": "Orchestrator did not give clear instruction to Filesurfer on how to check downloaded file it could have given downloaded file information /workspace/ojsboss,+Journal+manager,+16_243-1254-2-PB.pdf",
+                "failure_category": "Invalid Invocation",
+                "category_reason": "Orchestrator did not give clear instruction to Filesurfer on how to check downloaded file it could have given downloaded file information /workspace/ojsboss,+Journal+manager,+16_243-1254-2-PB.pdf",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 35,
+                "step_reason": "Hallucinated some random file location",
+                "failure_category": "Invention of new information",
+                "category_reason": "Hallucinated some random file location",
+                "failed_agent": "FileSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 50,
+                "step_reason": "Hallucinated that the file was downloaded by Websurfer (2nd attempt)",
+                "failure_category": "Invention of new information",
+                "category_reason": "Hallucinated that the file was downloaded by Websurfer (2nd attempt)",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 51,
+                "step_reason": "ResponsibleAIPolicyViolation (jailbreak=true), Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "ResponsibleAIPolicyViolation (jailbreak=true), Error code: 400. ResponsibleAIPolicyViolation. The response was filtered due to the prompt triggering Azure OpenAI's content management policy. Please modify your prompt and retry. To learn more about our content filtering policies please read our documentation:",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The Orchestrator agent consistently hallucinated the successful download of the PDF file, leading to a series of misguided instructions to both WebSurfer and FileSurfer. This fundamental misunderstanding of the file's availability caused multiple downstream failures, as the agents were tasked with actions based on incorrect assumptions."
+        },
+        "failure_summary": "The Orchestrator agent consistently hallucinated the successful download of the PDF file, leading to multiple failures as it issued instructions based on incorrect assumptions about the file's availability."
+    },
+    {
+        "trajectory_id": "6e3be83d1949fa52cba03fb1ce4b5b3bf7e37a83fd7d67694b10b2e439d90cf8",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 9,
+                "step_reason": "Websurfer could not verify if the gyms were within 5 minutes walk from NYSE, just gave random list of types of martial arts gyms in NYC",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer could not verify if the gyms were within 5 minutes walk from NYSE, just gave random list of types of martial arts gyms in NYC",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 10,
+                "step_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 11,
+                "step_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 15,
+                "step_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 19,
+                "step_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator assumed the websurfer is giving list of gyms within 5 minutes walk from NYSE but it was giving list martial arts types",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 21,
+                "step_reason": "Websurfer could have clicked on martial art tab but it clicked on details first",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer could have clicked on martial art tab but it clicked on details first",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 25,
+                "step_reason": "Websurfer did not gather address of gym",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not gather address of gym",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 29,
+                "step_reason": "ResponsibleAIPolicyViolation (jailbreak=true)",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "ResponsibleAIPolicyViolation (jailbreak=true)",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The root cause of the overall failure was the Orchestrator's misinterpretation of the incomplete output provided by WebSurfer. The WebSurfer agent failed to adhere to instructions by not providing a complete list of gyms within the specified distance. Consequently, the Orchestrator made decisions based on this incomplete information, leading to an unsatisfactory final response to the user."
+        },
+        "failure_summary": "The orchestrator misinterpeted the information provided by WebSurfer which was incomplete due to WebSurfer not following the instruction properly and Orchestrator not recovering from earlier mistakes of assuming certain stores did not have salads under $15."
+    },
+    {
+        "trajectory_id": "797f7a5b65ca28b7e7156e7db1e9f117bd4a021de0cd512bfdbb0be897d89eab",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 6,
+                "step_reason": "Orchestrator asked websurfer to give list of restaurents with vegan mains under $15 but websurfer failed to give the complete list",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Orchestrator asked websurfer to give list of restaurents with vegan mains under $15 but websurfer failed to give the complete list",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 7,
+                "step_reason": "Orchestrator worked on whatever list was provided by the websurfer did not check if was comprehensive or not",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator worked on whatever list was provided by the websurfer did not check if was comprehensive or not",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 10,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 14,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 18,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 22,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 30,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 34,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 38,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 10,
+                "step_number": 42,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 11,
+                "step_number": 46,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 12,
+                "step_number": 51,
+                "step_reason": "Orchestrator came up with a plan based on incomplete information and asked to search for casual or ethnic cuisine restaurants but the user specifically asked for vegan mains under $15",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator came up with a plan based on incomplete information and asked to search for casual or ethnic cuisine restaurants but the user specifically asked for vegan mains under $15",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 13,
+                "step_number": 53,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 14,
+                "step_number": 57,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 15,
+                "step_number": 61,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 16,
+                "step_number": 65,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 17,
+                "step_number": 69,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 18,
+                "step_number": 73,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 19,
+                "step_number": 77,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 20,
+                "step_number": 81,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 21,
+                "step_number": 85,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 22,
+                "step_number": 89,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 23,
+                "step_number": 93,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 24,
+                "step_number": 97,
+                "step_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not check vegan mains on the specified restaurent and just surfed the website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 25,
+                "step_number": 109,
+                "step_reason": "Orchestrator came up with a plan based on incomplete information and asked to search for casual or ethnic cuisine restaurants but the user specifically asked for vegan mains under $15",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator came up with a plan based on incomplete information and asked to search for casual or ethnic cuisine restaurants but the user specifically asked for vegan mains under $15",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 26,
+                "step_number": 113,
+                "step_reason": "RAI Policy Violation + Website not allowing agent access",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "RAI Policy Violation + Website not allowing agent access",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The orchestrator misinterpreted the incomplete information provided by WebSurfer, which failed to adhere to instructions by not providing a comprehensive list of vegan mains under $15. This led the Orchestrator to formulate plans based on incorrect assumptions, resulting in multiple failures throughout the trajectory."
+        },
+        "failure_summary": "The orchestrator misinterpreted the incomplete information provided by WebSurfer, which failed to adhere to instructions by not providing a comprehensive list of vegan mains under $15. This led the Orchestrator to formulate plans based on incorrect assumptions, resulting in multiple failures throughout the trajectory."
+    },
+    {
+        "trajectory_id": "624cbf11-6a41-4692-af9c-36b3e5ca3130",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 13,
+                "step_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 17,
+                "step_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 21,
+                "step_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 25,
+                "step_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did provide flavours but did not provide the year information. Basically it should have understood that flavours are clickable and year info can be obtained by clicking on flavours",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 27,
+                "step_reason": "Orchestrator worked on information without year info and guessed two potential flavours which are oldest",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator worked on information without year info and guessed two potential flavours which are oldest",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 31,
+                "step_reason": "Orchestrator worked on information without year info and guessed two potential flavours which are oldest",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator worked on information without year info and guessed two potential flavours which are oldest",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 37,
+                "step_reason": "Websurfer did not provide all the information about wavy gravy flavour",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not provide all the information about wavy gravy flavour",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 44,
+                "step_reason": "Websurfer cannot provide date related information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer cannot provide date related information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 48,
+                "step_reason": "Websurfer cannot provide date related information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer cannot provide date related information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 10,
+                "step_number": 52,
+                "step_reason": "Websurfer cannot provide date related information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer cannot provide date related information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 11,
+                "step_number": 56,
+                "step_reason": "Websurfer cannot provide date related information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer cannot provide date related information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 12,
+                "step_number": 64,
+                "step_reason": "Websurfer cannot provide date related information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer cannot provide date related information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 13,
+                "step_number": 68,
+                "step_reason": "Websurfer cannot provide date related information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer cannot provide date related information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 14,
+                "step_number": 72,
+                "step_reason": "Websurfer cannot provide date related information",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer cannot provide date related information",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 15,
+                "step_number": 79,
+                "step_reason": "Websurfer did not inspect image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not inspect image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 16,
+                "step_number": 86,
+                "step_reason": "Websurfer did not inspect image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer did not inspect image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 17,
+                "step_number": 90,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 18,
+                "step_number": 94,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 19,
+                "step_number": 98,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 20,
+                "step_number": 102,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 21,
+                "step_number": 106,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 22,
+                "step_number": 110,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 23,
+                "step_number": 121,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 24,
+                "step_number": 125,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 25,
+                "step_number": 129,
+                "step_reason": "Could not inspect the photo or image and the last line",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Could not inspect the photo or image and the last line",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 5,
+            "reason_for_root_cause": "The Orchestrator's misinterpretation of WebSurfer's incomplete output, particularly the absence of year information for the ice cream flavors, led to incorrect assumptions and decisions. This misunderstanding caused the Orchestrator to make guesses about the oldest flavors without sufficient data, resulting in a series of failures throughout the trajectory."
+        },
+        "failure_summary": "The Orchestrator's misinterpretation of WebSurfer's incomplete output, particularly the absence of year information for the ice cream flavors, led to incorrect assumptions and decisions. This misunderstanding caused the Orchestrator to make guesses about the oldest flavors without sufficient data, resulting in a series of failures throughout the trajectory."
+    },
+    {
+        "trajectory_id": "16d825ff-1623-4176-a5b5-42e0f5c2b0ac",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "WebSurfer did not get arrival time information which is important",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get arrival time information which is important",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 13,
+                "step_reason": "WebSurfer did  scroll but did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did  scroll but did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 17,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 25,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 29,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 33,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 37,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 41,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 56,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 10,
+                "step_number": 60,
+                "step_reason": "WebSurfer did not get information for specified date",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not get information for specified date",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 11,
+                "step_number": 66,
+                "step_reason": "Orchestrator try to contact through email which might not be good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator try to contact through email which might not be good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 12,
+                "step_number": 70,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 13,
+                "step_number": 74,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 14,
+                "step_number": 78,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 15,
+                "step_number": 82,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 16,
+                "step_number": 86,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 17,
+                "step_number": 90,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 18,
+                "step_number": 101,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 19,
+                "step_number": 105,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 20,
+                "step_number": 109,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 21,
+                "step_number": 116,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email which is not good strategy",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 22,
+                "step_number": 120,
+                "step_reason": "Orchestrator did not properly interpret user intent again trying to email/phone which is not good strategy",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator did not properly interpret user intent again trying to email/phone which is not good strategy",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The primary root cause of the failures in this trajectory is the WebSurfer's inability to retrieve specific arrival time information for the specified date. This lack of crucial information led to a series of misinterpretations by the Orchestrator, which repeatedly attempted to contact through email—a strategy misaligned with the user's intent. The cascading effect of these initial shortcomings resulted in multiple failures throughout the trajectory."
+        },
+        "failure_summary": "The primary root cause of the failures in this trajectory is the WebSurfer's inability to retrieve specific arrival time information for the specified date. This lack of crucial information led to a series of misinterpretations by the Orchestrator, which repeatedly attempted to contact through email—a strategy misaligned with the user's intent. The cascading effect of these initial shortcomings resulted in multiple failures throughout the trajectory."
+    },
+    {
+        "trajectory_id": "55f4258484c5b398956133128a50462a767da211f8f72aa5ac5bbffb9bcbba1a",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 12,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 16,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 20,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 24,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 28,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 32,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 36,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 9,
+                "step_number": 43,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 10,
+                "step_number": 47,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 11,
+                "step_number": 51,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 12,
+                "step_number": 55,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 13,
+                "step_number": 59,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 14,
+                "step_number": 63,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 15,
+                "step_number": 70,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 16,
+                "step_number": 74,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 17,
+                "step_number": 78,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 18,
+                "step_number": 82,
+                "step_reason": "did not provide full list of movies/series with Ted Danson",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "did not provide full list of movies/series with Ted Danson",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 19,
+                "step_number": 86,
+                "step_reason": "RAI Policy Violation + Website not allowing agent access",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "RAI Policy Violation + Website not allowing agent access",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is WebSurfer's failure to provide a comprehensive list of movies and series featuring Ted Danson as instructed. This lack of adherence to the plan led to the Orchestrator being unable to proceed effectively, resulting in multiple failures throughout the trajectory."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is WebSurfer's failure to provide a comprehensive list of movies and series featuring Ted Danson as instructed. This lack of adherence to the plan led to the Orchestrator being unable to proceed effectively, resulting in multiple failures throughout the trajectory."
+    },
+    {
+        "trajectory_id": "557e78eceec08ca8b0da5f9fdaca6e1c7ec6140a8ce600983ee716327dab005e",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 9,
+                "step_reason": "Did not provide complete list of bars that are closest to Mummers Museum",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Did not provide complete list of bars that are closest to Mummers Museum",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 14,
+                "step_reason": "Started working on whatever list was provided by WebSurfer without verifying if it was complete",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Started working on whatever list was provided by WebSurfer without verifying if it was complete",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 20,
+                "step_reason": "Did not provide distance information for bars that are closest to Mummers Museum",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Did not provide distance information for bars that are closest to Mummers Museum",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 24,
+                "step_reason": "Did not provide distance information for bars that are closest to Mummers Museum",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Did not provide distance information for bars that are closest to Mummers Museum",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 28,
+                "step_reason": "Did not provide distance information for bars that are closest to Mummers Museum",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Did not provide distance information for bars that are closest to Mummers Museum",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 32,
+                "step_reason": "ResponsibleAIPolicyViolation (jailbreak=true)",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "ResponsibleAIPolicyViolation (jailbreak=true)",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the Orchestrator's misinterpretation of the incomplete information provided by WebSurfer. The Orchestrator proceeded with the task based on the partial list of bars without verifying its completeness, leading to subsequent failures. Additionally, WebSurfer's failure to provide essential distance information further compounded the issues, ultimately resulting in a ResponsibleAIPolicyViolation."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the Orchestrator's misinterpretation of the incomplete information provided by WebSurfer. The Orchestrator proceeded with the task based on the partial list of bars without verifying its completeness, leading to subsequent failures. Additionally, WebSurfer's failure to provide essential distance information further compounded the issues, ultimately resulting in a ResponsibleAIPolicyViolation."
+    },
+    {
+        "trajectory_id": "72c06643-a2fa-4186-aa5c-9ec33ae9b445",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 9,
+                "step_reason": "Websurfer got verify you are not a robot",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Websurfer got verify you are not a robot",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 21,
+                "step_reason": "Websurfer got verify you are not a robot",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Websurfer got verify you are not a robot",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 25,
+                "step_reason": "Assistant did not have the correct information of density of freon-12 at the temperature of the marianas trench and still continued working on it",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Assistant did not have the correct information of density of freon-12 at the temperature of the marianas trench and still continued working on it",
+                "failed_agent": "Assistant"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The primary root cause of the failures in this trajectory is the WebSurfer's inability to bypass CAPTCHA challenges, which are designed to prevent automated access to web content. This limitation hindered the agent's ability to retrieve necessary information, leading to subsequent failures in the task execution."
+        },
+        "failure_summary": "The primary root cause of the failures in this trajectory is the WebSurfer's inability to bypass CAPTCHA challenges, which are designed to prevent automated access to web content. This limitation hindered the agent's ability to retrieve necessary information, leading to subsequent failures in the task execution."
+    },
+    {
+        "trajectory_id": "2dfc4c37-fec1-4518-84a7-10095d30ad75",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 17,
+                "step_reason": "Assistant omitted a movie name from top 10 domestic movies list and thus got the final answer wrong",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Assistant omitted a movie name from top 10 domestic movies list and thus got the final answer wrong",
+                "failed_agent": "Assistant"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the Assistant's omission of a movie name from the top 10 domestic movies list. This oversight led to an incorrect final answer, as the Assistant failed to accurately interpret and utilize the information retrieved."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the Assistant's omission of a movie name from the top 10 domestic movies list. This oversight led to an incorrect final answer, as the Assistant failed to accurately interpret and utilize the information retrieved."
+    },
+    {
+        "trajectory_id": "a3fbeb63-0e8c-4a11-bff6-0e3b484c3e9c",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 21,
+                "step_reason": "ResponsibleAIPolicyViolation (jailbreak=True)",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "ResponsibleAIPolicyViolation (jailbreak=True)",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the Orchestrator's prompt/generation that violated the Responsible AI Policy, specifically leading to a jailbreak "
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the Orchestrator's prompt/generation that violated the Responsible AI Policy, specifically leading to a jailbreak "
+    },
+    {
+        "trajectory_id": "929b45f34805280d77c61d1e093e3d4e551d77ddb6ecd73552b12b1af286388d",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "WebSurfer was asked to collect genome files from May 2020 but did not ensure the files were from that date infact gave files of date around 2005",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer was asked to collect genome files from May 2020 but did not ensure the files were from that date infact gave files of date around 2005",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 7,
+                "step_reason": "Orchestrator did not verify the information from WebSurfer and proceeded with the incorrect information",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator did not verify the information from WebSurfer and proceeded with the incorrect information",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the Orchestrator's failure to verify the accuracy of the information provided by WebSurfer. WebSurfer collected genome files that were not from the specified date of May 2020, but instead provided files from around 2005. The Orchestrator's lack of verification led to the propagation of incorrect information, resulting in subsequent failures."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the Orchestrator's failure to verify the accuracy of the information provided by WebSurfer. WebSurfer collected genome files that were not from the specified date of May 2020, but instead provided files from around 2005. The Orchestrator's lack of verification led to the propagation of incorrect information, resulting in subsequent failures."
+    },
+    {
+        "trajectory_id": "42576abe-0deb-4869-8c63-225c2d75a95a",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 2,
+                "step_reason": "The orchestrator hallucinated in identifying the object of verb-object-subject in the sentence. Even though it correctly deduced the thing doing the liking is actually the object of the sentence, but later it said Apple is object instead of I",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "The orchestrator hallucinated in identifying the object of verb-object-subject in the sentence. Even though it correctly deduced the thing doing the liking is actually the object of the sentence, but later it said Apple is object instead of I",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the Orchestrator's misinterpretation of the sentence structure, leading to an incorrect identification of the object in a verb-object-subject construction. Despite initially recognizing that the entity performing the action was actually the object, the Orchestrator ultimately misidentified 'Apple' as the object instead of 'I', resulting in a failure to accurately process the information."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the Orchestrator's misinterpretation of the sentence structure, leading to an incorrect identification of the object in a verb-object-subject construction. Despite initially recognizing that the entity performing the action was actually the object, the Orchestrator ultimately misidentified 'Apple' as the object instead of 'I', resulting in a failure to accurately process the information."
+    },
+    {
+        "trajectory_id": "14569e28-c88c-43e4-8c32-097d35b9a67d",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 12,
+                "step_reason": "The assistant invented a new operator in Unlambda that does not exist, leading to an incorrect answer.",
+                "failure_category": "Invention of new information",
+                "category_reason": "The assistant invented a new operator in Unlambda that does not exist, leading to an incorrect answer.",
+                "failed_agent": "Assistant"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the Assistant's invention of a non-existent operator in the Unlambda programming language. This fabrication of information led to an incorrect answer, as the Assistant deviated from established knowledge and introduced an element that does not exist within the Unlambda framework."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the Assistant's invention of a non-existent operator in the Unlambda programming language. This fabrication of information led to an incorrect answer, as the Assistant deviated from established knowledge and introduced an element that does not exist within the Unlambda framework."
+    },
+    {
+        "trajectory_id": "2aa5dd83fbcd0dce9a3dd4592106e5b5edf738008d932e357d477bba80e59ccf",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "ResponsibleAIPolicyViolation (jailbreak=True)",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "ResponsibleAIPolicyViolation (jailbreak=True)",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the WebSurfer's prompt/generation that violated the Responsible AI Policy, specifically leading to a jailbreak."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the WebSurfer's prompt/generation that violated the Responsible AI Policy, specifically leading to a jailbreak."
+    },
+    {
+        "trajectory_id": "42d4198c-5895-4f0a-b0c0-424a66465d83",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 19,
+                "step_reason": "Orchestrator thought the request is satisfied even though the request was not satisfied",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator thought the request is satisfied even though the request was not satisfied",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the Orchestrator's misinterpretation of the task completion status. The Orchestrator incorrectly assumed that the request had been satisfied, despite the fact that it had not been fulfilled. This misunderstanding led to a failure in accurately assessing the progress of the task."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the Orchestrator's misinterpretation of the task completion status. The Orchestrator incorrectly assumed that the request had been satisfied, despite the fact that it had not been fulfilled. This misunderstanding led to a failure in accurately assessing the progress of the task."
+    },
+    {
+        "trajectory_id": "72e110e7-464c-453c-a309-90a95aed6538",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 9,
+                "step_reason": "",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "WebSurfer encountered a guardrail violation, which prevented it from completing the task as intended. It was website not allowing agent access."
+        },
+        "failure_summary": "WebSurfer encountered a guardrail violation, which prevented it from completing the task as intended. It was website not allowing agent access."
+    },
+    {
+        "trajectory_id": "748899d9d70c09beb3bd48ac8a3658bdcfd2f9114fe6dc4c4b8d2f9541ef4607",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 32,
+                "step_reason": "The Websurfer failed to get cost estimates from FedEx from Rio de Janeiro to NYC, missing a key part of the user's request.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The Websurfer failed to get cost estimates from FedEx from Rio de Janeiro to NYC, missing a key part of the user's request.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 36,
+                "step_reason": "The Websurfer failed to get cost estimates from USPS from Rio de Janeiro to NYC, missing a key part of the user's request.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The Websurfer failed to get cost estimates from USPS from Rio de Janeiro to NYC, missing a key part of the user's request.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 40,
+                "step_reason": "The Websurfer failed to get cost estimates from DHL from Rio de Janeiro to NYC, missing a key part of the user's request.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The Websurfer failed to get cost estimates from DHL from Rio de Janeiro to NYC, missing a key part of the user's request.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 55,
+                "step_reason": "The Websurfer failed to get a quote from DHL from Rio de Janeiro to NYC instead just clicked on accept all link",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The Websurfer failed to get a quote from DHL from Rio de Janeiro to NYC instead just clicked on accept all link",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 71,
+                "step_reason": "The Websurfer typed USA but it should have typed NYC to get accurate pricing information.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The Websurfer typed USA but it should have typed NYC to get accurate pricing information.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 91,
+                "step_reason": "The Websurfer failed to get quote from DHL website and also did not checkmark that envelope only contains documents",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The Websurfer failed to get quote from DHL website and also did not checkmark that envelope only contains documents",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 95,
+                "step_reason": "The websurfer was asked to go for USPS website but is stayed on DHL website",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The websurfer was asked to go for USPS website but is stayed on DHL website",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 8,
+                "step_number": 124,
+                "step_reason": "The Orchestrator fabricated pricing information without any basis from the web search results",
+                "failure_category": "Invention of new information",
+                "category_reason": "The Orchestrator fabricated pricing information without any basis from the web search results",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to adhere to the instructions provided for obtaining accurate shipping cost estimates from various courier services. The WebSurfer consistently missed key details in the user's request, such as specifying the correct destination and ensuring all necessary options were selected on the courier websites. This lack of adherence to the plan led to incomplete or inaccurate information being gathered, which ultimately resulted in the Orchestrator fabricating pricing information without a valid basis."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to adhere to the instructions provided for obtaining accurate shipping cost estimates from various courier services. The WebSurfer consistently missed key details in the user's request, such as specifying the correct destination and ensuring all necessary options were selected on the courier websites. This lack of adherence to the plan led to incomplete or inaccurate information being gathered, which ultimately resulted in the Orchestrator fabricating pricing information without a valid basis."
+    },
+    {
+        "trajectory_id": "9baaa267c95f9d8b75741ee9169c50563d297cfa592c20deaffd30dbc5984c74",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 21,
+                "step_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 25,
+                "step_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 29,
+                "step_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 33,
+                "step_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer failed to type dates into the website to get relevant weather data.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 53,
+                "step_reason": "Max time (1500s) reached",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Max time (1500s) reached",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to input the required date information into the weather website. This omission prevented the retrieval of relevant weather data, leading to multiple instances of non-adherence to the task instructions. Ultimately, this hindered the Orchestrator's ability to complete the task within the allotted time, resulting in a timeout failure."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to input the required date information into the weather website. This omission prevented the retrieval of relevant weather data, leading to multiple instances of non-adherence to the task instructions. Ultimately, this hindered the Orchestrator's ability to complete the task within the allotted time, resulting in a timeout failure."
+    },
+    {
+        "trajectory_id": "b36ef2d8f2643b80e74a44ce3403f674ecb2aed7fd36afeaa289061a59feef92",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "WebSurfer did not provide complete list of gyms within 200m of Tompkins Square Park",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer did not provide complete list of gyms within 200m of Tompkins Square Park",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 7,
+                "step_reason": "Orchestrator failed to correctly interpret WebSurfer's output and assumed that partial gyms given by WebSurfer were sufficient",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "Orchestrator failed to correctly interpret WebSurfer's output and assumed that partial gyms given by WebSurfer were sufficient",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 21,
+                "step_reason": "RAI Policy Violation + Website not allowing agent access",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "RAI Policy Violation + Website not allowing agent access",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 2,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the Orchestrator's misinterpretation of the incomplete information provided by WebSurfer. The Orchestrator proceeded with the task based on the partial list of gyms without verifying its completeness, leading to subsequent failures. Additionally, WebSurfer's inability to access the website due to RAI Policy Violation further compounded the issues."
+        },
+        "failure_summary": ""
+    },
+    {
+        "trajectory_id": "73c1b9fe-ee1d-4cf4-96ca-35c08f97b054",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 13,
+                "step_reason": "Websurfer was searching for alligator information and suddenly the RAI Policy violation from openAI was triggered",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Websurfer was searching for alligator information and suddenly the RAI Policy violation from openAI was triggered",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the WebSurfer's prompt/generation that violated the Responsible AI Policy, specifically leading to RAI."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the WebSurfer's prompt/generation that violated the Responsible AI Policy, specifically leading to RAI."
+    },
+    {
+        "trajectory_id": "0a65cb96-cb6e-4a6a-8aae-c1084f613456",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 56,
+                "step_reason": "The WebSurfer failed to put the year '2015' to get NASA Astronomy Pictures of the Day for that year.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The WebSurfer failed to put the year '2015' to get NASA Astronomy Pictures of the Day for that year.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 64,
+                "step_reason": "The WebSurfer failed to put the year '2015' to get NASA Astronomy Pictures of the Day for that year.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The WebSurfer failed to put the year '2015' to get NASA Astronomy Pictures of the Day for that year.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 93,
+                "step_reason": "The WebSurfer attempted to access a website but got RAI Policy Violation from openAI",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "The WebSurfer attempted to access a website but got RAI Policy Violation from openAI",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to adhere to the instructions provided for retrieving NASA Astronomy Pictures of the Day for the year 2015. The WebSurfer consistently omitted the specified year when searching for the images, leading to incomplete or incorrect results. Additionally, the WebSurfer encountered a Responsible AI Policy Violation when attempting to access a website, further hindering its ability to complete the task as intended."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to adhere to the instructions provided for retrieving NASA Astronomy Pictures of the Day for the year 2015. The WebSurfer consistently omitted the specified year when searching for the images, leading to incomplete or incorrect results. Additionally, the WebSurfer encountered a Responsible AI Policy Violation when attempting to access a website, further hindering its ability to complete the task as intended."
+    },
+    {
+        "trajectory_id": "56137764-b4e0-45b8-9c52-1866420c3df5",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 5,
+                "step_reason": "The agent encountered a policy violation when attempting to access website. The response was filtered due to the prompt triggering Azure OpenAI's content management policy.",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "The agent encountered a policy violation when attempting to access website. The response was filtered due to the prompt triggering Azure OpenAI's content management policy.",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is the WebSurfer's prompt/generation that violated the Responsible AI Policy, specifically leading to a policy violation when attempting to access the website."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is the WebSurfer's prompt/generation that violated the Responsible AI Policy, specifically leading to a policy violation when attempting to access the website."
+    },
+    {
+        "trajectory_id": "9e31099fffa6a3891c94934fd4fc2f3f522d51c1904ff3561f3a10e4bf245821",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 41,
+                "step_reason": "The WebSurfer agent failed to search for relevant business news articles, financial news reports, or SEC filings instead clicked on control.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The WebSurfer agent failed to search for relevant business news articles, financial news reports, or SEC filings instead clicked on control.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 59,
+                "step_reason": "The WebSurfer was asked to confirm if bloomberg contains information about the c-suite executives at monday.com but it failed to do so.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The WebSurfer was asked to confirm if bloomberg contains information about the c-suite executives at monday.com but it failed to do so.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 90,
+                "step_reason": "The WebSurfer was asked to visit SEC-EDGAR database and get the list of c-suite executives at the time of IPO but it failed to do so.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The WebSurfer was asked to visit SEC-EDGAR database and get the list of c-suite executives at the time of IPO but it failed to do so.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 4,
+                "step_number": 113,
+                "step_reason": "The WebSurfer was asked to visit the link 'monday.com - Corporate Governance - Management Team' and list the names and positions of the current C-suite executives at monday.com but it failed to do so. Instead clicked on control for the current website on nocamel website.",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The WebSurfer was asked to visit the link 'monday.com - Corporate Governance - Management Team' and list the names and positions of the current C-suite executives at monday.com but it failed to do so. Instead clicked on control for the current website on nocamel website.",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 5,
+                "step_number": 117,
+                "step_reason": "The websurfer was asked to click on monday.com press release link but instead it clicked Editors’ & Readers’ Choice: 10 Favorite NoCamels Articles",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The websurfer was asked to click on monday.com press release link but instead it clicked Editors’ & Readers’ Choice: 10 Favorite NoCamels Articles",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 6,
+                "step_number": 121,
+                "step_reason": "The websurfer was asked to click on monday.com press release link but instead it Search tab in on nocamel article",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "The websurfer was asked to click on monday.com press release link but instead it Search tab in on nocamel article",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 7,
+                "step_number": 129,
+                "step_reason": "Max rounds reached (30)",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "Max rounds reached (30)",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to adhere to the instructions provided for gathering information about the C-suite executives at monday.com. The WebSurfer consistently deviated from the specified tasks, such as failing to search for relevant business news articles, confirm information on Bloomberg, access the SEC-EDGAR database, and visit designated links. These lapses in following the plan led to incomplete data collection and ultimately resulted in the Orchestrator reaching the maximum number of rounds without successfully completing the task."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the WebSurfer's repeated failure to adhere to the instructions provided for gathering information about the C-suite executives at monday.com. The WebSurfer consistently deviated from the specified tasks, such as failing to search for relevant business news articles, confirm information on Bloomberg, access the SEC-EDGAR database, and visit designated links. These lapses in following the plan led to incomplete data collection and ultimately resulted in the Orchestrator reaching the maximum number of rounds without successfully completing the task."
+    },
+    {
+        "trajectory_id": "b816bfce-3d80-4913-a07d-69b752ce6377",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 17,
+                "step_reason": "Orchestrator assumed that a file is downloaded when it was not",
+                "failure_category": "Invention of new information",
+                "category_reason": "Orchestrator assumed that a file is downloaded when it was not",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 24,
+                "step_reason": "The response was filtered due to the prompt triggering Azure OpenAI's content management policy",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "The response was filtered due to the prompt triggering Azure OpenAI's content management policy",
+                "failed_agent": "FileSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the Orchestrator's incorrect assumption that a file had been successfully downloaded when, in fact, it had not. This misjudgment led to the propagation of inaccurate information and subsequent failures in the task execution. Additionally, the FileSurfer encountered a Responsible AI Policy Violation when attempting to access content, further complicating the situation."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the Orchestrator's incorrect assumption that a file had been successfully downloaded when, in fact, it had not. This misjudgment led to the propagation of inaccurate information and subsequent failures in the task execution. Additionally, the FileSurfer encountered a Responsible AI Policy Violation when attempting to access content, further complicating the situation."
+    },
+    {
+        "trajectory_id": "57d9dc6935e8a40b02e7f8ec81768fe70e68a0c05f6866927c9fda38db38a486",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 17,
+                "step_reason": "Websurfer was asked to check for membership or annual pass but instead clicked on control",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "Websurfer was asked to check for membership or annual pass but instead clicked on control",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 21,
+                "step_reason": "WebSurfer was asked to check for membership or annual pass but instead clicked on licked FIELD TRIPS & GROUP",
+                "failure_category": "Instruction/Plan Adherence Failure",
+                "category_reason": "WebSurfer was asked to check for membership or annual pass but instead clicked on licked FIELD TRIPS & GROUP",
+                "failed_agent": "WebSurfer"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 31,
+                "step_reason": "Orchestrator failed to capture 2 adults and 2 kids in the final calculation. Only calculated for 2 adults and 1 kid.",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "Orchestrator failed to capture 2 adults and 2 kids in the final calculation. Only calculated for 2 adults and 1 kid.",
+                "failed_agent": "Orchestrator"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 3,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the Orchestrator's misalignment between the user's intent and the final calculation of the ticket prices. The Orchestrator failed to accurately account for the specified number of attendees, specifically omitting one child from the total count. This oversight led to an incorrect calculation that did not reflect the user's original request for tickets for 2 adults and 2 kids."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the Orchestrator's misalignment between the user's intent and the final calculation of the ticket prices. The Orchestrator failed to accurately account for the specified number of attendees, specifically omitting one child from the total count. This oversight led to an incorrect calculation that did not reflect the user's original request for tickets for 2 adults and 2 kids."
+    },
+    {
+        "trajectory_id": "a9074997e698f912b9e751779ea19c1e92fa148404e90e0ae997acea3f9559b0",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 4,
+                "step_reason": "The orchestrator did not search on tripadvisor website even though the user specifically requested highly rated hikes from tripadvisor",
+                "failure_category": "Intent Plan Misalignment",
+                "category_reason": "The orchestrator did not search on tripadvisor website even though the user specifically requested highly rated hikes from tripadvisor",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 2,
+                "step_number": 34,
+                "step_reason": "The Orchestrator worked on partial hike information from previous steps which was not given from tripadvisor leading to irrelevant results",
+                "failure_category": "Misinterpretation of Tool Output",
+                "category_reason": "The Orchestrator worked on partial hike information from previous steps which was not given from tripadvisor leading to irrelevant results",
+                "failed_agent": "Orchestrator"
+            },
+            {
+                "failure_id": 3,
+                "step_number": 52,
+                "step_reason": "The response was filtered due to the prompt triggering Azure OpenAI's content management policy",
+                "failure_category": "Guardrails Triggered",
+                "category_reason": "The response was filtered due to the prompt triggering Azure OpenAI's content management policy",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failures in this trajectory is the Orchestrator's misalignment with the user's intent, specifically in failing to utilize the TripAdvisor website as requested. This deviation from the user's explicit instructions led to the collection of irrelevant hike information, as the Orchestrator relied on incomplete data from previous steps rather than sourcing highly rated hikes directly from TripAdvisor. This misinterpretation and failure to adhere to the user's plan ultimately resulted in inaccurate and unsatisfactory outcomes."
+        },
+        "failure_summary": "The root cause of the failures in this trajectory is the Orchestrator's misalignment with the user's intent, specifically in failing to utilize the TripAdvisor website as requested. This deviation from the user's explicit instructions led to the collection of irrelevant hike information, as the Orchestrator relied on incomplete data from previous steps rather than sourcing highly rated hikes directly from TripAdvisor. This misinterpretation and failure to adhere to the user's plan ultimately resulted in inaccurate and unsatisfactory outcomes."
+    },
+    {
+        "trajectory_id": "f88066d274e265edd6cd9d61cd80a41accb3a14baf2297652fdd05cdf716d455",
+        "failures": [
+            {
+                "failure_id": 1,
+                "step_number": 17,
+                "step_reason": "The orchestration did not respond to websurfer and the agentic run abruptly stopped.",
+                "failure_category": "System Failure",
+                "category_reason": "The orchestration did not respond to websurfer and the agentic run abruptly stopped.",
+                "failed_agent": "WebSurfer"
+            }
+        ],
+        "root_cause": {
+            "failure_id": 1,
+            "reason_for_root_cause": "The root cause of the failure in this trajectory is a system failure where the Orchestrator did not respond to the WebSurfer agent, leading to an abrupt termination of the agentic run. This lack of communication between the agents resulted in an incomplete execution of the task."
+        },
+        "failure_summary": "The root cause of the failure in this trajectory is a system failure where the Orchestrator did not respond to the WebSurfer agent, leading to an abrupt termination of the agentic run. This lack of communication between the agents resulted in an incomplete execution of the task."
+    }
+]

@@ -1,0 +1,48 @@
+{
+  "experiment_kind": "zero_cost_local_https_mock",
+  "paid_provider_requests_authorized": false,
+  "real_credentials_loaded": false,
+  "provider_base_url": "127.0.0.1 loopback only",
+  "fake_credential_only": true,
+  "external_proxy": "127.0.0.1:9 (dead)",
+  "base_path": "/anthropic",
+  "mode": "detached",
+  "sse": false,
+  "h2": true,
+  "tools_enabled": false,
+  "model": "claude-agentsight-mock",
+  "claude_version": "2.1.303 (Claude Code)",
+  "agentsight_version": "agentsight 1.0.31",
+  "wrapped": null,
+  "detached": {
+    "mode": "detached",
+    "recorder_ready_before_cli": true,
+    "recorder_exit_code": 0,
+    "cli_exit_code": 0,
+    "cli_timed_out": false,
+    "mock_request_count": 1,
+    "mock_paths": [
+      "/anthropic/v1/messages"
+    ],
+    "prompt_reached_mock": true,
+    "database": {
+      "exists": true,
+      "counts": {
+        "llm_calls": 1,
+        "tool_calls": 0,
+        "token_usage": 1,
+        "network_targets": 1,
+        "process_nodes": 11,
+        "audit_events": 24
+      },
+      "audit_types": {
+        "llm": 2,
+        "process": 22
+      },
+      "network_hosts": [
+        "127.0.0.1:51117"
+      ]
+    }
+  },
+  "interpretation_rule": "If mock receives prompt but llm_calls stays zero, loss precedes the DB LLM record; do not infer the exact BPF/decoder stage without raw SSL evidence."
+}

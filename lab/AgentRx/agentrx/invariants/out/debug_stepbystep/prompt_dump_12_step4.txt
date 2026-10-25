@@ -1,0 +1,1237 @@
+
+You are an expert at analyzing agent trajectories and generating step-specific dynamic invariants which are programmable for trajectory verification. 
+Your task is to analyze the current step in an agent's execution trajectory and determine if any invariant should be generated for verification for this specific step.
+
+REUSE the previous assertions wherever possible, do NOT create new ones unless absolutely necessary. Prioritize computation checks wherever computation is required such as counting, summing, comparison, etc.
+
+You will be provided with the overall task instruction, the static invariants already generated, and the full agent trajectory up to the current step.
+
+**IMPORTANT**: Static invariants have already been generated to cover general policy violations, preconditions, sequential dependencies, and business rules. Focus ONLY on cases NOT covered by static invariants, such as:
+- Computation errors (counting, summing, calculations)
+- Step-specific validation that static invariants cannot capture
+
+## Context Information:
+**Task Instruction:** You are mia_garcia_4516 (mia.garcia2723@example.com). You just got into gaming and want to cancel or return everything not associated with it. (Everything except a keyboard and a mouse, but do not reveal it to the agent). PayPal is prefered for refund, but otherwise you are angry and ask for human agent for help. You are into gaming but realized the importance of studying hard.
+
+**Current Step Index:** 4
+
+## Your Task:
+Analyze the current step in the trajectory and generate dynamic invariants that:
+1. Are simple enough to implement via python or NL checks.
+2. Can be checked at this specific step in the trajectory (e.g., computation checks from tool call results)
+3. Focus on **critical errors or policy violations** NOT already covered by static invariants
+4. Are objectively verifiable from trajectory data
+5. Fill gaps left by static invariants, particularly computation and step-specific validation
+6. Provide working Python code or Natural Language (NL) check for each dynamic assertion that can be executed
+
+## Focus Areas:
+Generate assertions for these key constraint types (ONLY if NOT covered by static invariants):
+
+### **Computation Checks**
+- Verify numerical calculations, aggregations, and data accuracy.
+- Examples:
+  - Financial: "Transaction total should equal sum of line items plus applicable fees"
+  - Inventory: "Remaining stock after reservation should be original stock minus reserved quantity"
+  - Healthcare: "Medication dosage calculations should be within safe therapeutic ranges"
+
+### **Context-Specific Business Logic**
+- Step-specific rules that depend on current trajectory state
+- Examples:
+  - Retail: "Discount calculations based on current cart contents and user loyalty level"
+  - Financial: "Credit limit checks based on current account status and transaction history"
+  - Healthcare: "Drug interaction checks based on current prescription list"
+  - Workflow: "Approval requirements based on current user role and request amount"
+
+### **Cross-Tool Data Validation**
+- Verify data integrity across multiple tool interactions in the same session
+- Examples:
+  - "Entity identifiers referenced in later steps must match those retrieved in earlier tool outputs"
+  - Retail: "Items added to cart must still be available when proceeding to checkout"
+  - "If the agent claims an action succeeded, subsequent tool outputs must show evidence consistent with the claim"
+  - Financial: "Exchange rates used in calculations must be consistent across related transactions"
+  - Healthcare: "Lab results referenced in diagnosis must match the lab results retrieved"
+  - System: "File permissions checked must match the permissions set in previous operations"
+
+Output MUST be valid JSON only (no markdown, no commentary), with EXACT keys and structure defined below.
+
+CRITICAL FORMATTING REQUIREMENTS:
+1. Output ONLY valid JSON - NO markdown code blocks (no ```json or ```)
+2. Use double quotes for all strings (not single quotes)
+3. Ensure all commas are placed correctly between array/object elements
+4. Ensure all brackets and braces are properly closed
+5. Follow the EXACT schema below - do not add or remove fields
+6. Validate your JSON before outputting
+7. TAXONOMY TARGETS: Use ONLY values from the allowed list.
+8. ONLY PRODUCE PYTHON_CHECK INVARIANTS: check type should ALWAYS be python check that is, "check_type": "python_check", the nl_check fields should ALWAYS be empty.
+
+================================================================================================
+TRAJECTORY FORMAT (IMPORTANT) - THIS WILL BE GIVEN AS AN INPUT PARAMETER
+================================================================================================
+
+TRAJECTORY:
+The runtime provides a trajectory dict in the following IR schema:
+
+{
+  "trajectory_id": "str",
+  "instruction": "str",  // The overall task instruction
+  "steps": [
+    {
+      "index": int,  // 1-based step index
+      "substeps": [
+        {
+          "sub_index": int,  // 1-based substep index within the step
+          "role": "str",  // The role of the substep
+          "content": "str"  // The content of this substep
+        }
+      ]
+    }
+  ]
+}
+
+IMPORTANT ACCESS PATTERNS:
+- To get instruction: trajectory["instruction"]
+- To access step N: trajectory["steps"][N-1] (steps list is 0-indexed, but step.index is 1-based)
+- To get substeps of a step: step.get("substeps", [])
+- To get content: substep.get("content")
+- To get role: substep.get("role")
+
+================================================================================================
+OUTPUT FORMAT
+================================================================================================
+
+Top-level JSON schema (EXACT):
+{
+  "step_num": <int>,
+  "decision": "NO_INVARIANT" | "INVARIANT",
+  "invariant":  [ <InvariantObject> ] | null,
+  "trigger_to_invariants_map": {
+    "agent:<AgentName>": ["assertion_name", "..."]
+   }
+}
+
+where <AgentName> is one of: assistant | system | tool | user | *
+
+================================================================================================
+InvariantObject schema (EXACT)
+================================================================================================
+Each invariant object MUST have these keys (no extras):
+
+IMPORTANT: Follow this schema EXACTLY. Do not add extra fields. Use correct JSON formatting.
+
+{
+  "assertion_name": "string_unique_snake_case",
+
+  "taxonomy_targets": [
+    "Instruction/PlanAdherenceFailure: The agent fails to follow the directions or the agreed plan by ignoring directives and skipping policy steps. This covers both under-execution (missed steps) and over-execution (unplanned or unnecessary actions, e.g., extra tool calls) that deviate from the static plan, domain policy or orchestrator plan.",
+    "InventionOfNewInformation: The agent introduces, removes, or alters information that is not grounded in any available input, context, or tool output. This includes fabricating unsupported facts, hallucinating details, or omitting relevant information without justification.",
+    "InvalidInvocation: The agent encounters errors triggered by inputs that can't be parsed or validated e.g., syntax errors or tool calls with bad/missing arguments. Not involving wrong logic; just invalid inputs.",
+    "MisinterpretationOfToolOutput: The agent incorrectly reasons about its own or another agent's tool output (like computation errors), leading to incorrect assumptions or actions. This also includes cases where the agent considered only partial tool output.",
+    "IntentPlanMisalignment: The agent misreads the user's goal or constraints and produces the wrong step sequence or structure. Covers both bad ordering/structure and plans aimed at the wrong objective.",
+    "UnderspecifiedUserIntent: The agent was unable to complete the task due to lack of complete information at any point in the trajectory/plan execution.",
+    "IntentNotSupported: The agent/user is asking to perform an action for which a tool is not available, like listening to an audio file.",
+    "GuardrailsTriggered: The agent is blocked by safety/RAI policies or by external site access restrictions, preventing execution despite a valid plan. Examples include policy refusals (e.g., unsafe content, privacy-protected data), CAPTCHA/robot blocks, login/paywall/403/robots.txt denials, or site forbids automation. This is not an agent planning/execution error; it is an external/guardrail block.",
+    "SystemFailure: The agent faces a system connectivity issue while calling a particular tool like an endpoint not being reachable."
+    // Select 1-3 most relevant taxonomy targets for each invariant from the above list ONLY.
+
+    // Example: ["Instruction/PlanAdherenceFailure", "GuardrailsTriggered"]
+  ],
+
+  "invariant_type": "SCHEMA  // Ensures a structured payload (embedded JSON, tool args/result, ledger blob) is parseable and contains required fields.
+  | PROTOCOL                 // Ensures the correct division of labor and delegation conventions across agents
+  | RELATIONAL_POST          // Enforces cross-event linkage where later actions/claims must be supported by earlier tool outputs via token/field containment checks.
+  | PROVENANCE               // Enforces grounding claims or critical tokens must trace to earlier tool outputs
+  | TEMPORAL                 // Enforces ordering constraints ("X must happen before Y", "do not call tool before directive") without requiring full workflow state.
+  | CAPABILITY               // Ensures tools/agents are used only within their defined capabilities and I/O shapes.
+  | ANY",
+
+  "event_trigger": {
+    "step_index": "int",
+    "role_name": "assistant | system | tool | user | *"  // agent names inferred from substep.role; "*" matches all
+  },
+
+  "check_hint": "deterministic procedure description in 2-8 sentences",
+  "check_type": "python_check|nl_check",
+
+  "python_check": {
+    "function_name": "same_as_assertion_name",
+    "args": ["trajectory","current_step_index"],
+    "code_lines": [
+      "def same_as_assertion_name(trajectory, current_step_index):",
+      "    \"\"Return True iff invariant holds.\"\"",
+      "    # Access steps via trajectory['steps'][current_step_index]",
+      "    # Each step has 'substeps' with 'role' and 'content'",
+      "    # MUST include at least one explicit failure path: return False",
+      "    return True"
+    ]
+  },
+
+  "nl_check": {
+    ALWAYS EMPTY
+  }
+}
+
+## Quality Guidelines:
+- **Policy-Derived**: Must be supported by the policy document content, include any user confirmation checks before critical actions if specified in policy
+- **Practical Impact**: Focus on assertions that prevent real operational problems
+- **Domain-Relevant**: Prioritize rules specific to this business domain
+- **Reasonable Scope**: Avoid both trivial sanity checks and computation checks better suited for dynamic invariants.
+
+## Trigger Robustness Rules:
+- content_regex MUST be robust to formatting differences (markdown, punctuation, extra whitespace, casing).
+- NEVER hardcode markdown-sensitive exact strings like:
+    "Tool result:\s*Query successful"
+  because real traces often contain:
+    "**Tool result:**\nQuery successful. ..."
+- Prefer matching stable substrings that survive formatting changes.
+- Prefer SHORT regexes. Avoid overfitting to ":" vs "**:**" vs "." variations.
+- Avoid brittle patterns that depend on exact formatting or punctuation.
+- Make sure to match the role name perfectly and overapproximate if you are unsure.
+
+Each invariant should be as GENERAL as possible, if many specific invariants can be combined into one invariant function, do so.
+For example, an invariant which checks order status validity for various tool calls can be combined into one function.
+
+================================================================================================
+## PYTHON CHECK GUIDELINES
+================================================================================================
+
+## Python Code Guidelines:
+- Write complete, executable Python functions
+- You will be given 2 parameters - (trajectory and current_step_index), where trajectory is the full IR dict with "steps" field
+- Access steps via trajectory["steps"][current_step_index] - steps list is 0-indexed
+- Each step has "index" (1-based) and "substeps" array
+- Each substep has "sub_index", "role", and "content"
+- The current_step_index is 0-based. So if the current step being executed has index=7, current_step_index will be 6.
+- Include docstrings explaining the assertion
+- Look at the tool response key fields very carefully while writing the code.
+  1. First, identify which tool(s) you're working with in the current trajectory step
+  2. Pay attention to nested dictionaries (use chained .get() calls) and list structures (check length before indexing)
+  3. Note the data types (str, float, bool, list, dict) to avoid type errors
+  4. Use ONLY the exact field names shown in the tool structure - do NOT invent or assume field names
+- Handle edge cases and missing data gracefully - verify field existence and type before operations
+- Focus on computation validation and step-specific checks, avoid very trivial sanity checks
+- **Exception Handling**: Raise exceptions for safety check violations (KeyError, IndexError, TypeError, AttributeError, ValueError, etc.) instead of returning False. Let these exceptions propagate naturally. Only return boolean (True/False) for actual invariant logic violations
+- Return boolean values (True if assertion passes, False if invariant violation detected)
+- **Add print statements for debugging**: Start with printing the function name, then print all key variables, extracted JSON fields, and intermediate calculation results to aid in debugging and verification
+
+YOU NEED NOT GENERATE A DYNAMIC INVARIANT FOR EVERY STEP. IF NO NEW DYNAMIC INVARIANTS ARE NEEDED OR ARE ALREADY COVERED BY STATIC INVARIANTS, OUTPUT:
+
+{
+  "step_num": 4,
+  "decision": "NO_INVARIANT",
+  "invariant": null,
+  "trigger_to_invariants_map": {}
+}
+
+================================================================================================
+STATIC INVARIANTS ALREADY GENERATED
+================================================================================================
+
+{
+  "invariant": [
+    {
+      "assertion_name": "authentication_before_sensitive_tools",
+      "check_hint": "Ensure that before any sensitive tool operation (list products, get order/user/product details, cancel/return/exchange, modify), there is a prior authentication via find_user_id_by_email or find_user_id_by_name_zip. The check scans prior assistant tool-call contents for auth invocation markers. If the current assistant content indicates a sensitive tool call and no prior auth tool-call is found, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)(list_all_product_types|get_order_details|get_user_details|get_product_details|cancel_pending_order|exchange_delivered_order_items|return_delivered_order_items|modify_pending_order_[a-z_]+|modify_user_address)",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "TEMPORAL",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def authentication_before_sensitive_tools(trajectory, current_step_index):",
+          "    \"\"\"Validate that user authentication (find_user_id_by_email or find_user_id_by_name_zip) occurred before any sensitive tool usage in the current assistant call.\"\"\"",
+          "    import re",
+          "    print('authentication_before_sensitive_tools')",
+          "    # Extract current step",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps in trajectory')",
+          "    idx = current_step_index - 1",
+          "    if idx < 0 or idx >= len(steps):",
+          "      raise IndexError('current_step_index out of range')",
+          "    step = steps[idx]",
+          "    # Gather assistant contents for the current step",
+          "    contents = []",
+          "    subs = step.get('substeps', [])",
+          "    if subs:",
+          "      for s in subs:",
+          "        if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "          contents.append(s.get('content'))",
+          "    elif step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    current_text = '\\n'.join(contents)",
+          "    print('Current assistant content:', current_text)",
+          "    sensitive_pattern = re.compile(r\"(?i)(list_all_product_types|get_order_details|get_user_details|get_product_details|cancel_pending_order|exchange_delivered_order_items|return_delivered_order_items|modify_pending_order_[a-z_]+|modify_user_address)\")",
+          "    if not current_text or not sensitive_pattern.search(current_text):",
+          "      print('No sensitive tool invocation detected in current assistant content; invariant not applicable.')",
+          "      return True",
+          "    # Scan prior steps for authentication calls in assistant content",
+          "    auth_seen = False",
+          "    auth_pattern = re.compile(r\"(?i)(find_user_id_by_email|find_user_id_by_name_zip)\")",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      subs = st.get('substeps', [])",
+          "      if subs:",
+          "        for s in subs:",
+          "          if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "            if auth_pattern.search(s.get('content')):",
+          "              auth_seen = True",
+          "              print('Found prior authentication in assistant content at step', j+1)",
+          "              break",
+          "      else:",
+          "        if st.get('role') == 'assistant' and isinstance(st.get('content'), str) and auth_pattern.search(st.get('content')):",
+          "          auth_seen = True",
+          "          print('Found prior authentication in assistant content at step', j+1)",
+          "      if auth_seen:",
+          "        break",
+          "    print('Authentication seen:', auth_seen)",
+          "    if not auth_seen:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "authentication_before_sensitive_tools"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure",
+        "IntentPlanMisalignment"
+      ]
+    },
+    {
+      "assertion_name": "cancel_pending_order_status_required",
+      "check_hint": "Verify cancel_pending_order is only initiated when the order_id status is 'pending' based on a prior get_order_details tool result containing the same order_id. Extract order_id from current assistant content and search earlier tool outputs for order_info status 'pending'. If status isn't found or mismatches, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)cancel_pending_order",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "CAPABILITY",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def cancel_pending_order_status_required(trajectory, current_step_index):",
+          "    \"\"\"Ensure cancellation is attempted only when prior get_order_details shows status 'pending' for the same order_id.\"\"\"",
+          "    import re",
+          "    print('cancel_pending_order_status_required')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps available')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    # Extract current assistant content",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Current assistant content:', text)",
+          "    if not re.search(r'(?i)cancel_pending_order', text or ''):",
+          "      print('No cancel_pending_order call detected; invariant not applicable.')",
+          "      return True",
+          "    m = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', text or '')",
+          "    order_id = m.group(1) if m else None",
+          "    print('Extracted order_id:', order_id)",
+          "    if not order_id:",
+          "      return False",
+          "    # Find prior get_order_details tool output with matching order_id and status pending",
+          "    status_ok = False",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'tool' and isinstance(sb.get('content'), str):",
+          "          cnt = sb.get('content')",
+          "          if order_id in cnt and re.search(r'\\\"status\\\"\\s*:\\s*\\\"pending\\\"', cnt):",
+          "            status_ok = True",
+          "            print('Found pending status for order_id in tool result at step', j+1)",
+          "            break",
+          "      if status_ok:",
+          "        break",
+          "    print('Status pending verified:', status_ok)",
+          "    if not status_ok:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "cancel_pending_order_status_required"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure",
+        "InvalidInvocation"
+      ]
+    },
+    {
+      "assertion_name": "exchange_delivered_order_status_required",
+      "check_hint": "Verify exchange_delivered_order_items is only initiated when the order_id status is 'delivered' based on a prior get_order_details tool result for the same order_id. Extract order_id from current assistant content, search earlier tool outputs for status 'delivered'. If not found, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)exchange_delivered_order_items",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "CAPABILITY",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def exchange_delivered_order_status_required(trajectory, current_step_index):",
+          "    \"\"\"Ensure exchange is attempted only when prior get_order_details shows status 'delivered' for the same order_id.\"\"\"",
+          "    import re",
+          "    print('exchange_delivered_order_status_required')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps available')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Current assistant content:', text)",
+          "    if not re.search(r'(?i)exchange_delivered_order_items', text or ''):",
+          "      print('No exchange call detected; invariant not applicable.')",
+          "      return True",
+          "    m = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', text or '')",
+          "    order_id = m.group(1) if m else None",
+          "    print('Extracted order_id:', order_id)",
+          "    if not order_id:",
+          "      return False",
+          "    status_ok = False",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'tool' and isinstance(sb.get('content'), str):",
+          "          cnt = sb.get('content')",
+          "          if order_id in cnt and re.search(r'\\\"status\\\"\\s*:\\s*\\\"delivered\\\"', cnt):",
+          "            status_ok = True",
+          "            print('Found delivered status for order_id in tool result at step', j+1)",
+          "            break",
+          "      if status_ok:",
+          "        break",
+          "    print('Status delivered verified:', status_ok)",
+          "    if not status_ok:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "exchange_delivered_order_status_required"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure",
+        "InvalidInvocation"
+      ]
+    },
+    {
+      "assertion_name": "return_delivered_order_status_required",
+      "check_hint": "Verify return_delivered_order_items is initiated only when the order_id status is 'delivered' based on prior get_order_details for the same order_id. Extract order_id from current assistant content and confirm status 'delivered' appears in earlier tool outputs. If missing, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)return_delivered_order_items",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "CAPABILITY",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def return_delivered_order_status_required(trajectory, current_step_index):",
+          "    \"\"\"Ensure return is attempted only when prior get_order_details shows status 'delivered' for the same order_id.\"\"\"",
+          "    import re",
+          "    print('return_delivered_order_status_required')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps available')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Current assistant content:', text)",
+          "    if not re.search(r'(?i)return_delivered_order_items', text or ''):",
+          "      print('No return call detected; invariant not applicable.')",
+          "      return True",
+          "    m = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', text or '')",
+          "    order_id = m.group(1) if m else None",
+          "    print('Extracted order_id:', order_id)",
+          "    if not order_id:",
+          "      return False",
+          "    status_ok = False",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'tool' and isinstance(sb.get('content'), str):",
+          "          cnt = sb.get('content')",
+          "          if order_id in cnt and re.search(r'\\\"status\\\"\\s*:\\s*\\\"delivered\\\"', cnt):",
+          "            status_ok = True",
+          "            print('Found delivered status for order_id in tool result at step', j+1)",
+          "            break",
+          "      if status_ok:",
+          "        break",
+          "    print('Status delivered verified:', status_ok)",
+          "    if not status_ok:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "return_delivered_order_status_required"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure",
+        "InvalidInvocation"
+      ]
+    },
+    {
+      "assertion_name": "modify_pending_order_status_required",
+      "check_hint": "Verify modify_pending_order_* is initiated only when the order_id status is 'pending' in prior get_order_details for the same order_id. Extract order_id from current assistant content and confirm status 'pending' in earlier tool outputs. If not found, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)modify_pending_order_(address|items|payment)",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "CAPABILITY",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def modify_pending_order_status_required(trajectory, current_step_index):",
+          "    \"\"\"Ensure modifications are attempted only when prior get_order_details shows status 'pending' for the same order_id.\"\"\"",
+          "    import re",
+          "    print('modify_pending_order_status_required')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps available')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Current assistant content:', text)",
+          "    if not re.search(r'(?i)modify_pending_order_(address|items|payment)', text or ''):",
+          "      print('No modify call detected; invariant not applicable.')",
+          "      return True",
+          "    m = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', text or '')",
+          "    order_id = m.group(1) if m else None",
+          "    print('Extracted order_id:', order_id)",
+          "    if not order_id:",
+          "      return False",
+          "    status_ok = False",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'tool' and isinstance(sb.get('content'), str):",
+          "          cnt = sb.get('content')",
+          "          if order_id in cnt and re.search(r'\\\"status\\\"\\s*:\\s*\\\"pending\\\"', cnt):",
+          "            status_ok = True",
+          "            print('Found pending status for order_id in tool result at step', j+1)",
+          "            break",
+          "      if status_ok:",
+          "        break",
+          "    print('Status pending verified:', status_ok)",
+          "    if not status_ok:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "modify_pending_order_status_required"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure",
+        "InvalidInvocation"
+      ]
+    },
+    {
+      "assertion_name": "cancel_pending_order_reason_whitelist",
+      "check_hint": "Validate that cancel_pending_order reason argument is present and exactly one of 'no longer needed' or 'ordered by mistake'. Extract the 'reason' from current assistant content JSON-like args and enforce whitelist.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)cancel_pending_order",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "SCHEMA",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def cancel_pending_order_reason_whitelist(trajectory, current_step_index):",
+          "    \"\"\"Ensure cancel_pending_order reason is either 'no longer needed' or 'ordered by mistake'.\"\"\"",
+          "    import re",
+          "    print('cancel_pending_order_reason_whitelist')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps available')",
+          "    step = steps[current_step_index - 1]",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Current assistant content:', text)",
+          "    if not re.search(r'(?i)cancel_pending_order', text or ''):",
+          "      print('No cancel_pending_order call detected; invariant not applicable.')",
+          "      return True",
+          "    m = re.search(r'reason\\s*[:=\\\"]\\s*([A-Za-z\\s]+)', text or '')",
+          "    reason = m.group(1).strip().lower() if m else None",
+          "    print('Extracted reason:', reason)",
+          "    allowed = {'no longer needed', 'ordered by mistake'}",
+          "    if not reason or reason not in allowed:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "cancel_pending_order_reason_whitelist"
+      },
+      "taxonomy_targets": [
+        "InvalidInvocation",
+        "Instruction/PlanAdherenceFailure"
+      ]
+    },
+    {
+      "assertion_name": "single_use_exchange_once_per_order",
+      "check_hint": "Ensure exchange_delivered_order_items is only called once per order_id. Extract the order_id from current assistant content and scan prior assistant tool-call contents for previous exchange calls with the same order_id. If found, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)exchange_delivered_order_items",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "PROTOCOL",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def single_use_exchange_once_per_order(trajectory, current_step_index):",
+          "    \"\"\"Validate that exchange_delivered_order_items is not called more than once for the same order_id within the trajectory.\"\"\"",
+          "    import re",
+          "    print('single_use_exchange_once_per_order')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps available')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    # Extract current order_id",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Current assistant content:', text)",
+          "    if not re.search(r'(?i)exchange_delivered_order_items', text or ''):",
+          "      print('No exchange call detected; invariant not applicable.')",
+          "      return True",
+          "    m = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', text or '')",
+          "    order_id = m.group(1) if m else None",
+          "    print('Extracted order_id:', order_id)",
+          "    if not order_id:",
+          "      return False",
+          "    prior_count = 0",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'assistant' and isinstance(sb.get('content'), str) and re.search(r'(?i)exchange_delivered_order_items', sb.get('content')):",
+          "          mm = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', sb.get('content'))",
+          "          prev_id = mm.group(1) if mm else None",
+          "          if prev_id and prev_id == order_id:",
+          "            prior_count += 1",
+          "            print('Found prior exchange for order_id at step', j+1)",
+          "    print('Prior exchange count:', prior_count)",
+          "    if prior_count > 0:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "single_use_exchange_once_per_order"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure"
+      ]
+    },
+    {
+      "assertion_name": "single_use_modify_items_once_per_order",
+      "check_hint": "Ensure modify_pending_order_items is only called once per order_id. Extract order_id from current assistant content and scan prior assistant tool-call contents for previous modify_pending_order_items calls with the same order_id. If found, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)modify_pending_order_items",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "PROTOCOL",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def single_use_modify_items_once_per_order(trajectory, current_step_index):",
+          "    \"\"\"Validate that modify_pending_order_items is not called more than once for the same order_id within the trajectory.\"\"\"",
+          "    import re",
+          "    print('single_use_modify_items_once_per_order')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps available')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Current assistant content:', text)",
+          "    if not re.search(r'(?i)modify_pending_order_items', text or ''):",
+          "      print('No modify_items call detected; invariant not applicable.')",
+          "      return True",
+          "    m = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', text or '')",
+          "    order_id = m.group(1) if m else None",
+          "    print('Extracted order_id:', order_id)",
+          "    if not order_id:",
+          "      return False",
+          "    prior_count = 0",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'assistant' and isinstance(sb.get('content'), str) and re.search(r'(?i)modify_pending_order_items', sb.get('content')):",
+          "          mm = re.search(r'order_id\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', sb.get('content'))",
+          "          prev_id = mm.group(1) if mm else None",
+          "          if prev_id and prev_id == order_id:",
+          "            prior_count += 1",
+          "            print('Found prior modify_items for order_id at step', j+1)",
+          "    print('Prior modify_items count:', prior_count)",
+          "    if prior_count > 0:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "single_use_modify_items_once_per_order"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure"
+      ]
+    },
+    {
+      "assertion_name": "explicit_user_confirmation_before_write_action",
+      "check_hint": "Before any write-action tool call, enforce that the prior user message contains explicit confirmation keywords (yes/confirm/proceed/ok/okay/etc.), the assistant’s earlier message enumerated the specific action and included the relevant identifier (order_id or user_id), and the identifier in that assistant message matches the identifier in the current tool call args. If any condition fails, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)(cancel_pending_order|exchange_delivered_order_items|return_delivered_order_items|modify_pending_order_[a-z_]+|modify_user_address)",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "TEMPORAL",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def explicit_user_confirmation_before_write_action(trajectory, current_step_index):",
+          "    \"\"\"Check explicit user confirmation and identifier consistency before write actions:",
+          "    - Prior nearest user message must contain confirmation keyword.",
+          "    - Prior assistant message must describe action (cancel/modify/exchange/return/address update) and include identifier.",
+          "    - Identifier in assistant description must match identifier in current tool call args.\"\"\"",
+          "    import re",
+          "    print('explicit_user_confirmation_before_write_action')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    # Current assistant content",
+          "    cur_texts = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        cur_texts.append(s.get('content'))",
+          "    if not cur_texts and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      cur_texts.append(step.get('content'))",
+          "    cur_text = '\\n'.join(cur_texts)",
+          "    print('Current assistant content:', cur_text)",
+          "    write_pattern = re.compile(r'(?i)(cancel_pending_order|exchange_delivered_order_items|return_delivered_order_items|modify_pending_order_[a-z_]+|modify_user_address)')",
+          "    if not write_pattern.search(cur_text or ''):",
+          "      print('No write-action tool call detected; invariant not applicable.')",
+          "      return True",
+          "    # Extract identifier from current call: prefer order_id, else user_id",
+          "    id_match = re.search(r'(order_id|user_id)\\s*[:=\\\"]\\s*([A-Za-z0-9_-]+)', cur_text or '')",
+          "    id_label = id_match.group(1) if id_match else None",
+          "    id_value = id_match.group(2) if id_match else None",
+          "    print('Current call identifier:', id_label, id_value)",
+          "    if not id_value:",
+          "      return False",
+          "    # Find nearest prior user message",
+          "    user_text = ''",
+          "    for j in range(idx-1, -1, -1):",
+          "      st = steps[j]",
+          "      for sb in reversed(st.get('substeps', [])):",
+          "        if sb.get('role') == 'user' and isinstance(sb.get('content'), str):",
+          "          user_text = sb.get('content')",
+          "          print('Nearest prior user message at step', j+1, 'content:', user_text)",
+          "          break",
+          "      if user_text:",
+          "        break",
+          "      if st.get('role') == 'user' and isinstance(st.get('content'), str):",
+          "        user_text = st.get('content')",
+          "        print('Nearest prior user message (no substeps) at step', j+1, 'content:', user_text)",
+          "        break",
+          "    if not user_text:",
+          "      return False",
+          "    confirm_ok = re.search(r'(?i)\\b(yes|confirm|confirmed|proceed|ok|okay|go ahead|do it|please do|sounds good)\\b', user_text) is not None",
+          "    print('User confirmation keyword found:', confirm_ok)",
+          "    if not confirm_ok:",
+          "      return False",
+          "    # Find assistant message prior to that user confirmation",
+          "    assistant_text = ''",
+          "    for k in range(j-1, -1, -1):",
+          "      st2 = steps[k]",
+          "      for sb2 in reversed(st2.get('substeps', [])):",
+          "        if sb2.get('role') == 'assistant' and isinstance(sb2.get('content'), str):",
+          "          assistant_text = sb2.get('content')",
+          "          print('Assistant message before user confirm at step', k+1, 'content:', assistant_text)",
+          "          break",
+          "      if assistant_text:",
+          "        break",
+          "      if st2.get('role') == 'assistant' and isinstance(st2.get('content'), str):",
+          "        assistant_text = st2.get('content')",
+          "        print('Assistant message before user confirm (no substeps) at step', k+1, 'content:', assistant_text)",
+          "        break",
+          "    if not assistant_text:",
+          "      return False",
+          "    # Check action description keyword and identifier presence",
+          "    action_desc_ok = re.search(r'(?i)(cancel|modify|exchange|return|address update|update address)', assistant_text) is not None",
+          "    id_in_assistant = (id_value in assistant_text) if id_value else False",
+          "    print('Action described:', action_desc_ok, 'Identifier mentioned in assistant:', id_in_assistant)",
+          "    if not (action_desc_ok and id_in_assistant):",
+          "      return False",
+          "    # Identifier consistency between assistant description and current call (already checked by presence of same id_value string)",
+          "    return True"
+        ],
+        "function_name": "explicit_user_confirmation_before_write_action"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure"
+      ]
+    },
+    {
+      "assertion_name": "single_user_authentication_only",
+      "check_hint": "Ensure only one user_id is authenticated per conversation. Scan all prior tool results for user_id fields and confirm there is at most one unique user_id encountered. If more than one distinct user_id is present, flag violation.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "(?i)(find_user_id_by_email|find_user_id_by_name_zip)",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "PROTOCOL",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def single_user_authentication_only(trajectory, current_step_index):",
+          "    \"\"\"Check that the conversation authenticates at most one unique user_id by scanning prior tool outputs for user_id values.\"\"\"",
+          "    import re",
+          "    print('single_user_authentication_only')",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps')",
+          "    idx = current_step_index - 1",
+          "    user_ids = set()",
+          "    for j in range(0, idx+1):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'tool' and isinstance(sb.get('content'), str):",
+          "          m = re.search(r'\\\"user_id\\\"\\s*:\\s*\\\"?([A-Za-z0-9_-]+)\\\"?', sb.get('content'))",
+          "          if m:",
+          "            user_ids.add(m.group(1))",
+          "            print('Found user_id', m.group(1), 'at step', j+1)",
+          "      if st.get('role') == 'tool' and isinstance(st.get('content'), str):",
+          "        m2 = re.search(r'\\\"user_id\\\"\\s*:\\s*\\\"?([A-Za-z0-9_-]+)\\\"?', st.get('content'))",
+          "        if m2:",
+          "          user_ids.add(m2.group(1))",
+          "          print('Found user_id', m2.group(1), 'at step', j+1, '(no substeps)')",
+          "    print('Unique user_ids encountered:', user_ids)",
+          "    if len(user_ids) > 1:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "single_user_authentication_only"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure",
+        "IntentPlanMisalignment"
+      ]
+    },
+    {
+      "assertion_name": "no_invention_or_misinterpretation_in_assistant_responses",
+      "check_hint": "For assistant messages (non-tool call content): ensure specific claims are grounded in prior tool results and correctly interpreted. Check: mentioned order_id appears in prior tool results; mentioned status values match prior tool results; mentioned product_id/item_id exist in prior outputs; currency amounts either appear in prior tool outputs or the text indicates a calculation (refund/difference/total will be); and if assistant states counts (e.g., '3 items'), verify counts against latest get_order_details items by counting item_id occurrences.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "*",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "PROVENANCE",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def no_invention_or_misinterpretation_in_assistant_responses(trajectory, current_step_index):",
+          "    \"\"\"Verify assistant claims are grounded and correctly interpreted:",
+          "    - order_id/status/product_id/item_id must appear in prior tool outputs;",
+          "    - currency amounts must appear in prior tool outputs or be described as calculations;",
+          "    - counts like 'N items/orders' match counts from prior tool outputs (e.g., item_id occurrences).\"\"\"",
+          "    import re",
+          "    print('no_invention_or_misinterpretation_in_assistant_responses')",
+          "    tools_list = [",
+          "      'find_user_id_by_email','find_user_id_by_name_zip','list_all_product_types','get_order_details','get_product_details','get_user_details','cancel_pending_order','exchange_delivered_order_items','modify_pending_order_address','modify_pending_order_items','modify_pending_order_payment','modify_user_address','return_delivered_order_items'",
+          "    ]",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps')",
+          "    idx = current_step_index - 1",
+          "    step = steps[idx]",
+          "    # Current assistant content",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Assistant content:', text)",
+          "    if not text:",
+          "      return True",
+          "    # If assistant content appears to be a tool call (mentions tool names), skip this check.",
+          "    tool_name_pattern = re.compile('|'.join([re.escape(t) for t in tools_list]), re.IGNORECASE)",
+          "    if tool_name_pattern.search(text):",
+          "      print('Assistant content contains tool invocation; skip invention/misinterpretation check.')",
+          "      return True",
+          "    # Compile prior tool outputs",
+          "    prior_tool_text = []",
+          "    for j in range(0, idx):",
+          "      st = steps[j]",
+          "      for sb in st.get('substeps', []):",
+          "        if sb.get('role') == 'tool' and isinstance(sb.get('content'), str):",
+          "          prior_tool_text.append(sb.get('content'))",
+          "      if st.get('role') == 'tool' and isinstance(st.get('content'), str):",
+          "        prior_tool_text.append(st.get('content'))",
+          "    prior_blob = '\\n'.join(prior_tool_text)",
+          "    print('Aggregated prior tool outputs length:', len(prior_blob))",
+          "    # INVENTION: order_id grounding",
+          "    order_m = re.search(r'order[_\\s]?id[:#]?\\s*([A-Za-z0-9_-]+)', text)",
+          "    if order_m:",
+          "      oid = order_m.group(1)",
+          "      print('Mentioned order_id:', oid)",
+          "      if oid not in prior_blob:",
+          "        return False",
+          "    # INVENTION: status grounding",
+          "    status_m = re.search(r'\\b(pending|processed|delivered|cancelled)\\b', text, re.IGNORECASE)",
+          "    if status_m:",
+          "      status_val = status_m.group(1).lower()",
+          "      print('Mentioned status:', status_val)",
+          "      if not re.search(r'\\\"status\\\"\\s*:\\s*\\\"' + re.escape(status_val) + r'\\\"', prior_blob):",
+          "        return False",
+          "    # INVENTION: product_id/item_id grounding",
+          "    prod_m = re.search(r'product[_\\s]?id[:#]?\\s*([A-Za-z0-9_-]+)', text)",
+          "    if prod_m:",
+          "      pid = prod_m.group(1)",
+          "      print('Mentioned product_id:', pid)",
+          "      if pid not in prior_blob:",
+          "        return False",
+          "    item_m = re.search(r'item[_\\s]?id[:#]?\\s*([A-Za-z0-9_-]+)', text)",
+          "    if item_m:",
+          "      itid = item_m.group(1)",
+          "      print('Mentioned item_id:', itid)",
+          "      if itid not in prior_blob:",
+          "        return False",
+          "    # INVENTION: currency amounts grounding or described calculation",
+          "    amounts = re.findall(r'\\$([0-9]+(?:\\.[0-9]{2})?)', text)",
+          "    if amounts:",
+          "      print('Mentioned amounts:', amounts)",
+          "      calc_context = re.search(r'(?i)(refund|difference|total will|will be|estimated|approximate)', text) is not None",
+          "      all_amounts_grounded = all((('$' + a) in prior_blob) for a in amounts)",
+          "      print('Amounts grounded:', all_amounts_grounded, 'Calc context present:', calc_context)",
+          "      if not all_amounts_grounded and not calc_context:",
+          "        return False",
+          "    # MISINTERPRETATION: counts of items/orders",
+          "    count_m = re.search(r'\\b(\\d+)\\s+(items?|orders?)\\b', text)",
+          "    if count_m:",
+          "      num = int(count_m.group(1))",
+          "      noun = count_m.group(2).lower()",
+          "      print('Mentioned count:', num, noun)",
+          "      # Try to verify items by counting item_id occurrences in latest get_order_details output",
+          "      latest_order_blob = ''",
+          "      for j in range(idx-1, -1, -1):",
+          "        st = steps[j]",
+          "        found = False",
+          "        for sb in reversed(st.get('substeps', [])):",
+          "          if sb.get('role') == 'tool' and isinstance(sb.get('content'), str) and 'order_info' in sb.get('content'):",
+          "            latest_order_blob = sb.get('content')",
+          "            found = True",
+          "            print('Found latest order_info at step', j+1)",
+          "            break",
+          "        if found:",
+          "          break",
+          "        if st.get('role') == 'tool' and isinstance(st.get('content'), str) and 'order_info' in st.get('content'):",
+          "          latest_order_blob = st.get('content')",
+          "          print('Found latest order_info (no substeps) at step', j+1)",
+          "          break",
+          "      if latest_order_blob and 'item' in noun:",
+          "        item_count = len(re.findall(r'\\\"item_id\\\"\\s*:', latest_order_blob))",
+          "        print('Computed item count from tool output:', item_count)",
+          "        if item_count != num:",
+          "          return False",
+          "    return True"
+        ],
+        "function_name": "no_invention_or_misinterpretation_in_assistant_responses"
+      },
+      "taxonomy_targets": [
+        "InventionOfNewInformation",
+        "MisinterpretationOfToolOutput"
+      ]
+    },
+    {
+      "assertion_name": "one_tool_call_at_a_time_and_no_user_response_simultaneously",
+      "check_hint": "Ensure the assistant makes at most one tool call per message: count occurrences of known tool names within the current assistant content; if more than one tool name is present, flag violation. This enforces single tool call atomicity.",
+      "check_type": "python_check",
+      "event_trigger": {
+        "content_regex": "*",
+        "role_name": "assistant",
+        "tool_name": "*"
+      },
+      "invariant_type": "PROTOCOL",
+      "python_check": {
+        "args": [
+          "trajectory",
+          "current_step_index"
+        ],
+        "code_lines": [
+          "def one_tool_call_at_a_time_and_no_user_response_simultaneously(trajectory, current_step_index):",
+          "    \"\"\"Check that a single assistant message does not include multiple tool calls by counting tool name mentions in the content.\"\"\"",
+          "    import re",
+          "    print('one_tool_call_at_a_time_and_no_user_response_simultaneously')",
+          "    tools_list = [",
+          "      'find_user_id_by_email','find_user_id_by_name_zip','list_all_product_types','get_order_details','get_product_details','get_user_details','cancel_pending_order','exchange_delivered_order_items','modify_pending_order_address','modify_pending_order_items','modify_pending_order_payment','modify_user_address','return_delivered_order_items'",
+          "    ]",
+          "    steps = trajectory.get('steps', [])",
+          "    if not steps:",
+          "      raise ValueError('No steps')",
+          "    step = steps[current_step_index - 1]",
+          "    contents = []",
+          "    for s in step.get('substeps', []):",
+          "      if s.get('role') == 'assistant' and isinstance(s.get('content'), str):",
+          "        contents.append(s.get('content'))",
+          "    if not contents and step.get('role') == 'assistant' and isinstance(step.get('content'), str):",
+          "      contents.append(step.get('content'))",
+          "    text = '\\n'.join(contents)",
+          "    print('Assistant content:', text)",
+          "    if not text:",
+          "      return True",
+          "    count = 0",
+          "    for t in tools_list:",
+          "      if re.search(re.escape(t), text, re.IGNORECASE):",
+          "        count += 1",
+          "    print('Tool mentions count:', count)",
+          "    if count > 1:",
+          "      return False",
+          "    return True"
+        ],
+        "function_name": "one_tool_call_at_a_time_and_no_user_response_simultaneously"
+      },
+      "taxonomy_targets": [
+        "Instruction/PlanAdherenceFailure"
+      ]
+    }
+  ],
+  "trigger_to_invariants_map": {
+    "agent:assistant": [
+      "authentication_before_sensitive_tools",
+      "cancel_pending_order_status_required",
+      "exchange_delivered_order_status_required",
+      "return_delivered_order_status_required",
+      "modify_pending_order_status_required",
+      "cancel_pending_order_reason_whitelist",
+      "single_use_exchange_once_per_order",
+      "single_use_modify_items_once_per_order",
+      "explicit_user_confirmation_before_write_action",
+      "single_user_authentication_only",
+      "no_invention_or_misinterpretation_in_assistant_responses",
+      "one_tool_call_at_a_time_and_no_user_response_simultaneously"
+    ],
+    "tool:cancel_pending_order": [
+      "cancel_pending_order_status_required",
+      "cancel_pending_order_reason_whitelist",
+      "explicit_user_confirmation_before_write_action"
+    ],
+    "tool:exchange_delivered_order_items": [
+      "exchange_delivered_order_status_required",
+      "single_use_exchange_once_per_order",
+      "explicit_user_confirmation_before_write_action"
+    ],
+    "tool:get_order_details": [
+      "authentication_before_sensitive_tools"
+    ],
+    "tool:get_product_details": [
+      "authentication_before_sensitive_tools"
+    ],
+    "tool:get_user_details": [
+      "authentication_before_sensitive_tools"
+    ],
+    "tool:list_all_product_types": [
+      "authentication_before_sensitive_tools"
+    ],
+    "tool:modify_pending_order_address": [
+      "modify_pending_order_status_required",
+      "explicit_user_confirmation_before_write_action"
+    ],
+    "tool:modify_pending_order_items": [
+      "modify_pending_order_status_required",
+      "single_use_modify_items_once_per_order",
+      "explicit_user_confirmation_before_write_action"
+    ],
+    "tool:modify_pending_order_payment": [
+      "modify_pending_order_status_required",
+      "explicit_user_confirmation_before_write_action"
+    ],
+    "tool:modify_user_address": [
+      "explicit_user_confirmation_before_write_action"
+    ],
+    "tool:return_delivered_order_items": [
+      "return_delivered_order_status_required",
+      "explicit_user_confirmation_before_write_action"
+    ]
+  }
+}
+
+================================================================================================
+DYNAMIC INVARIANTS GENERATED FOR PREVIOUS STEPS
+================================================================================================
+
+[]
+
+================================================================================================
+TRAJECTORY STEPS TILL NOW
+================================================================================================
+
+[STEP 1]
+# Retail agent policy
+
+As a retail agent, you can help users cancel or modify pending orders, return or exchange delivered orders, modify their default user address, or provide information about their own profile, orders, and related products.
+
+- At the beginning of the conversation, you have to authenticate the user identity by locating their user id via email, or via name + zip code. This has to be done even when the user already provides the user id.
+
+- Once the user has been authenticated, you can provide the user with information about order, product, profile information, e.g. help the user look up order id.
+
+- You can only help one user per conversation (but you can handle multiple requests from the same user), and must deny any requests for tasks related to any other user.
+
+- Before taking consequential actions that update the database (cancel, modify, return, exchange), you have to list the action detail and obtain explicit user confirmation (yes) to proceed.
+
+- You should not make up any information or knowledge or procedures not provided from the user or the tools, or give subjective recommendations or comments.
+
+- You should at most make one tool call at a time, and if you take a tool call, you should not respond to the user at the same time. If you respond to the user, you should not make a tool call.
+
+- You should transfer the user to a human agent if and only if the request cannot be handled within the scope of your actions.
+
+## Domain basic
+
+- All times in the database are EST and 24 hour based. For example "02:30:00" means 2:30 AM EST.
+
+- Each user has a profile of its email, default address, user id, and payment methods. Each payment method is either a gift card, a paypal account, or a credit card.
+
+- Our retail store has 50 types of products. For each type of product, there are variant items of different options. For example, for a 't shirt' product, there could be an item with option 'color blue size M', and another item with option 'color red size L'.
+
+- Each product has an unique product id, and each item has an unique item id. They have no relations and should not be confused.
+
+- Each order can be in status 'pending', 'processed', 'delivered', or 'cancelled'. Generally, you can only take action on pending or delivered orders.
+
+- Exchange or modify order tools can only be called once. Be sure that all items to be changed are collected into a list before making the tool call!!!
+
+## Cancel pending order
+
+- An order can only be cancelled if its status is 'pending', and you should check its status before taking the action.
+
+- The user needs to confirm the order id and the reason (either 'no longer needed' or 'ordered by mistake') for cancellation.
+
+- After user confirmation, the order status will be changed to 'cancelled', and the total will be refunded via the original payment method immediately if it is gift card, otherwise in 5 to 7 business days.
+
+## Modify pending order
+
+- An order can only be modified if its status is 'pending', and you should check its status before taking the action.
+
+- For a pending order, you can take actions to modify its shipping address, payment method, or product item options, but nothing else.
+
+### Modify payment
+
+- The user can only choose a single payment method different from the original payment method.
+
+- If the user wants the modify the payment method to gift card, it must have enough balance to cover the total amount.
+
+- After user confirmation, the order status will be kept 'pending'. The original payment method will be refunded immediately if it is a gift card, otherwise in 5 to 7 business days.
+
+### Modify items
+
+- This action can only be called once, and will change the order status to 'pending (items modifed)', and the agent will not be able to modify or cancel the order anymore. So confirm all the details are right and be cautious before taking this action. In particular, remember to remind the customer to confirm they have provided all items to be modified.
+
+- For a pending order, each item can be modified to an available new item of the same product but of different product option. There cannot be any change of product types, e.g. modify shirt to shoe.
+
+- The user must provide a payment method to pay or receive refund of the price difference. If the user provides a gift card, it must have enough balance to cover the price difference.
+
+## Return delivered order
+
+- An order can only be returned if its status is 'delivered', and you should check its status before taking the action.
+
+- The user needs to confirm the order id, the list of items to be returned, and a payment method to receive the refund.
+
+- The refund must either go to the original payment method, or an existing gift card.
+
+- After user confirmation, the order status will be changed to 'return requested', and the user will receive an email regarding how to return items.
+
+## Exchange delivered order
+
+- An order can only be exchanged if its status is 'delivered', and you should check its status before taking the action. In particular, remember to remind the customer to confirm they have provided all items to be exchanged.
+
+- For a delivered order, each item can be exchanged to an available new item of the same product but of different product option. There cannot be any change of product types, e.g. modify shirt to shoe.
+
+- The user must provide a payment method to pay or receive refund of the price difference. If the user provides a gift card, it must have enough balance to cover the price difference.
+
+- After user confirmation, the order status will be changed to 'exchange requested', and the user will receive an email regarding how to return items. There is no need to place a new order.
+
+[STEP 2]
+Hi. I want to cancel or return some items, but I’m not happy, so please make this quick.
+
+[STEP 3]
+I can assist you with canceling or returning items. To get started, I need to authenticate your identity. Could you please provide your email address? Alternatively, you can provide your first name, last name, and zip code.
+
+[STEP 4]
+Sure, my email is mia.garcia2723@example.com.

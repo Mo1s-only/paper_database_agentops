@@ -1,0 +1,21 @@
+{
+  "batch_id": "error-propagation-v1-real-two-agent-20261021-rerun",
+  "authorization": "User approved one real two-agent error-propagation-v1 run; no automatic retries; $0.08 total planned CLI soft budget across two sessions.",
+  "baseline_ledger_path": "my_paper_coding/experiment_control/cost-ledger-through-run9-20261021.json",
+  "historical_ledger_status": "UNVERIFIED_RAW_LOGS",
+  "current_total_before_run_usd": 2.4300992,
+  "planning_usd_cny_rate": 10.0,
+  "planned_cli_sessions": 2,
+  "per_session_cli_soft_budget_usd": 0.04,
+  "planned_increment_usd": 0.08,
+  "planned_total_usd": 2.5100992,
+  "hard_stop_total_usd": 2.5141464,
+  "scenario": "error-propagation-v1",
+  "agents": ["agent_a", "agent_b"],
+  "no_automatic_retry": true,
+  "approval": {
+    "approved_in_chat": true,
+    "scope": "One real two-agent dataset run only. Agent B is skipped if Agent A fails or the observed cumulative projection would exceed the hard stop."
+  },
+  "note": "The Claude CLI max-budget is a soft limit and may be exceeded. CLI-reported cost is not an independently reconciled provider invoice."
+}

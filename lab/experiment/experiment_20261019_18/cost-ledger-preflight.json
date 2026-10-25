@@ -1,0 +1,10 @@
+{
+  "files_scanned": 0,
+  "priced_records": 0,
+  "duplicate_session_records": 0,
+  "priced_runs": 0,
+  "total_cost_usd": 0,
+  "max_single_run_usd": 0,
+  "entries": [],
+  "source_policy": "local logs only; one maximum final cost per provider session; no API calls"
+}

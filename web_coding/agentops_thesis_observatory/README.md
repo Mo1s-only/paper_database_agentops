@@ -1,41 +1,59 @@
-# AgentOps Thesis Observatory
+# AgentOps 实验工作台 · 重建版
 
-面向论文实验的本地 AgentOps 可观测性与实验控制台。页面结构借鉴常见 Trace、Evaluation 和 Evidence 控制台，但视觉、文案与交互均为本项目独立实现。控制接口只绑定 `127.0.0.1`，不能作为公网服务部署。
+本机实验平台：从真实输入定义出发，在 Ubuntu WSL 中执行已登记实验，将每次运行保存为独立记录，并展示 API 会话、AgentSight 系统观测、工具关联、Trace、SQLite 表格及图表。
 
-## 数据更新
+完整的页面分区、字段含义、图表读法和操作步骤见[《页面说明与使用指南》](页面说明与使用指南.md)。
 
-在仓库根目录执行：
+## 启动
 
-```powershell
-python web_coding/agentops_thesis_observatory/scripts/build_data.py
-python web_coding/agentops_thesis_observatory/scripts/validate_site.py
-```
-
-`build_data.py` 读取仓库内已存在的实验 JSON、公开样本与离线 fixture，并生成 `dist/data.json`；不会发起网络请求。页面不会把 `INFERRED`、`UNVERIFIED` 或 `BLOCKED` 状态显示成完成。
-
-## 本地启动与页面操作
-
-在 `web_coding/agentops_thesis_observatory/` 目录启动：
+在本目录的 PowerShell 中运行：
 
 ```powershell
-python scripts/local_controller.py
+powershell -ExecutionPolicy Bypass -File .\Start-Observatory.ps1
 ```
 
-打开 `http://127.0.0.1:8766/#experimentSetup`。填写名称、类型和本次输入数据集后，可以从页面保存/载入草稿、运行预检、启动实验、查看阶段进度和结果、停止后续 API 阶段、查看历史运行及刷新证据快照。若双 Agent 会话成功且费用完整、但系统工具捕获不完整导致 AgentRx 尚未执行，可在历史记录中选择该批次、再次勾选预算确认后点“继续未执行的 AgentRx”；这只完成原批次的第三阶段，不重跑前两次会话。每次保存草稿后重置数据集选择，避免误沿用。浏览器草稿本身不运行实验、不授权 API 调用。
+默认地址 `http://127.0.0.1:8780/`。启动器会复用同一工作区的 2.0 服务；端口被其他程序占用时选择相邻可用端口，并打印实际地址。请使用新地址，旧版的 8766–8771 标签页已经停用。启动平台本身不消耗模型 API。
 
-页面接口：`GET /api/health`、`GET /api/preflight?dataset_id=...`、`GET /api/runs`、`GET /api/runs/{id}`、`POST /api/runs`、`POST /api/runs/{id}/stop-after-current`、`POST /api/runs/{id}/continue-agentrx`、`POST /api/refresh-snapshot`。POST 使用同源 JSON 与 `X-AgentOps-Control: 1`，不接受任意命令、脚本路径或数据集路径。运行工件保存在 `lab/experiment/experiment_20261019_18/results/run-*/`；原始 CLI 日志不会经 HTTP 返回。
+也可前台运行：
 
-当前付费授权仅允许 `error-propagation-v1` 两会话后接一条 AgentRx #12 诊断；预检检查 WSL Ubuntu root、运行工具和凭据存在、预算数值、历史账本政策及工作区可访问性。用户已为 `2026-10-19` 这一批次明确批准使用 `$2.183708` 冻结账本作为未完全复核的历史基线，原始路径仍是 0/30；这一例外不适用于其他批次。批次规划 1.80 CNY、上限 2 CNY，不自动重试。页面的“停止后续 API 阶段”不会中断当前已开始的会话，但会禁止下一阶段启动。其他付费数据集显示为未授权，不会运行。公开数据与合成 fixture 的页面操作是零 API 的**已有标准化输入结构复核**，不是上游 adapter 重跑、真实系统采集或归因准确率评估。
+```powershell
+python server.py --port 8780
+```
 
-Ubuntu WSL2、Claude Code 和 AgentSight 已在本机就绪；控制器从同级 `agentsight/test/.env` 读取已有凭据，不在页面显示密钥。授权批次 `run-dff396441f6a` 已执行 3 个真实 CLI 会话，CLI 报告合计 `$0.1147568`（内部规划系数下约 `¥1.147568`）；页面状态 `PARTIAL`，因为 AgentSight 的工具记录为 0/4，不能据此声称系统层归因成功。详见 `lab/experiment/experiment_20261019_18/实验记录.md`。可运行 `python -m unittest discover -s scripts -p test_local_controller.py -v` 验证控制器。
+需要 Python 3.12，后端使用标准库，无需 Node/npm 安装。页面和实验控制接口由同一个服务提供。
 
-数据集目录从本地受控场景代码、AgentRx 公开样本、公开数据适配报告和合成 fixture 构建。已有实验若无可验证的输入数据集记录，表中显示“未登记”；计划输入明确标为“计划”，不视作已执行。
+## 使用
 
-## 文件
+1. 在运行列表选择一次历史或新运行；页面标题会显示精确 ID、时间、数据集及来源。
+2. 总览查看 API 会话证据、系统数据库计数和各关联方法的结果；Trace、数据、文件页签查看该次运行的独立工件。
+3. “新建实验”填写名称、实验类型与输入。输入说明明确它是受控任务定义、公开样本还是合成夹具，并提供原文件链接。
+4. 运行预检，真实 API 实验确认本次调用范围后启动。后台自动调用 Ubuntu WSL，运行进度与新产生的证据自动刷新。
+5. 同一数据集可以反复运行；每次获得新的 ID 和目录，历史结果可继续查看。
 
-- `dist/index.html`：页面结构；
-- `dist/styles.css`：响应式视觉系统；
-- `dist/app.js`：图表、筛选、Trace inspector 和交互；
-- `dist/data.json`：由实验工件生成的数据快照；
-- `scripts/local_controller.py`：本机受控实验接口与运行器；
-- `.openai/hosting.json`：Sites 私有部署配置。
+## 证据解释
+
+- 真实跨层实验分别执行 Agent A、B 两个会话，每会话 CLI 软预算 $0.05。历史累计上限不再作为禁止重复的条件；每次运行记录自己的费用与调用确认。CLI 软预算与 CLI 报告费用均不是供应商最终账单。
+- 真实实验优先复用历史成功运行的 Windows CurrentUser DPAPI 凭据别名 `test` 及其模型设置，凭据通过进程环境交给 WSL；页面仅显示别名与提供方信息。预检检查解密和转发，不向供应商发出试探请求。
+- “API 会话”来自该次会话摘要及 SQLite LLM HTTP 记录；摘要缺失时显示未知。
+- `session-and-tool` / `shared-tool-id` 衡量原生工具 ID 与系统语义记录的匹配。`process-and-tool` 与受控 Bash hook → eBPF 进程桥分别展示。
+- 应用侧场景评分来自运行自己的验证报告，成功执行实验与任务中观察到预设故障是不同字段。
+- Trace 来源会标为原生事件或控制器生命周期；缺少原生事件时只展示已有来源，不生成假 Span。
+- 公开数据输入复核属于零 API 结构检查，不等同于重新采集公开数据集的原始系统运行。
+
+默认历史样本 `real-canary-20261022-45`：`error-propagation-v1` 的两个真实会话成功，原生/系统工具 ID 4/4，`session-and-tool` accepted 4/4。Bash 受控进程桥为 2/2；Write 没有独立进程桥。详见该运行的原始场景报告和关联报告。
+
+## 文件与数据
+
+```
+backend/data.py       数据集、历史运行索引、独立证据读取、SQLite 预览
+backend/runner.py     固定实验配方、WSL 执行、预检和持久化进度
+backend/server.py     本机 HTTP API
+web/                 浏览器界面
+server.py            服务入口
+Start-Observatory.ps1 Windows 启动器
+runtime/             本机索引和服务日志（不纳入 Git）
+```
+
+新实验工件保存在论文工作区的 `lab/experiment/observatory_runs/<run-id>/`。历史导入读取 `lab/experiment/` 中现有运行，源文件不变；工作台目录重建后可重新索引这些实验。页面的原文件接口仅提供登记数据集或所选运行目录内支持的工件，SQLite 以只读模式查询。
+
+重建前的整套平台已移至 `web_coding/_archive/agentops_thesis_observatory_20261023_before_rebuild/`。本目录不依赖归档代码。

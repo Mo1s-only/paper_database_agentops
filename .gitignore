@@ -47,5 +47,21 @@ skills/research_skill_sources/*
 !skills/research_skill_sources/README.md
 
 # OS metadata
+# Runtime records are local-only; keep source, protocols and reviewed summaries.
+*.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+lab/experiment/**/*.jsonl
+lab/experiment/**/real-canary-*/
+lab/experiment/**/blind-*/
+lab/experiment/**/cf-blind-*/
+lab/experiment/**/dataset-2026*/
+lab/experiment/observatory_runs/
+lab/experiment/**/detached/
+lab/experiment/**/visualizations/
+lab/experiment/**/zero-api-tool-id-boundary-*/
+
 .DS_Store
 Thumbs.db

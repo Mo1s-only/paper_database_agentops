@@ -1,0 +1,62 @@
+{
+  "cases": [
+    {
+      "dataset": "AgentTrace",
+      "split": null,
+      "sample_id": "cod_034b23",
+      "source_ref": "Reference paper/datasets/shared_data/AgentTrace_ICLR2026_data/traces/cod_034b23_trace.json",
+      "source_artifact_sha256": "5cda9eaa31c554a260f6404372b0d3973f259b40e6b9ccc5fdef460cd0e1e741",
+      "selected_record_sha256": "5cda9eaa31c554a260f6404372b0d3973f259b40e6b9ccc5fdef460cd0e1e741"
+    },
+    {
+      "dataset": "WhoAndWhen",
+      "split": "Algorithm-Generated",
+      "sample_id": "99da66d8af02491f98b98c56b26c709e773b5a2ad945fb280375951ba600de09",
+      "source_ref": "Reference paper/datasets/shared_data/WhoAndWhen_184/Algorithm-Generated/99.json",
+      "source_artifact_sha256": "a8e7dec2ba70fb676e6fbc1fe5b861b75401604f49f13594ddb40402be4b5605",
+      "selected_record_sha256": "a8e7dec2ba70fb676e6fbc1fe5b861b75401604f49f13594ddb40402be4b5605"
+    },
+    {
+      "dataset": "WhoAndWhen",
+      "split": "Hand-Crafted",
+      "sample_id": "e2d69698-bc99-4e85-9880-67eaccd66e6c",
+      "source_ref": "Reference paper/datasets/shared_data/WhoAndWhen_184/Hand-Crafted/9.json",
+      "source_artifact_sha256": "85b57194dd9689b465c61aba1a9391628b627a3ce64126602c1e27059e255e79",
+      "selected_record_sha256": "85b57194dd9689b465c61aba1a9391628b627a3ce64126602c1e27059e255e79"
+    },
+    {
+      "dataset": "TRAIL",
+      "split": "GAIA",
+      "sample_id": "0035f455b3ff2295167a844f04d85d34",
+      "source_ref": "Reference paper/datasets/shared_data/TRAIL_benchmarking_148_traces.zip::benchmarking/processed_annotations_gaia/0035f455b3ff2295167a844f04d85d34.json",
+      "source_artifact_sha256": "518875332ffb616aa7d56c369821b30399531e2549049a9563f708c6a4c94ddc",
+      "selected_record_sha256": "4baaa1b2e803ca600937b33b80dac0d8a449327ebbe5865b07f3dd6f804fdec9"
+    },
+    {
+      "dataset": "TRAIL",
+      "split": "SWE-bench",
+      "sample_id": "0e6f7928953ab5a568bae640ce915cc3",
+      "source_ref": "Reference paper/datasets/shared_data/TRAIL_benchmarking_148_traces.zip::benchmarking/processed_annotations_swe_bench/0e6f7928953ab5a568bae640ce915cc3.json",
+      "source_artifact_sha256": "518875332ffb616aa7d56c369821b30399531e2549049a9563f708c6a4c94ddc",
+      "selected_record_sha256": "082d57bb2f42f988019ac04f7e5a1003b7297b964dbaf0435b5b8810fe48e822"
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "shared_data/AgentTrace_ICLR2026_data/traces/cod_034b23_trace.json",
+      "sha256": "5cda9eaa31c554a260f6404372b0d3973f259b40e6b9ccc5fdef460cd0e1e741"
+    },
+    {
+      "path": "shared_data/WhoAndWhen_184/Algorithm-Generated/99.json",
+      "sha256": "a8e7dec2ba70fb676e6fbc1fe5b861b75401604f49f13594ddb40402be4b5605"
+    },
+    {
+      "path": "shared_data/WhoAndWhen_184/Hand-Crafted/9.json",
+      "sha256": "85b57194dd9689b465c61aba1a9391628b627a3ce64126602c1e27059e255e79"
+    },
+    {
+      "path": "shared_data/TRAIL_benchmarking_148_traces.zip",
+      "sha256": "518875332ffb616aa7d56c369821b30399531e2549049a9563f708c6a4c94ddc"
+    }
+  ]
+}

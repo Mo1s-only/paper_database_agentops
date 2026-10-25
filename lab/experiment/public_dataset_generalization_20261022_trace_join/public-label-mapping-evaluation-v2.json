@@ -1,0 +1,75 @@
+{
+  "schema_version": "public-dataset-label-mapping-evaluation-v0.1",
+  "case_count": 5,
+  "dataset_families": [
+    "AgentTrace",
+    "TRAIL",
+    "WhoAndWhen"
+  ],
+  "source_integrity_verified_count": 5,
+  "case_results": [
+    {
+      "dataset": "AgentTrace",
+      "sample_id": "cod_034b23",
+      "label_type": "causal_graph_root_and_path",
+      "root_cause_resolves": true,
+      "error_node_resolves": true,
+      "path_nodes_resolved": 3,
+      "path_node_count": 3,
+      "path_edges_resolved": 2,
+      "path_edge_count": 2,
+      "result": "resolved",
+      "runtime_identity_available": false
+    },
+    {
+      "dataset": "WhoAndWhen",
+      "split": "Algorithm-Generated",
+      "sample_id": "99da66d8af02491f98b98c56b26c709e773b5a2ad945fb280375951ba600de09",
+      "label_type": "agent_step_attribution",
+      "label_fields_present": 4,
+      "label_fields_expected": 4,
+      "gold_agent": "Verification_Expert",
+      "gold_step": "2",
+      "explicit_history_step_locator_available": false,
+      "result": "labels_present_but_step_not_resolved_to_native_turn_id",
+      "runtime_identity_available": false
+    },
+    {
+      "dataset": "WhoAndWhen",
+      "split": "Hand-Crafted",
+      "sample_id": "e2d69698-bc99-4e85-9880-67eaccd66e6c",
+      "label_type": "agent_step_attribution",
+      "label_fields_present": 4,
+      "label_fields_expected": 4,
+      "gold_agent": "Orchestrator",
+      "gold_step": "25",
+      "explicit_history_step_locator_available": false,
+      "result": "labels_present_but_step_not_resolved_to_native_turn_id",
+      "runtime_identity_available": false
+    },
+    {
+      "dataset": "TRAIL",
+      "split": "GAIA",
+      "sample_id": "0035f455b3ff2295167a844f04d85d34",
+      "label_type": "span_error_location",
+      "gold_locations_resolved": 3,
+      "gold_locations_total": 3,
+      "result": "resolved",
+      "runtime_identity_available": false
+    },
+    {
+      "dataset": "TRAIL",
+      "split": "SWE-bench",
+      "sample_id": "0e6f7928953ab5a568bae640ce915cc3",
+      "label_type": "span_error_location",
+      "gold_locations_resolved": 8,
+      "gold_locations_total": 8,
+      "result": "resolved",
+      "runtime_identity_available": false
+    }
+  ],
+  "trail_normalized_span_count": 43,
+  "trail_normalized_spans_sha256": "bf54db0d2ea0b1f86d9f012b9b2a7e2235df6cbb5ff2a2f579adee3f33775438",
+  "claim_boundary": "Public-label structural resolvability only; not current AgentSight/eBPF capture, runtime cross-layer linkage, or attribution accuracy.",
+  "api_calls": 0
+}

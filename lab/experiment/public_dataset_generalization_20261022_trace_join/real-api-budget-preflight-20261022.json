@@ -1,0 +1,63 @@
+{
+  "schema_version": "agentops-api-budget-preflight-v0.1",
+  "preflight_only": true,
+  "api_requests_this_turn": 0,
+  "new_user_cap_cny": 1.0,
+  "planning_usd_cny_rate": 10.0,
+  "latest_available_ledger": {
+    "path": "my_paper_coding/experiment_control/cost-ledger-through-run12-20261021.json",
+    "sha256": "4cbdfad9414cf417b1b360262bebcfbe86bfda7802595edc1e51a06a2590ad93",
+    "reported_total_usd": 2.5662392,
+    "authorized_hard_stop_usd": 2.5898728,
+    "reported_remaining_usd": 0.0236336,
+    "status": "stale_before_runs_43_to_46"
+  },
+  "existing_unledgered_runs": [
+    {
+      "run_id": "real-canary-20261022-43",
+      "scenario": "error-propagation-v1",
+      "sessions": 1,
+      "cost_complete": true,
+      "reported_cost_usd": 0.0264232,
+      "capture_summary_sha256": "2c073750be4d970de2c5b1989598b832b3f03dd9ba4b867fa6d57a623fc0e6e4"
+    },
+    {
+      "run_id": "real-canary-20261022-44",
+      "scenario": "error-propagation-v1",
+      "sessions": 1,
+      "cost_complete": true,
+      "reported_cost_usd": 0.0244112,
+      "capture_summary_sha256": "bf397236fa60d433a64f8510d9f7ff9180dc6cc50510017660546e4fe5daf0bf"
+    },
+    {
+      "run_id": "real-canary-20261022-45",
+      "scenario": "error-propagation-v1",
+      "sessions": 2,
+      "cost_complete": true,
+      "reported_cost_usd": 0.0496904,
+      "capture_summary_sha256": "e134ea72e05bff0da3249d17ac7f3172f733c84b8e6f473c2faae67c7142cfc8"
+    },
+    {
+      "run_id": "real-canary-20261022-46",
+      "scenario": "routing-error-v1",
+      "sessions": 2,
+      "cost_complete": true,
+      "reported_cost_usd": 0.0533712,
+      "capture_summary_sha256": "e0434b80997d71ba8595d77ba8bac46838bfe19fcc8605bb26d4479f8f03d149"
+    }
+  ],
+  "unledgered_reported_cost_usd": 0.153896,
+  "unledgered_reported_cost_cny_at_planning_rate": 1.53896,
+  "projected_cumulative_usd_if_added_once": 2.7201352,
+  "excess_over_previous_hard_stop_usd": 0.1302624,
+  "provider_invoice_reconciled": false,
+  "secret_value_read_or_printed": false,
+  "alias_metadata": {"alias": "test", "provider": "deepseek", "model": "deepseek-flash"},
+  "runtime_preflight": {
+    "ubuntu_wsl": "available",
+    "claude_code": "2.1.303",
+    "agentsight_binary": "present",
+    "tracefs": "ready"
+  },
+  "decision": "Do not issue another API request until runs 43-46 and other same-day paid work are reconciled into an auditable current ledger."
+}

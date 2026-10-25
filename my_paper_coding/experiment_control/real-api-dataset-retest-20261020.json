@@ -1,0 +1,17 @@
+{
+  "batch_id": "real-api-dataset-retest-20261020",
+  "authorization": "User requested a current real-API retest of error-propagation-v1 and AgentRx task_id=12 on 2026-10-20.",
+  "baseline_ledger_path": "my_paper_coding/experiment_control/cost-ledger-dataset-retest-20261020.json",
+  "baseline_ledger_total_usd": 2.3245672,
+  "historical_ledger_status": "UNVERIFIED_RAW_LOGS",
+  "planning_usd_cny_rate": 10.0,
+  "batch_cap_cny": 2.0,
+  "error_propagation_max_usd_per_session": 0.05,
+  "agentrx_max_usd": 0.08,
+  "planned_cli_sessions": 3,
+  "planned_batch_budget_usd": 0.18,
+  "planned_batch_budget_cny": 1.8,
+  "hard_stop_total_usd": 2.5045672,
+  "no_automatic_retry": true,
+  "note": "The 10 CNY/USD factor is for planning, not a live exchange rate. Claude-reported costs are not a provider invoice. The hard stop includes the frozen historical total and all known prior CLI-reported increments."
+}

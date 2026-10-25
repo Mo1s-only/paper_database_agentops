@@ -1,5 +1,8 @@
 import { alertRules, projects, traces } from './mock-data';
 import { calculateMetrics } from './metrics';
+import { fetchUpstream, UpstreamError } from './upstream';
+import { validateTraces, validAlertRules } from './validation';
+import { getLocalStore } from './local-store';
 
 export type DataMode = 'mock' | 'remote';
 
@@ -8,36 +11,46 @@ export function getDataMode(): DataMode {
 }
 
 async function remoteGet<T>(path: string): Promise<T> {
-  const baseUrl = process.env.AGENTOPS_API_URL;
-  if (!baseUrl) throw new Error('AGENTOPS_API_URL is required in remote mode');
-  const response = await fetch(`${baseUrl.replace(/\/$/, '')}${path}`, {
-    headers: process.env.AGENTOPS_API_TOKEN
-      ? { Authorization: `Bearer ${process.env.AGENTOPS_API_TOKEN}` }
-      : undefined,
-    cache: 'no-store',
-  });
-  if (!response.ok) throw new Error(`AgentOps API returned ${response.status}`);
-  return response.json() as Promise<T>;
+  return fetchUpstream<T>(process.env.AGENTOPS_API_URL, path, process.env.AGENTOPS_API_TOKEN);
+}
+
+export function getReferenceTime() {
+  return getDataMode() === 'mock' ? Math.max(...getLocalStore().traces().map((t) => Date.parse(t.startedAt))) : Date.now();
 }
 
 export async function getProjects() {
-  return getDataMode() === 'remote' ? remoteGet<typeof projects>('/v1/projects') : projects;
+  const result = getDataMode() === 'remote' ? await remoteGet<typeof projects>('/v1/projects') : getLocalStore().projects();
+  if (!Array.isArray(result) || !result.every((p) => p && typeof p.id === 'string' && typeof p.name === 'string' && ['development', 'staging', 'production'].includes(p.environment))) throw new UpstreamError('INVALID_RESPONSE');
+  return result;
 }
 
 export async function getTraces() {
-  return getDataMode() === 'remote' ? remoteGet<typeof traces>('/v1/traces') : traces;
+  const result = getDataMode() === 'remote' ? await remoteGet<unknown>('/v1/traces') : getLocalStore().traces();
+  if (!validateTraces(result)) throw new UpstreamError('INVALID_RESPONSE');
+  return result;
 }
 
 export async function getTrace(id: string) {
-  if (getDataMode() === 'remote') return remoteGet<(typeof traces)[number]>(`/v1/traces/${id}`);
-  return traces.find((trace) => trace.id === id) ?? null;
+  if (getDataMode() === 'remote') {
+    try {
+      const result = await remoteGet<(typeof traces)[number]>(`/v1/traces/${encodeURIComponent(id)}`);
+      if (!validateTraces([result])) throw new UpstreamError('INVALID_RESPONSE');
+      return result;
+    } catch (error) { if (error instanceof UpstreamError && error.code === 'NOT_FOUND') return null; throw error; }
+  }
+  return getLocalStore().traces().find((trace) => trace.id === id) ?? null;
 }
 
 export async function getOverviewMetrics() {
   if (getDataMode() === 'remote') return remoteGet<ReturnType<typeof calculateMetrics>>('/v1/metrics/overview');
-  return calculateMetrics(traces);
+  return calculateMetrics(getLocalStore().traces());
 }
 
 export async function getAlertRules() {
-  return getDataMode() === 'remote' ? remoteGet<typeof alertRules>('/v1/alerts') : alertRules;
+  const result = getDataMode() === 'remote' ? await remoteGet<typeof alertRules>('/v1/alerts') : getLocalStore().alerts().rules;
+  if (!validAlertRules(result)) throw new UpstreamError('INVALID_RESPONSE');
+  return result;
 }
+
+export async function getAlertState() { return getDataMode() === 'remote' ? { rules: await getAlertRules(), revision: 0 } : getLocalStore().alerts(); }
+export function getLabels() { return getDataMode() === 'remote' ? [] : getLocalStore().labels(); }

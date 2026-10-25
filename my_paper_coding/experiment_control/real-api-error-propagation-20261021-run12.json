@@ -1,0 +1,22 @@
+{
+  "batch_id": "error-propagation-v1-real-agent-a-20261021-run12",
+  "authorization": "User explicitly requested another real API test. This run is limited to one agent_a session, a $0.02 Claude CLI soft budget, and no automatic retries. The existing cumulative hard stop is unchanged.",
+  "baseline_ledger_path": "my_paper_coding/experiment_control/cost-ledger-through-run11-20261021.json",
+  "historical_ledger_status": "UNVERIFIED_RAW_LOGS",
+  "current_total_before_run_usd": 2.5402672,
+  "planned_increment_usd": 0.02,
+  "planned_cli_soft_budget_usd": 0.02,
+  "planning_usd_cny_rate": 10.0,
+  "planned_total_usd": 2.5602672,
+  "hard_stop_total_usd": 2.5898728,
+  "remaining_after_planned_run_usd": 0.0296056,
+  "agentsight_binary_sha256": "2a1d93841880ae9f65662bf61f4f6436a9aaef36b5e28c33ad4e4c825f2c3883",
+  "scenario": "error-propagation-v1",
+  "agents": ["agent_a"],
+  "no_automatic_retry": true,
+  "approval": {
+    "approved_in_chat": true,
+    "scope": "One real agent_a API retest to validate the AgentSight record build with filesystem-write capture enabled. No second agent and no automatic retry."
+  },
+  "note": "The CLI budget is soft and may be exceeded. Costs are CLI-reported, not reconciled to a provider invoice. The historical baseline remains unverified against raw logs."
+}

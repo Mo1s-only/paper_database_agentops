@@ -1,0 +1,8 @@
+__pycache__/
+.env
+runs/
+src/invariants/dynamic_invariant_outputs/
+papers/
+related_works.md
+partners/
+agentrx.egg-info/

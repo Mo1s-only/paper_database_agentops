@@ -1,0 +1,11 @@
+{
+  "schema_version": "agentops-real-api-preflight-v0.1",
+  "run_name": "real-canary-20261021-3",
+  "status": "blocked_before_api",
+  "reason_code": "credential_missing",
+  "exception_type": "RuntimeError",
+  "api_request_sent": false,
+  "reported_cost_usd": 0,
+  "automatic_retries": 0,
+  "secret_values_recorded": false
+}

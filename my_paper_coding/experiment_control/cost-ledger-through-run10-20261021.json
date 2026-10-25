@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "total_cost_usd": 2.4898728,
+  "historical_baseline_usd": 2.183708,
+  "historical_baseline_status": "UNVERIFIED_RAW_LOGS",
+  "reported_incremental_costs": [
+    {"source": "error-propagation-v1 capture summary", "cost_usd": 0.0540648},
+    {"source": "AgentRx task 12 CLI summary", "cost_usd": 0.060692},
+    {"run": "real-canary-20261021-4", "cost_usd": 0.0237776},
+    {"run": "real-canary-20261021-5", "cost_usd": 0.0181688},
+    {"run": "real-canary-20261021-6", "cost_usd": 0.0191904},
+    {"run": "real-canary-20261021-7", "cost_usd": 0.0200784},
+    {"run": "real-canary-20261021-8", "cost_usd": 0.0244664},
+    {"run": "real-canary-20261021-9", "cost_usd": 0.0259528},
+    {"run": "real-canary-20261021-10", "scenario": "error-propagation-v1", "agent_a_usd": 0.0293048, "agent_b_usd": 0.0304688, "cost_usd": 0.0597736}
+  ],
+  "incremental_total_usd": 0.3061648,
+  "authorized_hard_stop_total_usd": 2.5141464,
+  "remaining_to_hard_stop_usd": 0.0242736,
+  "calculation": "historical_baseline_usd + reported_incremental_costs",
+  "reconciled_to_provider_invoice": false,
+  "note": "CLI-reported costs only. The historical baseline remains unverified against the 30 raw logs. This snapshot records one approved real error-propagation-v1 two-agent rerun; no further API calls are authorized by this batch."
+}

@@ -1,0 +1,36 @@
+{
+  "checked_at_local": "2026-10-19 19:50 Asia/Shanghai",
+  "status": "BLOCKED_BEFORE_API_BY_LEDGER_EVIDENCE",
+  "wsl": {
+    "distribution": "Ubuntu",
+    "version": 2,
+    "root_access": true,
+    "kernel": "6.18.40.1-microsoft-standard-WSL2",
+    "python": "3.14.4",
+    "node": "v22.14.0",
+    "npm": "10.9.2",
+    "claude_code": "2.1.303",
+    "agentsight": "1.0.31",
+    "tracefs_sched_process_exec": true,
+    "workspace_visible": true,
+    "agentsight_process_probe_emitted_events": true
+  },
+  "credential_file_exists": true,
+  "credential_value_recorded": false,
+  "credential_provider_acceptance_verified": false,
+  "historical_ledger": {
+    "frozen_total_usd": 2.183708,
+    "declared_source_paths_present": 0,
+    "declared_source_paths_expected": 30,
+    "alternative_matching_log_sources_found": 1,
+    "alternative_matching_log_note": "One local AgentSight test/out Claude log matches a frozen ledger session ID and cost, but does not restore the remaining source files."
+  },
+  "batch": {
+    "planned_cny": 1.8,
+    "cap_cny": 2.0,
+    "api_calls_made_this_attempt": 0,
+    "prediction_generated": false,
+    "system_capture_generated": false
+  },
+  "user_decision": "Provide the historical original log directory before paid calls; do not bypass ledger evidence gate."
+}

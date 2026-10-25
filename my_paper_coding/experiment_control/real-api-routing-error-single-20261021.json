@@ -1,0 +1,25 @@
+{
+  "batch_id": "routing-error-single-20261021",
+  "authorization": "User approved one real routing-error-v1 single-agent API call with a $0.04 Claude CLI soft limit, no automatic retry, cumulative planning cap CNY 2.604384, and cumulative USD hard stop 2.4441464.",
+  "baseline_ledger_path": "my_paper_coding/experiment_control/cost-ledger-20261012-sse-clock.json",
+  "baseline_ledger_total_usd": 2.183708,
+  "historical_ledger_status": "UNVERIFIED_RAW_LOGS",
+  "previous_verified_cli_increment_usd": 0.2204384,
+  "current_total_before_run_usd": 2.4041464,
+  "planning_usd_cny_rate": 10.0,
+  "batch_cap_cny": 2.604384,
+  "planned_cli_sessions": 1,
+  "scenario": "routing-error-v1",
+  "agents": ["agent_a"],
+  "cli_soft_budget_usd_per_session": 0.04,
+  "planned_increment_usd": 0.04,
+  "planned_total_usd": 2.4441464,
+  "hard_stop_total_usd": 2.4441464,
+  "no_automatic_retry": true,
+  "approval": {
+    "approved_in_chat": true,
+    "approval_reply": "批准一次真实调用（推荐）",
+    "scope": "One routing-error-v1 agent_a live capture session only; the CLI limit is soft and provider-reported spend may exceed it."
+  },
+  "note": "The planning conversion is not a live FX quote. Costs are CLI-reported, not independently reconciled to a provider invoice."
+}

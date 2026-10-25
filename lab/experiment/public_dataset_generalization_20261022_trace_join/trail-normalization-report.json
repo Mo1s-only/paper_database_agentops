@@ -1,0 +1,68 @@
+{
+  "schema_version": "trail-public-semantic-span-v0.1",
+  "record_count": 43,
+  "cases": [
+    {
+      "split": "GAIA",
+      "sample_id": "0035f455b3ff2295167a844f04d85d34",
+      "span_count": 11,
+      "trace_record_sha256": "1b07af4974140f3929ffb573b7a2d44a496018e110f5fddf553097a4aebe28d6",
+      "span_ids": [
+        "77fb7128d6f04862",
+        "6dd9e2d6d5e2fe6b",
+        "c12b564639302005",
+        "a6fa26f0e16d751c",
+        "195e4d5039d9ed74",
+        "e32a2a33a464cb54",
+        "98fa1dda65ab168b",
+        "2f5bc0fdc71c99df",
+        "bc20feefb97e11e5",
+        "193693565e6dc4d0",
+        "97268e3854c7a045"
+      ]
+    },
+    {
+      "split": "SWE-bench",
+      "sample_id": "0e6f7928953ab5a568bae640ce915cc3",
+      "span_count": 32,
+      "trace_record_sha256": "769237936f2337be4d8d9ddfd3f70530db96ca7db711cb95b92b9afbe6ad4e28",
+      "span_ids": [
+        "23550689031e26d0",
+        "49b082e9ae7ce5d3",
+        "fe5d65d6daa87542",
+        "a23ec295e4d7ce41",
+        "b746431dac84cda6",
+        "ec5fe1c022cea96a",
+        "c33b6c5a57f688ff",
+        "74b3acfbef472367",
+        "bb4ab0cbbf11b90e",
+        "1937d26040ed7b2f",
+        "0f9026916876a263",
+        "ae8a00b7410f42f1",
+        "fe545a9ae8cf12d6",
+        "6fb35e926af8a6fb",
+        "abe174886ae1a18f",
+        "aed8d32b10d450bf",
+        "28f8d33cff18ce45",
+        "78d40cde0da7a70d",
+        "1540de58ef3510e5",
+        "01d13b729e5b110e",
+        "ac8e673cf13ceee7",
+        "e96b6de6144b4a64",
+        "ab1a9d7bba24e920",
+        "b726bde06e1dc942",
+        "6994b2c7d32c7446",
+        "deba14095df31c72",
+        "27e51a47791689b2",
+        "e7ad90c7588b9ab3",
+        "bf91891bec8b8ff1",
+        "5f7efa50e39c6ccf",
+        "6f67d8652157acc3",
+        "ba16484070fe81f5"
+      ]
+    }
+  ],
+  "identity_policy": "Historical public traces do not assert current tool IDs or OS process identity; absent fields remain null.",
+  "excluded_content": "Raw prompt, completion, tool arguments and tool output bodies are not copied; only selected metadata and attribute-presence indicators are retained.",
+  "api_calls": 0
+}

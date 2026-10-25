@@ -13,7 +13,7 @@ export function calculateMetrics(traces: Trace[]): OverviewMetrics {
   const buckets = new Map<string, { traces: number; errors: number; cost: number }>();
 
   for (const trace of traces) {
-    const hour = `${new Date(trace.startedAt).getHours().toString().padStart(2, '0')}:00`;
+    const hour = new Date(trace.startedAt).toISOString().slice(0, 13) + ':00Z';
     const bucket = buckets.get(hour) ?? { traces: 0, errors: 0, cost: 0 };
     bucket.traces += 1;
     bucket.errors += trace.status === 'error' ? 1 : 0;

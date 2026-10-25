@@ -1,0 +1,16 @@
+{
+  "checked_at_local": "2026-10-19 19:32 Asia/Shanghai",
+  "scope": "post-reboot Windows/WSL and cumulative-cost readiness check",
+  "wsl_optional_features": {
+    "Microsoft-Windows-Subsystem-Linux": "Enabled",
+    "VirtualMachinePlatform": "Enabled"
+  },
+  "wsl_list_verbose_exit_code": -1,
+  "wsl_list_verbose_message": "适用于 Linux 的 Windows 子系统没有已安装的分发版。",
+  "ubuntu_available": false,
+  "historical_ledger_raw_entries_present": 0,
+  "historical_ledger_raw_entries_expected": 30,
+  "real_api_calls_made_in_this_attempt": 0,
+  "status": "BLOCKED_BEFORE_API",
+  "unverified": ["Claude CLI and AgentSight inside Ubuntu", "WSL credential availability", "actual API cost", "capture and attribution metrics"]
+}

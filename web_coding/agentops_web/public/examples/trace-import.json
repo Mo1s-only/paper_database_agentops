@@ -1,0 +1,18 @@
+[
+  {
+    "id": "example_import_001",
+    "projectId": "reassigned_to_selected_project",
+    "name": "Example: tool timeout (synthetic)",
+    "startedAt": "2026-01-01T08:00:00Z",
+    "durationMs": 1200,
+    "status": "error",
+    "tokens": 0,
+    "cost": 0,
+    "tags": ["synthetic", "import-example"],
+    "provenance": { "kind": "demo" },
+    "spans": [
+      { "id": "example_root", "parentId": null, "name": "Example workflow", "kind": "workflow", "agent": "ExampleAgent", "startedAt": "2026-01-01T08:00:00Z", "durationMs": 1200, "input": "Synthetic input for UI testing only", "output": "", "tokens": 0, "cost": 0, "status": "error", "error": "Synthetic tool timeout" },
+      { "id": "example_tool", "parentId": "example_root", "name": "Example search", "kind": "tool", "agent": "ExampleAgent", "startedAt": "2026-01-01T08:00:00.100Z", "durationMs": 1000, "input": "Synthetic search request", "output": "", "tokens": 0, "cost": 0, "status": "error", "error": "Synthetic timeout after 1000 ms" }
+    ]
+  }
+]

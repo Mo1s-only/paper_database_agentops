@@ -1,0 +1,13 @@
+{
+  "schema_version": "agentops-cost-ledger-snapshot-v0.1",
+  "snapshot_date": "2026-10-20",
+  "total_cost_usd": 2.3245672,
+  "baseline_components": {
+    "frozen_historical_ledger_usd": 2.183708,
+    "error_propagation_and_agentrx_20261019_reported_usd": 0.1147568,
+    "agentsight_real_canary_20261020_reported_usd": 0.0261024
+  },
+  "historical_ledger_status": "UNVERIFIED_RAW_LOGS",
+  "incremental_costs_status": "CLI_REPORTED",
+  "note": "Derived preflight snapshot only; the frozen historical 30-session raw log set remains unverified and this is not a provider invoice."
+}

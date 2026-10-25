@@ -1,0 +1,34 @@
+{
+  "batch_id": "error-propagation-and-agentrx-20261019",
+  "authorization": "User requested one real error-propagation-v1 API run and a small real API call on AgentRx data, with both together below 2 CNY.",
+  "baseline_ledger_path": "my_paper_coding/experiment_control/cost-ledger-20261012-sse-clock.json",
+  "baseline_ledger_total_usd": 2.183708,
+  "historical_ledger_override": {
+    "approved_by_user": true,
+    "approval_reply": "是，按冻结账本继续启动",
+    "batch_id": "error-propagation-and-agentrx-20261019",
+    "baseline_total_usd": 2.183708,
+    "max_incremental_cny": 2.0,
+    "raw_log_paths_present_at_approval": 0,
+    "raw_log_paths_expected": 30,
+    "historical_cost_status": "UNVERIFIED_RAW_LOGS",
+    "scope": "This one bounded batch only; do not treat the frozen historical total as re-audited."
+  },
+  "planning_usd_cny_rate": 10.0,
+  "batch_cap_cny": 2.258936,
+  "planned_cli_sessions": 3,
+  "error_propagation_max_usd_per_session": 0.05,
+  "agentrx_max_usd": 0.08,
+  "planned_batch_budget_usd": 0.18,
+  "planned_batch_budget_cny": 1.8,
+  "hard_stop_total_usd": 2.4096016,
+  "no_automatic_retry": true,
+  "cap_increase_approval": {
+    "approved_in_chat": true,
+    "approval": "确认提高总上限，允许本轮最多 $0.05（推荐）",
+    "additional_session_cap_usd": 0.05,
+    "approved_cumulative_planning_cap_cny": 2.258936,
+    "scope": "One additional real API canary only; no automatic retry."
+  },
+  "note": "The 10 CNY/USD factor is a conservative planning factor, not a live exchange rate or provider billing guarantee. The newly approved $0.05 maximum raises projected cumulative planning spend to CNY 2.258936. The CLI max-budget is a soft limit and may be exceeded; the canary uses a lower $0.04 CLI ceiling as headroom. Refresh the cumulative ledger before execution; only CLI-reported cost can be checked here."
+}

@@ -8,10 +8,12 @@ import { PageHeader } from './ui';
 import { formatCompact, formatCost, formatDuration } from '@/lib/format';
 import { calculateMetrics } from '@/lib/metrics';
 import type { Trace } from '@/lib/types';
+import { filterTraces } from '@/lib/query';
+import { DataControls, DataScope } from './data-controls';
 
 export function MetricsWorkspace({ traces }: { traces: Trace[] }) {
-  const { selectedProjectId, timeRange, setTimeRange } = useDashboard();
-  const filtered = useMemo(() => traces.filter((trace) => selectedProjectId === 'all' || trace.projectId === selectedProjectId), [traces, selectedProjectId]);
+  const { selectedProjectId, timeRange, referenceTime, traceSource } = useDashboard();
+  const filtered = useMemo(() => filterTraces(traces, selectedProjectId, timeRange, referenceTime, traceSource), [traces, selectedProjectId, timeRange, referenceTime, traceSource]);
   const metrics = useMemo(() => calculateMetrics(filtered), [filtered]);
   const callMix = useMemo(() => {
     const spans = filtered.flatMap((trace) => trace.spans);
@@ -24,8 +26,8 @@ export function MetricsWorkspace({ traces }: { traces: Trace[] }) {
   const maxLatency = Math.max(...filtered.map((trace) => trace.durationMs), 1);
 
   return <>
-    <PageHeader eyebrow="Analytics / Metrics" title="性能与成本指标" description="按项目查看吞吐、延迟、错误、模型和调用类型分布。" actions={<label className="select-control"><span>时间范围</span><select value={timeRange} onChange={(event) => setTimeRange(event.target.value)}><option value="24h">最近 24 小时</option><option value="7d">最近 7 天</option><option value="30d">最近 30 天</option></select></label>} />
-    <div className="metrics-note"><Gauge size={17} /><span><strong>确定性演示数据</strong> · 时间范围控件已保留接口，接入真实后端后由查询参数驱动聚合。</span></div>
+    <PageHeader eyebrow="Analytics / Metrics" title="性能与成本指标" description="按项目查看吞吐、延迟、错误、模型和调用类型分布。" actions={<DataControls />} />
+    <DataScope />
     <section className="metrics-kpis">
       <article><span className="tone-violet"><Activity size={18} /></span><p><small>Trace 数</small><strong>{formatCompact(metrics.traceCount)}</strong><em>当前筛选</em></p></article>
       <article><span className="tone-blue"><Timer size={18} /></span><p><small>P95 延迟</small><strong>{formatDuration(metrics.p95LatencyMs)}</strong><em>nearest-rank</em></p></article>

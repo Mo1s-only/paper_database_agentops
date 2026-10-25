@@ -5,7 +5,7 @@ import {
   GitCompareArrows, Tags, TriangleAlert,
 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { buildEvaluationRecords } from '@/lib/evaluation';
 import type { GroundTruthLabel, Trace } from '@/lib/types';
 import { useDashboard } from './dashboard-context';
@@ -19,24 +19,14 @@ const labelNames: Record<GroundTruthLabel['failureType'], string> = {
   other: '其他',
 };
 
-export function EvaluationWorkspace({ traces }: { traces: Trace[] }) {
-  const { selectedProjectId } = useDashboard();
-  const [labels, setLabels] = useState<GroundTruthLabel[]>([]);
-  const [labelsLoaded, setLabelsLoaded] = useState(false);
+export function EvaluationWorkspace({ traces, labels }: { traces: Trace[]; labels: GroundTruthLabel[] }) {
+  const { selectedProjectId, dataMode } = useDashboard();
+  const [source, setSource] = useState('all');
   const [exported, setExported] = useState(false);
 
-  useEffect(() => {
-    try {
-      setLabels(JSON.parse(window.localStorage.getItem('agentops-ground-truth') ?? '[]') as GroundTruthLabel[]);
-    } catch {
-      setLabels([]);
-    }
-    setLabelsLoaded(true);
-  }, []);
-
   const visibleTraces = useMemo(
-    () => traces.filter((trace) => selectedProjectId === 'all' || trace.projectId === selectedProjectId),
-    [selectedProjectId, traces],
+    () => traces.filter((trace) => (selectedProjectId === 'all' || trace.projectId === selectedProjectId) && (source === 'all' || trace.provenance?.kind === source)),
+    [selectedProjectId, traces, source],
   );
   const records = useMemo(() => buildEvaluationRecords(visibleTraces, labels), [labels, visibleTraces]);
   const labeled = records.filter((record) => record.groundTruth);
@@ -52,11 +42,12 @@ export function EvaluationWorkspace({ traces }: { traces: Trace[] }) {
     const payload = {
       schemaVersion: '0.1.0',
       exportedAt: new Date().toISOString(),
-      scope: { projectId: selectedProjectId, source: 'local-demo' },
+      scope: { projectId: selectedProjectId, dataMode, source },
       method: { name: 'transparent-rule-baseline', version: '0.1.0' },
       records: records.map((record) => ({
         traceId: record.trace.id,
         traceName: record.trace.name,
+        provenance: record.trace.provenance ?? { kind: 'remote-unverified' },
         automaticAttribution: record.attribution,
         groundTruth: record.groundTruth,
         agreesWithHuman: record.agreesWithHuman,
@@ -81,11 +72,12 @@ export function EvaluationWorkspace({ traces }: { traces: Trace[] }) {
     />
 
     <div className="evaluation-boundary"><FlaskConical size={17} /><p><strong>研究协议草案 · AUTHOR_INPUT_NEEDED</strong><span>当前只验证数据结构和工作流。正式论文结论需要真实失败 Trace、盲评标注、裁决规则与冻结的数据版本。</span></p></div>
+    {dataMode === 'mock' && <label className="select-control source-picker"><span>评测数据来源</span><select value={source} onChange={(e) => setSource(e.target.value)}><option value="all">全部来源（可能包含示例）</option><option value="imported">仅用户导入（未经独立验证）</option><option value="demo">仅示例数据</option></select></label>}
 
     <section className="evaluation-kpis">
       <article><span className="tone-red"><TriangleAlert size={18} /></span><p><small>失败 Trace</small><strong>{records.length}</strong><em>当前项目筛选</em></p></article>
       <article><span className="tone-violet"><GitCompareArrows size={18} /></span><p><small>自动候选</small><strong>{records.filter((record) => record.attribution.rootSpanId).length}</strong><em>规则基线 v0.1.0</em></p></article>
-      <article><span className="tone-blue"><ClipboardCheck size={18} /></span><p><small>人工标签覆盖</small><strong>{labelsLoaded ? `${labeled.length} / ${records.length}` : '—'}</strong><em>浏览器本地标签</em></p></article>
+      <article><span className="tone-blue"><ClipboardCheck size={18} /></span><p><small>人工标签覆盖</small><strong>{`${labeled.length} / ${records.length}`}</strong><em>{dataMode === 'mock' ? '服务端保存 · 待独立复核' : '远程标签服务未接入'}</em></p></article>
       <article><span className="tone-green"><Check size={18} /></span><p><small>已标注样本一致率</small><strong>{agreementRate === null ? '待标注' : `${agreementRate.toFixed(0)}%`}</strong><em>{agreementRate === null ? '不将缺失标签计为 0%' : `n = ${labeled.length}`}</em></p></article>
     </section>
 
@@ -96,7 +88,7 @@ export function EvaluationWorkspace({ traces }: { traces: Trace[] }) {
           const automaticSpan = record.trace.spans.find((span) => span.id === record.attribution.rootSpanId);
           const humanSpan = record.trace.spans.find((span) => span.id === record.groundTruth?.rootSpanId);
           return <tr key={record.trace.id}>
-            <td><Link className="trace-name" href={`/traces/${record.trace.id}`}><span>{record.trace.name}</span><code>{record.trace.id}</code></Link></td>
+            <td><Link className="trace-name" href={`/traces/${record.trace.id}`}><span>{record.trace.name}</span><code>{record.trace.id}</code><small>{record.trace.provenance?.kind === 'demo' ? '示例数据' : '未经独立验证的输入'}</small></Link></td>
             <td><div className="evaluation-candidate"><strong>{automaticSpan?.name ?? '无候选'}</strong><code>{record.attribution.rootSpanId ?? '—'} · {record.attribution.score === null ? '—' : record.attribution.score.toFixed(2)}</code></div></td>
             <td>{record.groundTruth ? <div className="evaluation-candidate human"><strong>{humanSpan?.name ?? record.groundTruth.rootSpanId}</strong><span>{labelNames[record.groundTruth.failureType]}</span></div> : <span className="label-needed"><FileQuestion size={14} />待人工标注</span>}</td>
             <td>{record.agreesWithHuman === null ? <span className="comparison-state pending">不可计算</span> : record.agreesWithHuman ? <span className="comparison-state agree">一致</span> : <span className="comparison-state disagree">分歧</span>}</td>

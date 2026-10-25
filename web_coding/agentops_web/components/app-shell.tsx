@@ -30,7 +30,7 @@ const commands = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { projects, selectedProjectId, setSelectedProjectId, theme, toggleTheme } = useDashboard();
+  const { projects, selectedProjectId, setSelectedProjectId, theme, toggleTheme, dataMode } = useDashboard();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
@@ -62,6 +62,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className={`app-frame ${collapsed ? 'sidebar-collapsed' : ''}`}>
+      <a className="skip-link" href="#main-content">跳转到主要内容</a>
       <button className="mobile-menu" onClick={() => setMobileOpen(true)} aria-label="打开菜单"><Menu size={20} /></button>
       {mobileOpen && <button className="mobile-scrim" onClick={() => setMobileOpen(false)} aria-label="关闭菜单" />}
       <aside className={`sidebar ${mobileOpen ? 'mobile-open' : ''}`}>
@@ -70,15 +71,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <button className="icon-button mobile-close" onClick={() => setMobileOpen(false)} aria-label="关闭菜单"><X size={18} /></button>
         </div>
 
+        {!collapsed && <><div className="workspace-label"><span>AW</span><div><strong>AgentOps Workspace</strong><small>{dataMode === 'mock' ? '本机持久化工作区' : '远程数据工作区'}</small></div></div><div className="nav-section-label">Workspace</div></>}
         <nav className="primary-nav" aria-label="主导航">
           {navigation.map((item) => {
             const active = pathname === item.href || pathname.startsWith(`${item.href}/`);
             const Icon = item.icon;
             return (
-              <Link key={item.href} href={item.href} className={`nav-item ${active ? 'active' : ''}`} title={collapsed ? item.label : undefined}>
+              <Link key={item.href} href={item.href} aria-current={active ? 'page' : undefined} className={`nav-item ${active ? 'active' : ''}`} title={collapsed ? item.label : undefined}>
                 <Icon size={18} strokeWidth={1.8} />
                 {!collapsed && <span>{item.label}</span>}
-                {item.href === '/alerts' && !collapsed && <span className="nav-badge">2</span>}
                 {item.href === '/deploy' && !collapsed && <span className="nav-alpha">α</span>}
               </Link>
             );
@@ -111,8 +112,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <ChevronDown size={14} aria-hidden="true" />
           </div>
           <div className="topbar-actions">
-            <button className="search-button" onClick={() => setCommandOpen(true)}>
-              <Search size={16} /><span>搜索页面与命令</span><kbd>⌘ K</kbd>
+            <span className={`connection-pill ${dataMode}`}><i />{dataMode === 'mock' ? '本地模式' : '远程模式'}</span>
+            <button className="search-button" aria-label="搜索页面与命令" onClick={() => setCommandOpen(true)}>
+              <Search size={16} /><span>搜索页面与命令</span><kbd>Ctrl K</kbd>
             </button>
             <button className="icon-button" onClick={toggleTheme} aria-label="切换主题">
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
@@ -121,7 +123,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="avatar" title="Research Operator">RO</div>
           </div>
         </header>
-        <main className="page-content">{children}</main>
+        <main className="page-content" id="main-content" tabIndex={-1}>{children}</main>
       </div>
 
       {commandOpen && (
@@ -144,8 +146,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <section className="notification-popover" aria-label="通知中心">
           <div className="notification-head"><div><span className="eyebrow">Activity</span><h2>通知</h2></div><button onClick={() => setNotificationsRead(true)}><CheckCheck size={14} />全部已读</button></div>
           <div className="notification-demo-label">演示通知 · 未连接推送服务</div>
-          <Link href="/traces/tr_819ca7752bb1" onClick={() => setNotificationsOpen(false)} className={notificationsRead ? 'read' : ''}><span className="notification-icon error"><CircleAlert size={16} /></span><p><strong>Trace failure detected</strong><span>incident_root_cause_analysis 出现工具超时</span><small>46 分钟前 · Multi-Agent Benchmark</small></p></Link>
-          <Link href="/metrics" onClick={() => setNotificationsOpen(false)} className={notificationsRead ? 'read' : ''}><span className="notification-icon latency"><Timer size={16} /></span><p><strong>P95 latency crossed demo threshold</strong><span>当前确定性样本的 P95 高于 30s</span><small>1 小时前 · 演示规则</small></p></Link>
+          {dataMode === 'mock' ? <><Link href="/traces/tr_819ca7752bb1" onClick={() => setNotificationsOpen(false)} className={notificationsRead ? 'read' : ''}><span className="notification-icon error"><CircleAlert size={16} /></span><p><strong>示例：工具调用超时</strong><span>incident_root_cause_analysis</span><small>样本快照 · Multi-Agent Benchmark</small></p></Link><Link href="/metrics" onClick={() => setNotificationsOpen(false)} className={notificationsRead ? 'read' : ''}><span className="notification-icon latency"><Timer size={16} /></span><p><strong>示例：P95 延迟超过 30s</strong><span>查看当前样本的延迟分布</span><small>样本快照 · 演示规则</small></p></Link></> : <p className="empty-compact">尚未连接实时通知服务</p>}
           <div className="notification-foot"><Link href="/alerts" onClick={() => setNotificationsOpen(false)}>查看告警策略</Link></div>
         </section>
       </>}

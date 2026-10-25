@@ -1,6 +1,7 @@
 import { AlertsWorkspace } from '@/components/alerts-workspace';
-import { getAlertRules } from '@/lib/data-source';
+import { getAlertState } from '@/lib/data-source';
 
 export default async function AlertsPage() {
-  return <AlertsWorkspace initialRules={await getAlertRules()} />;
+  const state = await getAlertState();
+  return <AlertsWorkspace initialRules={state.rules} initialRevision={state.revision} />;
 }

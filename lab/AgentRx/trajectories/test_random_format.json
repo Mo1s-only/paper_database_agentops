@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "session_id": "sess-X7q9-2026-03-03",
+    "created": "2026-03-03T14:22:00Z",
+    "platform": "acme-support-v3",
+    "region": "us-west-2",
+    "tags": ["escalation", "billing", "refund"]
+  },
+  "customer_profile": {
+    "cid": "CUST-88712",
+    "tier": "gold",
+    "name": "Priya Sharma"
+  },
+  "goal_description": "Customer wants to dispute a double charge on invoice #INV-2026-4401, get a refund for the duplicate, and update their billing address before the next cycle.",
+  "dialogue": {
+    "turns": [
+      {
+        "seq": 1,
+        "who": "customer",
+        "channel": "chat",
+        "payload": {
+          "msg": "Hi, I was charged twice for my February subscription — invoice INV-2026-4401. Can you look into this?"
+        },
+        "ts": "2026-03-03T14:22:05Z"
+      },
+      {
+        "seq": 2,
+        "who": "agent",
+        "channel": "chat",
+        "payload": {
+          "msg": "Hello Priya! I'm sorry to hear that. Let me pull up your account and check the billing history."
+        },
+        "ts": "2026-03-03T14:22:18Z"
+      },
+      {
+        "seq": 3,
+        "who": "agent",
+        "channel": "internal",
+        "payload": {
+          "tool_call": {
+            "fn": "billing.get_invoices",
+            "kwargs": {"customer_id": "CUST-88712", "date_range": ["2026-02-01", "2026-02-28"]},
+            "request_id": "req-0031"
+          }
+        },
+        "ts": "2026-03-03T14:22:20Z"
+      },
+      {
+        "seq": 4,
+        "who": "system",
+        "channel": "internal",
+        "payload": {
+          "tool_result": {
+            "request_id": "req-0031",
+            "status": "ok",
+            "data": {
+              "invoices": [
+                {"invoice_id": "INV-2026-4401", "amount": 49.99, "currency": "USD", "charged_at": "2026-02-01T00:00:00Z", "status": "paid"},
+                {"invoice_id": "INV-2026-4401-DUP", "amount": 49.99, "currency": "USD", "charged_at": "2026-02-01T00:03:12Z", "status": "paid"}
+              ]
+            }
+          }
+        },
+        "ts": "2026-03-03T14:22:22Z"
+      },
+      {
+        "seq": 5,
+        "who": "agent",
+        "channel": "chat",
+        "payload": {
+          "msg": "I can see two charges of $49.99 on February 1st — the original INV-2026-4401 and a duplicate INV-2026-4401-DUP charged 3 minutes later. This does look like a double charge. I'll initiate a refund for the duplicate. Before I proceed, could you confirm you'd like me to refund $49.99 for INV-2026-4401-DUP?"
+        },
+        "ts": "2026-03-03T14:22:35Z"
+      },
+      {
+        "seq": 6,
+        "who": "customer",
+        "channel": "chat",
+        "payload": {
+          "msg": "Yes please, go ahead with the refund."
+        },
+        "ts": "2026-03-03T14:22:50Z"
+      },
+      {
+        "seq": 7,
+        "who": "agent",
+        "channel": "internal",
+        "payload": {
+          "tool_call": {
+            "fn": "billing.issue_refund",
+            "kwargs": {"invoice_id": "INV-2026-4401-DUP", "amount": 49.99, "reason": "duplicate_charge"},
+            "request_id": "req-0032"
+          }
+        },
+        "ts": "2026-03-03T14:22:52Z"
+      },
+      {
+        "seq": 8,
+        "who": "system",
+        "channel": "internal",
+        "payload": {
+          "tool_result": {
+            "request_id": "req-0032",
+            "status": "ok",
+            "data": {"refund_id": "RFD-90821", "amount": 49.99, "eta_days": 5}
+          }
+        },
+        "ts": "2026-03-03T14:22:55Z"
+      },
+      {
+        "seq": 9,
+        "who": "agent",
+        "channel": "chat",
+        "payload": {
+          "msg": "Done! Refund RFD-90821 for $49.99 has been issued. It should appear in your account within 5 business days. You also mentioned wanting to update your billing address — would you like to do that now?"
+        },
+        "ts": "2026-03-03T14:23:05Z"
+      },
+      {
+        "seq": 10,
+        "who": "customer",
+        "channel": "chat",
+        "payload": {
+          "msg": "Yes, I moved recently. New address is 742 Evergreen Terrace, Springfield, IL 62704."
+        },
+        "ts": "2026-03-03T14:23:20Z"
+      },
+      {
+        "seq": 11,
+        "who": "agent",
+        "channel": "internal",
+        "payload": {
+          "tool_call": {
+            "fn": "crm.update_address",
+            "kwargs": {
+              "customer_id": "CUST-88712",
+              "address_type": "billing",
+              "new_address": {
+                "street": "742 Evergreen Terrace",
+                "city": "Springfield",
+                "state": "IL",
+                "zip": "62704"
+              }
+            },
+            "request_id": "req-0033"
+          }
+        },
+        "ts": "2026-03-03T14:23:25Z"
+      },
+      {
+        "seq": 12,
+        "who": "system",
+        "channel": "internal",
+        "payload": {
+          "tool_result": {
+            "request_id": "req-0033",
+            "status": "ok",
+            "data": {"previous_address": "100 Main St, Chicago, IL 60601", "new_address": "742 Evergreen Terrace, Springfield, IL 62704"}
+          }
+        },
+        "ts": "2026-03-03T14:23:27Z"
+      },
+      {
+        "seq": 13,
+        "who": "agent",
+        "channel": "chat",
+        "payload": {
+          "msg": "Your billing address has been updated to 742 Evergreen Terrace, Springfield, IL 62704. The change will take effect for your next billing cycle. Is there anything else I can help with?"
+        },
+        "ts": "2026-03-03T14:23:40Z"
+      },
+      {
+        "seq": 14,
+        "who": "customer",
+        "channel": "chat",
+        "payload": {
+          "msg": "Nope, that's everything. Thanks for the quick help!"
+        },
+        "ts": "2026-03-03T14:23:55Z"
+      },
+      {
+        "seq": 15,
+        "who": "agent",
+        "channel": "chat",
+        "payload": {
+          "msg": "You're welcome, Priya! Have a great day."
+        },
+        "ts": "2026-03-03T14:24:00Z"
+      }
+    ],
+    "resolution": {
+      "outcome": "resolved",
+      "categories": ["billing_dispute", "address_update"],
+      "csat_score": null
+    }
+  }
+}

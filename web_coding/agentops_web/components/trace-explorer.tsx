@@ -2,7 +2,7 @@
 
 import {
   Activity, ArrowDownUp, Bookmark, Bot, ChevronLeft, ChevronRight, CircleDollarSign,
-  Download, ExternalLink, Filter, Search, TriangleAlert, Wrench, X,
+  Download, ExternalLink, Filter, Search, TriangleAlert, Wrench, X, Save, Trash2,
 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
@@ -11,11 +11,22 @@ import { EmptyState, PageHeader, StatusBadge } from './ui';
 import type { Trace, TraceStatus } from '@/lib/types';
 import { formatCompact, formatCost, formatDateTime, formatDuration } from '@/lib/format';
 import { calculateTraceStats } from '@/lib/trace-stats';
+import { filterTraces } from '@/lib/query';
+import { readStored, writeStored, isStringArray } from '@/lib/browser-storage';
+import { DataControls, DataScope } from './data-controls';
+import { Modal } from './modal';
+import { useToast } from './toast';
+import { useSearchParams } from 'next/navigation';
+import { TraceImport } from './trace-import';
 
 type SortKey = 'startedAt' | 'durationMs' | 'cost' | 'tokens';
+type SavedView = { id: string; name: string; query: string; status: string; sort: SortKey; project: string; range: string; bookmarkedOnly: boolean; source?: string };
+const validViews = (value: unknown): value is SavedView[] => Array.isArray(value) && value.every((v) => v && ['id', 'name', 'query', 'project'].every((key) => typeof v[key] === 'string') && ['all', 'ok', 'error', 'running'].includes(v.status) && ['startedAt', 'durationMs', 'cost', 'tokens'].includes(v.sort) && ['1h', '24h', '7d', '30d', 'all'].includes(v.range) && typeof v.bookmarkedOnly === 'boolean');
 
 export function TraceExplorer({ traces }: { traces: Trace[] }) {
-  const { selectedProjectId, timeRange, setTimeRange } = useDashboard();
+  const { selectedProjectId, setSelectedProjectId, projects, timeRange, setTimeRange, referenceTime, traceSource, setTraceSource } = useDashboard();
+  const params = useSearchParams();
+  const toast = useToast();
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<'all' | TraceStatus>('all');
   const [sort, setSort] = useState<SortKey>('startedAt');
@@ -23,32 +34,37 @@ export function TraceExplorer({ traces }: { traces: Trace[] }) {
   const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [bookmarkedOnly, setBookmarkedOnly] = useState(false);
   const [selectedTrace, setSelectedTrace] = useState<Trace | null>(null);
+  const [savedViews, setSavedViews] = useState<SavedView[]>([]);
+  const [saveOpen, setSaveOpen] = useState(false);
+  const [viewName, setViewName] = useState('');
   const pageSize = 5;
 
   useEffect(() => {
-    try { setBookmarks(JSON.parse(window.localStorage.getItem('agentops-bookmarks') ?? '[]')); } catch { setBookmarks([]); }
+    setBookmarks(readStored('agentops-bookmarks', [], isStringArray));
+    setSavedViews(readStored('agentops-views-v1', [], validViews));
   }, []);
+  useEffect(() => { const next = params.get('status'); if (next && ['all', 'ok', 'error', 'running'].includes(next)) setStatus(next as typeof status); }, [params]);
 
   const toggleBookmark = (id: string) => {
     setBookmarks((current) => {
       const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
-      window.localStorage.setItem('agentops-bookmarks', JSON.stringify(next));
+      if (!writeStored('agentops-bookmarks', next)) { toast('无法保存收藏，请检查浏览器存储权限。', true); return current; }
       return next;
     });
   };
 
-  const filtered = useMemo(() => traces
-    .filter((trace) => selectedProjectId === 'all' || trace.projectId === selectedProjectId)
+  const filtered = useMemo(() => filterTraces(traces, selectedProjectId, timeRange, referenceTime, traceSource)
     .filter((trace) => status === 'all' || trace.status === status)
     .filter((trace) => !bookmarkedOnly || bookmarks.includes(trace.id))
     .filter((trace) => `${trace.name} ${trace.id} ${trace.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase()))
     .sort((a, b) => sort === 'startedAt'
       ? new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime()
-      : b[sort] - a[sort]), [traces, selectedProjectId, status, bookmarkedOnly, bookmarks, query, sort]);
+      : b[sort] - a[sort]), [traces, selectedProjectId, timeRange, referenceTime, status, bookmarkedOnly, bookmarks, query, sort, traceSource]);
 
-  useEffect(() => setPage(1), [query, status, selectedProjectId, bookmarkedOnly]);
+  useEffect(() => setPage(1), [query, status, selectedProjectId, timeRange, bookmarkedOnly, sort, traceSource]);
   const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
-  const visible = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const currentPage = Math.min(page, pageCount);
+  const visible = filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   const summary = useMemo(() => calculateTraceStats(filtered), [filtered]);
 
   useEffect(() => {
@@ -65,11 +81,23 @@ export function TraceExplorer({ traces }: { traces: Trace[] }) {
     const anchor = document.createElement('a');
     anchor.href = url; anchor.download = 'agentops-traces.json'; anchor.click();
     URL.revokeObjectURL(url);
+    toast(`已导出 ${filtered.length} 条 Trace`);
+  };
+
+  const saveView = (event: React.FormEvent) => {
+    event.preventDefault();
+    const name = viewName.trim();
+    if (!name || savedViews.some((v) => v.name.toLowerCase() === name.toLowerCase())) { toast('请输入不重复的视图名称。', true); return; }
+    const next = [...savedViews, { id: crypto.randomUUID(), name, query, status, sort, project: selectedProjectId, range: timeRange, bookmarkedOnly, source: traceSource }];
+    if (!writeStored('agentops-views-v1', next)) { toast('保存失败：浏览器存储不可用。', true); return; }
+    setSavedViews(next); setSaveOpen(false); setViewName(''); toast('视图已保存到此浏览器');
   };
 
   return (
     <>
-      <PageHeader eyebrow="Observability / Traces" title="Trace 探索器" description="检索、比较并下钻每一次智能体执行。" actions={<><label className="select-control"><span>时间范围</span><select value={timeRange} onChange={(event) => setTimeRange(event.target.value)}><option value="24h">24 小时</option><option value="7d">7 天</option><option value="30d">30 天</option></select></label><button className="button secondary" onClick={exportJson}><Download size={16} />导出 JSON</button></>} />
+      <PageHeader eyebrow="Observability / Traces" title="Trace 探索器" description="检索、比较并下钻每一次智能体执行。" actions={<><DataControls /><button className="button secondary" onClick={exportJson} disabled={!filtered.length}><Download size={16} />导出 JSON</button><TraceImport onImported={() => { setQuery(''); setStatus('all'); setBookmarkedOnly(false); setTraceSource('all'); }} /></>} />
+      <DataScope />
+      <div className="saved-views"><span>我的视图</span>{savedViews.map((view) => <div key={view.id}><button onClick={() => { setTraceSource(['demo', 'imported'].includes(view.source ?? '') ? view.source! : 'all'); setQuery(view.query); setStatus(view.status as typeof status); setSort(view.sort); setBookmarkedOnly(view.bookmarkedOnly); setTimeRange(view.range); setSelectedProjectId(projects.some((p) => p.id === view.project) ? view.project : 'all'); }}>{view.name}</button><button aria-label={`删除视图 ${view.name}`} onClick={() => { const next = savedViews.filter((v) => v.id !== view.id); if (writeStored('agentops-views-v1', next)) setSavedViews(next); else toast('删除失败，浏览器存储不可用。', true); }}><X size={12} /></button></div>)}<button className="text-link" onClick={() => setSaveOpen(true)}><Save size={14} />保存当前视图</button></div>
 
       <section className="trace-kpi-grid" aria-label="当前筛选结果摘要">
         <article><span className="tone-violet"><Activity size={16} /></span><div><small>Traces</small><strong>{summary.traces}</strong></div></article>
@@ -95,7 +123,7 @@ export function TraceExplorer({ traces }: { traces: Trace[] }) {
               <tbody>{visible.map((trace) => (
                 <tr key={trace.id}>
                   <td><button className={`bookmark-button ${bookmarks.includes(trace.id) ? 'active' : ''}`} onClick={() => toggleBookmark(trace.id)} aria-label="收藏 Trace"><Bookmark size={16} fill={bookmarks.includes(trace.id) ? 'currentColor' : 'none'} /></button></td>
-                  <td><Link className="trace-name" href={`/traces/${trace.id}`}><span>{trace.name}</span><code>{trace.id}</code><div className="tag-row">{trace.tags.slice(0, 2).map((tag) => <i key={tag}>{tag}</i>)}</div></Link></td>
+                  <td><Link className="trace-name" href={`/traces/${trace.id}`}><span>{trace.name}</span><code>{trace.id}</code><div className="tag-row"><i className={`source-badge ${trace.provenance?.kind ?? 'remote'}`}>{trace.provenance?.kind === 'demo' ? '示例' : trace.provenance?.kind === 'imported' ? '用户导入' : '远程'}</i>{trace.tags.slice(0, 2).map((tag) => <i key={tag}>{tag}</i>)}</div></Link></td>
                   <td><StatusBadge status={trace.status} /></td>
                   <td className="muted-cell">{formatDateTime(trace.startedAt)}</td>
                   <td><div className="duration-cell"><span><i style={{ width: `${Math.min(100, Math.max(8, trace.durationMs / 450))}%` }} /></span>{formatDuration(trace.durationMs)}</div></td>
@@ -107,8 +135,9 @@ export function TraceExplorer({ traces }: { traces: Trace[] }) {
           </div>
         ) : <EmptyState icon={Search} title="没有匹配的 Trace" description="尝试清空关键词、状态筛选或项目筛选。" />}
 
-        <div className="pagination"><span>第 {page} / {pageCount} 页</span><div><button disabled={page === 1} onClick={() => setPage((value) => value - 1)}><ChevronLeft size={16} /></button><button disabled={page === pageCount} onClick={() => setPage((value) => value + 1)}><ChevronRight size={16} /></button></div></div>
+        <div className="pagination"><span>第 {currentPage} / {pageCount} 页 · 共 {filtered.length} 条</span><div><button aria-label="上一页" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}><ChevronLeft size={16} /></button><button aria-label="下一页" disabled={currentPage === pageCount} onClick={() => setPage(currentPage + 1)}><ChevronRight size={16} /></button></div></div>
       </section>
+      {saveOpen && <Modal title="保存搜索视图" onClose={() => setSaveOpen(false)}><form onSubmit={saveView}><label className="field"><span>视图名称</span><input autoFocus required maxLength={50} value={viewName} onChange={(e) => setViewName(e.target.value)} placeholder="例如：生产环境失败队列" /></label><p className="form-note">保存项目、时间范围、数据来源、关键词、状态、排序与收藏筛选。</p><div className="modal-actions"><button type="button" className="button secondary" onClick={() => setSaveOpen(false)}>取消</button><button className="button primary">保存视图</button></div></form></Modal>}
 
       {selectedTrace && <>
         <button className="drawer-scrim" onClick={() => setSelectedTrace(null)} aria-label="关闭快速详情" />

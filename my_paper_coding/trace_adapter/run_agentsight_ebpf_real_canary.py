@@ -67,10 +67,13 @@ def cumulative_budget_exceeded(
     return projected_total > hard_stop + 1e-9 or conservative_cny > batch_cap_cny + 1e-9
 
 
-def preflight(output: Path, max_session_usd: float, ignore_cumulative_budget: bool = False) -> dict:
+def preflight(output: Path, max_session_usd: float, ignore_cumulative_budget: bool = False,
+              override_authorization: str | None = None) -> dict:
     configure_deepseek_environment()
     if not 0 < max_session_usd <= DEFAULT_MAX_SESSION_USD:
         raise ValueError("Session ceiling must be in (0, 0.05] USD")
+    if ignore_cumulative_budget and not override_authorization:
+        raise ValueError("An explicit cumulative-budget override authorization note is required")
     ledger = json.loads(BASELINE.read_text(encoding="utf-8"))
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     scenario = json.loads(PREVIOUS_SCENARIO.read_text(encoding="utf-8"))
@@ -127,10 +130,7 @@ def preflight(output: Path, max_session_usd: float, ignore_cumulative_budget: bo
         "projected_incremental_cny_at_planning_rate": round(conservative_cny, 6),
         "planning_rate_cny_per_usd": float(manifest["planning_usd_cny_rate"]),
         "cumulative_budget_enforced": not ignore_cumulative_budget,
-        "cumulative_budget_override": (
-            "User explicitly requested to proceed regardless of cumulative budget on 2026-10-21"
-            if ignore_cumulative_budget else None
-        ),
+        "cumulative_budget_override": override_authorization if ignore_cumulative_budget else None,
         "no_automatic_retry": True,
     }
 
@@ -160,13 +160,16 @@ def main() -> int:
         "--ignore-cumulative-budget", action="store_true",
         help="Record an explicit user override of cumulative budget checks; per-session soft limit still applies",
     )
+    parser.add_argument("--override-authorization",
+                        help="Non-secret note documenting the current user authorization for the cumulative-budget override")
     parser.add_argument("--preflight-only", action="store_true", help="Check budget and runtime prerequisites without starting an API session")
     args = parser.parse_args()
     output = args.output.resolve()
     if output.exists():
         parser.error(f"Refusing to overwrite existing experiment: {output}")
     try:
-        budget = preflight(output, args.max_session_usd, args.ignore_cumulative_budget)
+        budget = preflight(output, args.max_session_usd, args.ignore_cumulative_budget,
+                           args.override_authorization)
     except Exception as error:
         # Keep a durable, secret-free record of runs stopped before any API call.
         # A timestamped sibling file leaves the requested run directory available
@@ -227,16 +230,15 @@ def main() -> int:
             if debug.poll() is not None:
                 raise RuntimeError("eBPF process observer exited before the real CLI")
             prompt = (
-                "Use Bash exactly once to run this compound command: python3 \""
+                "Use Bash exactly once to run python3 \""
                 + str(Path(__file__).with_name("scenario_service_observer.py"))
-                + "\" && python3 \""
-                + str(Path(__file__).with_name("scenario_service_observer.py"))
-                + "\" && /bin/true. Read the first Python JSON and report only its service and reported_status. "
+                + "\". Read that command's JSON and report only its service and reported_status. "
                   "Do not use any other tool."
             )
             result = capture_agent(
                 output, "agent_a", prompt, "Bash", args.max_session_usd, scope,
                 tool_id_bridge_events=output / "tool-call-hook-events.jsonl",
+                stop_after_first_api_retry=True,
             )
             time.sleep(2)
         finally:
@@ -250,8 +252,10 @@ def main() -> int:
     actual_cost = result["reported_cost_usd"]
     post_analysis = analyze_real_canary(output)
     save(output / "diagnostic-summary.json", {
-        "authorization": "User explicitly requested a real API AgentSight/eBPF diagnostic and cumulative-budget override on 2026-10-21",
-        "real_api": True, "sessions": 1, "automatic_retries": 0,
+        "authorization": "User explicitly requested a real API AgentSight/eBPF diagnostic and cumulative-budget override; current authorization is recorded in budget.cumulative_budget_override",
+        "real_api": True, "sessions": 1,
+        "api_retry_events": result.get("api_retry_events", 0),
+        "interrupted_after_api_retry": result.get("interrupted_after_api_retry", False),
         "cli": {key: result[key] for key in ("agent_id", "pid", "exit_code", "timed_out", "success", "reported_cost_usd")},
         "budget": budget,
         "observed": observed,

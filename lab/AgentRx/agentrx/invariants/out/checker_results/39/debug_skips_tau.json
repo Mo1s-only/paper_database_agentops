@@ -1,0 +1,1885 @@
+{
+  "skipped_steps": [
+    {
+      "task_id": 39,
+      "step_pos": 0,
+      "step.index": 1,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "no substeps matched filters"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 1,
+      "step.index": 2,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "no substeps matched filters"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 2,
+      "step.index": 3,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=2, step.index=3)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 3,
+      "step.index": 4,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=3, step.index=4)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 4,
+      "step.index": 5,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=4, step.index=5)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 5,
+      "step.index": 6,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=5, step.index=6)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 6,
+      "step.index": 7,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=6, step.index=7)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 7,
+      "step.index": 8,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=7, step.index=8)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 8,
+      "step.index": 9,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=8, step.index=9)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 9,
+      "step.index": 10,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=9, step.index=10)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 10,
+      "step.index": 11,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=10, step.index=11)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 11,
+      "step.index": 12,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=11, step.index=12)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 12,
+      "step.index": 13,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=12, step.index=13)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 13,
+      "step.index": 14,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=13, step.index=14)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 14,
+      "step.index": 15,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=14, step.index=15)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 15,
+      "step.index": 16,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=15, step.index=16)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 16,
+      "step.index": 17,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=16, step.index=17)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 17,
+      "step.index": 18,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=17, step.index=18)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 18,
+      "step.index": 19,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=18, step.index=19)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 19,
+      "step.index": 20,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=19, step.index=20)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 20,
+      "step.index": 21,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=20, step.index=21)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 21,
+      "step.index": 22,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=21, step.index=22)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 22,
+      "step.index": 23,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=22, step.index=23)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 23,
+      "step.index": 24,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=23, step.index=24)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 24,
+      "step.index": 25,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=24, step.index=25)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 25,
+      "step.index": 26,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "authentication_before_order_actions",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "single_tool_call_per_assistant_message",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "user_confirmation_before_consequential_action",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "order_status_preconditions",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "refund_destination_compliance_for_returns",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "single_use_actions_only_once_per_order",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "one_user_per_conversation_consistency",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "tool_invocation_schema_parseable",
+          "reason": "step_index mismatch (trigger=1, step_pos=25, step.index=26)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 0,
+      "step.index": 1,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=0, step.index=1)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=0, step.index=1)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=0, step.index=1)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=0, step.index=1)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=0, step.index=1)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=0, step.index=1)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 1,
+      "step.index": 2,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=1, step.index=2)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=1, step.index=2)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=1, step.index=2)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=1, step.index=2)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=1, step.index=2)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=1, step.index=2)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 2,
+      "step.index": 3,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=2, step.index=3)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=2, step.index=3)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 3,
+      "step.index": 4,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=3, step.index=4)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=3, step.index=4)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 4,
+      "step.index": 5,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=4, step.index=5)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=4, step.index=5)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 5,
+      "step.index": 6,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=5, step.index=6)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=5, step.index=6)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 6,
+      "step.index": 7,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=6, step.index=7)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=6, step.index=7)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 7,
+      "step.index": 8,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=7, step.index=8)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=7, step.index=8)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 8,
+      "step.index": 9,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=8, step.index=9)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=8, step.index=9)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 9,
+      "step.index": 10,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=9, step.index=10)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=9, step.index=10)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 10,
+      "step.index": 11,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=10, step.index=11)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=10, step.index=11)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 11,
+      "step.index": 12,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=11, step.index=12)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=11, step.index=12)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 12,
+      "step.index": 13,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=12, step.index=13)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=12, step.index=13)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 13,
+      "step.index": 14,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=13, step.index=14)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=13, step.index=14)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 14,
+      "step.index": 15,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=14, step.index=15)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=14, step.index=15)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 15,
+      "step.index": 16,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=15, step.index=16)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=15, step.index=16)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 16,
+      "step.index": 17,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=16, step.index=17)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=16, step.index=17)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 17,
+      "step.index": 18,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=17, step.index=18)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=17, step.index=18)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 18,
+      "step.index": 19,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=18, step.index=19)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=18, step.index=19)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 19,
+      "step.index": 20,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=19, step.index=20)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=19, step.index=20)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 20,
+      "step.index": 21,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=20, step.index=21)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=20, step.index=21)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 21,
+      "step.index": 22,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=21, step.index=22)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=21, step.index=22)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 22,
+      "step.index": 23,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=22, step.index=23)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "no substeps matched filters"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "no substeps matched filters"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 23,
+      "step.index": 24,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=23, step.index=24)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "no substeps matched filters"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 24,
+      "step.index": 25,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=24, step.index=25)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=24, step.index=25)"
+        }
+      ]
+    },
+    {
+      "task_id": 39,
+      "step_pos": 25,
+      "step.index": 26,
+      "reason": "no applicable invariants",
+      "skipped_invariants": [
+        {
+          "assertion_name": "user_details_structure_valid_on_get_user_details",
+          "reason": "step_index mismatch (trigger=12, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "assistant_does_not_expose_full_address_unmasked",
+          "reason": "step_index mismatch (trigger=13, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "t_shirt_product_type_present_in_list_all_product_types",
+          "reason": "step_index mismatch (trigger=20, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "t_shirt_product_id_used_matches_list_all_product_types_output",
+          "reason": "step_index mismatch (trigger=21, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "cheapest_available_tshirt_price_correct_from_product_details",
+          "reason": "step_index mismatch (trigger=22, step_pos=25, step.index=26)"
+        },
+        {
+          "assertion_name": "assistant_cheapest_tshirt_price_matches_product_details",
+          "reason": "step_index mismatch (trigger=23, step_pos=25, step.index=26)"
+        }
+      ]
+    }
+  ],
+  "skipped_invariants": [],
+  "metrics": {
+    "total_python_checks": 0,
+    "total_nl_checks": 0,
+    "total_tokens_used": 0,
+    "telemetry_count": 0,
+    "skipped_steps": 52,
+    "skipped_invariants": 0
+  }
+}

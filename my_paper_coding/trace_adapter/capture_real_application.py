@@ -51,7 +51,7 @@ def process_views(pid):
 
 
 def capture_agent(output, agent, prompt, tools, budget, scope, tool_id_bridge_events=None,
-                  allow_known_scenario_scripts=False):
+                  allow_known_scenario_scripts=False, stop_after_first_api_retry=False):
     session = str(uuid.uuid4())
     command = ["claude", "-p", prompt, "--output-format", "stream-json", "--verbose",
                "--include-partial-messages", "--include-hook-events", "--session-id", session,
@@ -100,6 +100,8 @@ def capture_agent(output, agent, prompt, tools, budget, scope, tool_id_bridge_ev
                 "budget_usd": budget, "command": command}
     save(output / f"{agent}-launch.json", metadata)
     results, messages, raw_lines = [], [], 0
+    api_retry_events = 0
+    interrupted_after_api_retry = False
     selector = selectors.DefaultSelector()
     selector.register(process.stdout, selectors.EVENT_READ)
     buffer = b""
@@ -109,7 +111,7 @@ def capture_agent(output, agent, prompt, tools, budget, scope, tool_id_bridge_ev
     timed_out = False
 
     def consume(line):
-        nonlocal raw_lines
+        nonlocal raw_lines, api_retry_events, interrupted_after_api_retry
         raw_lines += 1
         raw.write(line + b"\n"); raw.flush()
         received = {"line": raw_lines, "received_at_ms": round(wall_ms()), "received_monotonic_ns": time.monotonic_ns()}
@@ -120,6 +122,11 @@ def capture_agent(output, agent, prompt, tools, budget, scope, tool_id_bridge_ev
             return
         if isinstance(value, dict):
             messages.append({"line": raw_lines, "type": value.get("type"), "subtype": value.get("subtype")})
+            if value.get("type") == "system" and value.get("subtype") == "api_retry":
+                api_retry_events += 1
+                if stop_after_first_api_retry and not interrupted_after_api_retry:
+                    interrupted_after_api_retry = True
+                    stop(process)
             if value.get("type") == "result":
                 results.append(value)
 
@@ -147,6 +154,8 @@ def capture_agent(output, agent, prompt, tools, budget, scope, tool_id_bridge_ev
     result = results[-1] if results else {}
     summary = {"agent_id": agent, "session_id": session, "pid": process.pid,
                "exit_code": process.returncode, "timed_out": timed_out, "stream_lines": raw_lines,
+               "api_retry_events": api_retry_events,
+               "interrupted_after_api_retry": interrupted_after_api_retry,
                "message_types": messages, "reported_cost_usd": result.get("total_cost_usd"),
                "usage": result.get("usage"), "modelUsage": result.get("modelUsage"),
                "result_subtype": result.get("subtype"), "is_error": result.get("is_error"),

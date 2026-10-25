@@ -2,8 +2,10 @@
 
 import type { OverviewMetrics } from '@/lib/types';
 import { formatCompact, formatCost } from '@/lib/format';
+import { useId } from 'react';
 
 export function TrendChart({ data }: { data: OverviewMetrics['trend'] }) {
+  const gradientId = useId();
   const width = 760;
   const height = 230;
   const pad = 24;
@@ -15,24 +17,28 @@ export function TrendChart({ data }: { data: OverviewMetrics['trend'] }) {
   });
   const line = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
   const area = points.length ? `${line} L ${points.at(-1)!.x} ${height - pad} L ${points[0].x} ${height - pad} Z` : '';
+  const errors = points.map((p, i) => `${i ? 'L' : 'M'} ${p.x} ${height - pad - (p.errors / max) * (height - pad * 2)}`).join(' ');
+  if (!data.length) return <div className="chart-empty">此范围暂无 Trace 数据</div>;
 
   return (
     <div className="chart-wrap">
       <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Trace 数量趋势">
         <defs>
-          <linearGradient id="trace-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="var(--accent)" stopOpacity=".34" /><stop offset="1" stopColor="var(--accent)" stopOpacity="0" /></linearGradient>
+          <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="var(--accent)" stopOpacity=".34" /><stop offset="1" stopColor="var(--accent)" stopOpacity="0" /></linearGradient>
         </defs>
         {[0, 1, 2, 3].map((row) => <line key={row} x1={pad} x2={width - pad} y1={pad + row * 56} y2={pad + row * 56} className="grid-line" />)}
-        <path d={area} fill="url(#trace-area)" />
+        <path d={area} fill={`url(#${gradientId})`} />
         <path d={line} className="trend-line" />
-        {points.map((point) => <circle key={point.time} cx={point.x} cy={point.y} r="4" className="trend-dot"><title>{point.time}: {point.traces} traces</title></circle>)}
+        <path d={errors} className="trend-errors" />
+        {points.map((point) => <circle key={point.time} cx={point.x} cy={point.y} r="4" className="trend-dot"><title>{`${point.time}: ${point.traces} traces`}</title></circle>)}
       </svg>
-      <div className="chart-labels">{data.map((item) => <span key={item.time}>{item.time}</span>)}</div>
+      <div className="chart-labels">{data.filter((_, i) => i % Math.max(1, Math.ceil(data.length / 5)) === 0).map((item) => <span key={item.time}>{item.time.slice(5, 10)} {item.time.slice(11, 16)}</span>)}</div>
     </div>
   );
 }
 
 export function ModelUsage({ data }: { data: OverviewMetrics['modelUsage'] }) {
+  if (!data.length) return <div className="chart-empty">此范围暂无模型调用</div>;
   const max = Math.max(...data.map((item) => item.tokens), 1);
   return (
     <div className="model-usage">

@@ -2,6 +2,7 @@ export type TraceStatus = 'ok' | 'error' | 'running';
 export type SpanKind = 'agent' | 'llm' | 'tool' | 'workflow';
 
 export interface Project {
+  revision?: number;
   id: string;
   name: string;
   environment: 'production' | 'staging' | 'development';
@@ -27,6 +28,7 @@ export interface Span {
 }
 
 export interface Trace {
+  provenance?: { kind: 'demo' | 'imported'; importedAt?: string; batchId?: string };
   id: string;
   projectId: string;
   name: string;
@@ -79,6 +81,7 @@ export interface FailureAttribution {
 }
 
 export interface GroundTruthLabel {
+  revision?: number;
   traceId: string;
   rootSpanId: string;
   failureType: 'tool_failure' | 'llm_failure' | 'handoff_failure' | 'workflow_failure' | 'other';

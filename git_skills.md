@@ -58,6 +58,8 @@ git rev-parse origin/main
 
 ## 上传范围和敏感信息
 
+`lab/AgentRx/` 同样按普通源码快照上传，不使用 Git 子模块。上游为 https://github.com/microsoft/AgentRx ，固定提交 `7a18c79708e7671be15124460f4f7296107c2a55`；来源记录见 `lab/AgentRx/LOCAL_SNAPSHOT.md`。本机内嵌 `.git` 仅在本地保留，不上传。新增此类目录时，应逐文件暂存并检查 `git ls-files --stage`，不得误生成 `160000` gitlink。
+
 `agentsight/` 以普通源码快照上传，不是本仓库的 Git 子模块。上游为 https://github.com/eunomia-bpf/agentsight ，快照基于提交 `bb99b66f8f98e4b9f8b1769a3da0a8fbbe26b6c3`，附带本地新增的 `test/` 测试文件。本机原有 `agentsight/.git` 仅保留在本地，不上传；在本机该目录内运行 Git 命令会操作上游仓库，因此本仓库的提交和推送务必在根目录执行。
 
 原始检出的 `libbpf/`、`bpftool/` 和 `.agents/sources/agent-skills/` 依赖目录为空，未包含于此快照。需要构建完整上游项目时，在本仓库外另行执行 `git clone --recurse-submodules https://github.com/eunomia-bpf/agentsight.git`，并按上游文档准备依赖。本仓库内的 `agentsight/.gitmodules` 仅作为上游信息保留，不能通过在本仓库根目录运行 `git submodule update` 恢复这些依赖。

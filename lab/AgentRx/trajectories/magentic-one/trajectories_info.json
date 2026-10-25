@@ -1,0 +1,64 @@
+{
+    "RAI Policy Violation + Website not allowing agent access": {
+        "2aa5dd83fbcd0dce9a3dd4592106e5b5edf738008d932e357d477bba80e59ccf": {
+            "step" : 5,
+            "reason": "RAI kicked in",
+            "name": "rai_policy_violation.json"
+        },
+        "72c06643-a2fa-4186-aa5c-9ec33ae9b445": {
+            "step" : 9,
+            "reason": "Website not allowing agent access",
+            "name": "rai_policy_violation_1.json"
+        }
+    },
+    "Intent not supported": {
+        "1f975693-876d-457b-a649-393859e79bf3": {
+            "step" : 4,
+            "reason": "Intent not supported",
+            "name": "intent_not_supported.json"
+        }
+    },
+    "Intent-Plan Misalignment": {
+        "3af8028c2a59e28ca88baff0e6d91f2a9f170c5ef91003f1c8406755a2760ad4": {
+            "step" : 4,
+            "reason": "Intent-Plan Misalignment",
+            "name": "intent_plan_misalignment.json"
+        },
+        "8b3379c0-0981-4f5b-8407-6444610cb212": {
+            "step" : 4,
+            "reason": "Intent-Plan Misalignment",
+            "name": "intent_plan_misalignment_1.json"
+        }
+    },
+    "Invention of new information": {
+        "6f8e4a3d-1e2b-4c5a-9f3b-2d3e4f5a6b7c": {
+            "step" : 12,
+            "reason": "Invention of New Information",
+            "name": "invent_new_info.json"
+        }
+    },
+    "Misinterpretation of Tool Output/Interpretation & Handoff Failure": {
+        "42d4198c-5895-4f0a-b0c0-424a66465d83": {
+            "step" : 19,
+            "reason": "Misinterpretation of Tool Output",
+            "name": "misinterpret_tool_info.json"
+        },
+        "2dfc4c37-fec1-4518-84a7-10095d30ad75": {
+            "step" : 17,
+            "reason": "Misinterpretation of Tool Output",
+            "name": "misinterpret_tool_info_1.json"
+        },
+        "0ec4371851b96837b0a81b3dd3df401415061bb532fbafeb4609f3337c358508": {
+            "step" : 10,
+            "reason": "Misinterpretation of Tool Output",
+            "name": "misinterpret_tool_info_2.json"
+        }
+    },
+    "Instruction/Plan Adherence Failure": {
+        "08cae58d-4084-4616-b6dd-dd6534e4825b": {
+            "step" : 5,
+            "reason": "Instruction/Plan Adherence Failure",
+            "name": "plan_adherence_failure.json"
+        }
+    }
+}

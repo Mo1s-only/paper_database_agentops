@@ -1,0 +1,23 @@
+{
+  "checked_at_local": "2026-10-19 18:14-18:17 Asia/Shanghai",
+  "host_os": "Windows 10 Pro 19045.5131",
+  "initial_wsl_feature_state": "Disabled",
+  "initial_virtual_machine_platform_state": "Disabled",
+  "action": [
+    "DISM enabled Microsoft-Windows-Subsystem-Linux with /NoRestart",
+    "DISM enabled VirtualMachinePlatform with /NoRestart"
+  ],
+  "post_action_wsl_feature_state": "Enabled",
+  "post_action_virtual_machine_platform_state": "Enabled",
+  "component_based_servicing_reboot_pending": true,
+  "post_action_wsl_list_verbose_exit_code": 1,
+  "post_action_wsl_output_kind": "installation help, not a distribution list",
+  "current_user_lxss_registry_key_present": false,
+  "ubuntu_executable_on_path": false,
+  "windows_claude_cli_available": false,
+  "windows_agentsight_cli_available": false,
+  "windows_anthropic_credential_present": false,
+  "real_api_calls_made_this_turn": 0,
+  "status": "WAITING_FOR_WINDOWS_RESTART_AND_LINUX_ENVIRONMENT_VERIFICATION",
+  "note": "Enabled is the DISM reported feature state; the pending reboot means WSL is not yet operational. Absence of the current-user Lxss key does not prove no distribution exists under another Windows account."
+}

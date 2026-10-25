@@ -1,0 +1,24 @@
+{
+  "batch_id": "error-propagation-v1-real-two-agent-20261021-run11",
+  "authorization": "User requested continuing the work and a real API test after the previous response proposed a $0.10 additional cumulative allowance; this run is limited to one two-agent replay with no automatic retries.",
+  "baseline_ledger_path": "my_paper_coding/experiment_control/cost-ledger-through-run10-20261021.json",
+  "historical_ledger_status": "UNVERIFIED_RAW_LOGS",
+  "current_total_before_run_usd": 2.4898728,
+  "planned_increment_usd": 0.10,
+  "planning_usd_cny_rate": 10.0,
+  "planned_cli_sessions": 2,
+  "per_session_cli_soft_budget_usd": 0.04,
+  "planned_cli_soft_budget_usd": 0.08,
+  "reserve_for_soft_cap_overrun_usd": 0.02,
+  "planned_total_usd": 2.5898728,
+  "hard_stop_total_usd": 2.5898728,
+  "agentsight_binary_sha256": "4e52c647f63994d25681334c080eb370fe1ad698b202315d9aa9408d049b019d",
+  "scenario": "error-propagation-v1",
+  "agents": ["agent_a", "agent_b"],
+  "no_automatic_retry": true,
+  "approval": {
+    "approved_in_chat": true,
+    "scope": "One new two-agent real API test only; do not start another batch after this run. Agent B must be skipped if Agent A fails or observed cost plus remaining soft reservation would exceed the cumulative hard stop."
+  },
+  "note": "The Claude CLI max-budget is a soft limit and may be exceeded. CLI-reported cost is not an independently reconciled provider invoice. Run10 did not store the launch-time binary hash; run11 will pin the current locally rebuilt binary hash before any API request."
+}

@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "total_cost_usd": 2.4300992,
+  "historical_baseline_usd": 2.183708,
+  "historical_baseline_status": "UNVERIFIED_RAW_LOGS",
+  "reported_incremental_costs": [
+    {"source": "error-propagation-v1 capture summary", "cost_usd": 0.0540648},
+    {"source": "AgentRx task 12 CLI summary", "cost_usd": 0.060692},
+    {"run": "real-canary-20261021-4", "cost_usd": 0.0237776},
+    {"run": "real-canary-20261021-5", "cost_usd": 0.0181688},
+    {"run": "real-canary-20261021-6", "cost_usd": 0.0191904},
+    {"run": "real-canary-20261021-7", "cost_usd": 0.0200784},
+    {"run": "real-canary-20261021-8", "cost_usd": 0.0244664},
+    {"run": "real-canary-20261021-9", "cost_usd": 0.0259528}
+  ],
+  "incremental_total_usd": 0.2463912,
+  "calculation": "historical_baseline_usd + reported_incremental_costs",
+  "reconciled_to_provider_invoice": false,
+  "note": "CLI-reported frozen snapshot after the one approved routing-error-v1 session; preserves the original frozen ledger unchanged."
+}
