@@ -1,0 +1,310 @@
+{
+  "scanned_at": "2026-10-27T16:27:01.736814+08:00",
+  "root": "C:\\Users\\mobao\\Desktop\\论文方向",
+  "scope": "All local directory metadata; .git directories excluded; directory symlinks not followed. Content reviewed selectively; counts are before writing this inventory.",
+  "directory_count": 2152,
+  "file_count": 18204,
+  "total_bytes": 5346634419,
+  "top_level": {
+    ".openai": {
+      "files": 0,
+      "bytes": 0
+    },
+    ".sites-checkout": {
+      "files": 0,
+      "bytes": 0
+    },
+    ".workbuddy-ai": {
+      "files": 2,
+      "bytes": 5531
+    },
+    "Reference paper": {
+      "files": 5283,
+      "bytes": 290302603
+    },
+    "[root]": {
+      "files": 4,
+      "bytes": 8460
+    },
+    "agent前备知识": {
+      "files": 64,
+      "bytes": 7602846
+    },
+    "lab": {
+      "files": 12023,
+      "bytes": 5026075046
+    },
+    "my_paper": {
+      "files": 74,
+      "bytes": 357053
+    },
+    "my_paper_coding": {
+      "files": 719,
+      "bytes": 21973470
+    },
+    "skills": {
+      "files": 10,
+      "bytes": 22718
+    },
+    "web_coding": {
+      "files": 10,
+      "bytes": 82103
+    },
+    "周报": {
+      "files": 5,
+      "bytes": 50854
+    },
+    "调研": {
+      "files": 10,
+      "bytes": 153735
+    }
+  },
+  "second_level": {
+    ".workbuddy-ai/memory": {
+      "files": 2,
+      "bytes": 5531
+    },
+    "Reference paper": {
+      "files": 2,
+      "bytes": 15470
+    },
+    "Reference paper/01_agent_observation": {
+      "files": 16,
+      "bytes": 63327980
+    },
+    "Reference paper/02_failure_attribution": {
+      "files": 17,
+      "bytes": 29070653
+    },
+    "Reference paper/03_diagnosis_localization": {
+      "files": 21,
+      "bytes": 20843846
+    },
+    "Reference paper/04_prediction_early_warning": {
+      "files": 5,
+      "bytes": 5775639
+    },
+    "Reference paper/05_reliability_evaluation": {
+      "files": 5,
+      "bytes": 4748338
+    },
+    "Reference paper/06_agent_evaluation_metrics": {
+      "files": 7,
+      "bytes": 33387954
+    },
+    "Reference paper/99_cross_cutting": {
+      "files": 2,
+      "bytes": 16570
+    },
+    "Reference paper/datasets": {
+      "files": 5208,
+      "bytes": 133116153
+    },
+    "[root]": {
+      "files": 4,
+      "bytes": 8460
+    },
+    "agent前备知识": {
+      "files": 1,
+      "bytes": 5495
+    },
+    "agent前备知识/00_项目扫描与学习路线": {
+      "files": 4,
+      "bytes": 15487
+    },
+    "agent前备知识/01_计算机系统与工程基础": {
+      "files": 5,
+      "bytes": 991829
+    },
+    "agent前备知识/02_LLM与生成式AI基础": {
+      "files": 4,
+      "bytes": 19369
+    },
+    "agent前备知识/03_单Agent核心机制": {
+      "files": 5,
+      "bytes": 1117540
+    },
+    "agent前备知识/04_工具调用与Agent协议": {
+      "files": 5,
+      "bytes": 1025832
+    },
+    "agent前备知识/05_多Agent系统与协作": {
+      "files": 5,
+      "bytes": 1112005
+    },
+    "agent前备知识/06_Agent故障模式与可靠性": {
+      "files": 5,
+      "bytes": 1008782
+    },
+    "agent前备知识/07_AgentOps可观测性与追踪": {
+      "files": 4,
+      "bytes": 15620
+    },
+    "agent前备知识/08_因果归因与根因诊断": {
+      "files": 5,
+      "bytes": 1111972
+    },
+    "agent前备知识/09_Agent评测指标与实验统计": {
+      "files": 4,
+      "bytes": 14439
+    },
+    "agent前备知识/10_安全隐私与治理": {
+      "files": 5,
+      "bytes": 1116999
+    },
+    "agent前备知识/11_项目复现与数据工程": {
+      "files": 4,
+      "bytes": 17232
+    },
+    "agent前备知识/12_论文研究方法与课题衔接": {
+      "files": 4,
+      "bytes": 17799
+    },
+    "agent前备知识/99_附录": {
+      "files": 4,
+      "bytes": 12446
+    },
+    "lab": {
+      "files": 1,
+      "bytes": 786
+    },
+    "lab/Watson": {
+      "files": 22,
+      "bytes": 336470
+    },
+    "lab/agentsight": {
+      "files": 11874,
+      "bytes": 4985854313
+    },
+    "lab/experiment": {
+      "files": 126,
+      "bytes": 39883477
+    },
+    "my_paper": {
+      "files": 1,
+      "bytes": 967
+    },
+    "my_paper/metric": {
+      "files": 7,
+      "bytes": 113473
+    },
+    "my_paper/方向框架": {
+      "files": 38,
+      "bytes": 82507
+    },
+    "my_paper/进展": {
+      "files": 28,
+      "bytes": 160106
+    },
+    "my_paper_coding": {
+      "files": 1,
+      "bytes": 762
+    },
+    "my_paper_coding/evaluation_gate": {
+      "files": 33,
+      "bytes": 56552
+    },
+    "my_paper_coding/experiment_control": {
+      "files": 34,
+      "bytes": 163274
+    },
+    "my_paper_coding/failure_pilot": {
+      "files": 170,
+      "bytes": 5170456
+    },
+    "my_paper_coding/p0_pairing": {
+      "files": 54,
+      "bytes": 812507
+    },
+    "my_paper_coding/public_dataset_adapters": {
+      "files": 19,
+      "bytes": 115163
+    },
+    "my_paper_coding/trace_adapter": {
+      "files": 408,
+      "bytes": 15654756
+    },
+    "skills/research_skills": {
+      "files": 10,
+      "bytes": 22718
+    },
+    "web_coding/agentops_thesis_observatory": {
+      "files": 10,
+      "bytes": 82103
+    },
+    "周报": {
+      "files": 5,
+      "bytes": 50854
+    },
+    "调研": {
+      "files": 10,
+      "bytes": 153735
+    }
+  },
+  "extensions": {
+    ".json": 5125,
+    ".o": 3682,
+    "[no suffix]": 2616,
+    ".yaml": 1217,
+    ".timestamp": 1056,
+    ".d": 949,
+    ".rmeta": 787,
+    ".rlib": 781,
+    ".md": 479,
+    ".py": 256,
+    ".jsonl": 180,
+    ".rs": 121,
+    ".txt": 111,
+    ".pyc": 77,
+    ".log": 75,
+    ".h": 74,
+    ".sh": 67,
+    ".bin": 66,
+    ".so": 60,
+    ".pdf": 51,
+    ".js": 34,
+    ".tsx": 32,
+    ".lock": 31,
+    ".ts": 27,
+    ".png": 22,
+    ".db": 22,
+    ".c": 20,
+    ".db-shm": 17,
+    ".db-wal": 17,
+    ".toml": 16,
+    ".a": 16,
+    ".mjs": 14,
+    ".html": 12,
+    ".yml": 12,
+    ".svg": 10,
+    ".err": 10,
+    ".tex": 10,
+    ".folded": 8,
+    ".sql": 7,
+    ".xlsx": 4,
+    ".tag": 3,
+    ".css": 3,
+    ".ps1": 2,
+    ".example": 2,
+    ".jsonc": 2,
+    ".pc": 2,
+    ".expr": 2,
+    ".gif": 2,
+    ".zip": 2,
+    ".docx": 1,
+    ".dockerfile": 1,
+    ".nix": 1,
+    ".wit": 1,
+    ".mp4": 1,
+    ".tsbuildinfo": 1,
+    ".arm": 1,
+    ".release": 1,
+    ".stderr": 1,
+    ".pddl": 1,
+    ".twl2": 1,
+    ".csv": 1,
+    ".gz": 1
+  },
+  "skipped_directory_links": [],
+  "errors": []
+}

@@ -1,0 +1,968 @@
+{
+  "description": "2026-10-27读取的既有真实跨层关联结果；未发起新实验。records为原记录，非新预测。",
+  "runs": [
+    {
+      "run_id": "real-complete-20261010",
+      "report": {
+        "run_id": "real-complete-20261010",
+        "evidence_kind": "runtime_observed",
+        "event_count": 16,
+        "session_count": 2,
+        "all_sessions_closed": true,
+        "tool_alignment_count": 3,
+        "status_counts": {
+          "accepted": 3
+        },
+        "identity_mode": "session-and-tool",
+        "tool_identity_gate_passed": true,
+        "scope": "tool.start events only; not all steps or causal responsibility",
+        "precision": null,
+        "recall": null,
+        "unified_trace_ready": false,
+        "responsibility_claim_made": false,
+        "input_audit": {
+          "manifest_sha256": "d4d1498b10c273a2e73df67f8937c3a3b0acb887ca273c8b7ed901dd905abf5d",
+          "evidence_sha256": "95a11430539d174d69047d94d1ec2dc6280fc61fced3d368f3b102ffa389fb31",
+          "verified_sources": {
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db": "dc6bd1f3623a04c59c7391927c512c106965cd6b5e126a2f766f01cd1bae90cc"
+          },
+          "excluded_records": {},
+          "validator_artifacts_read": false,
+          "derived_artifacts_read": false,
+          "boundary": "Hashes freeze local inputs; normalized field extraction is not independently certified.",
+          "application_sha256": "66aaf2aee2ee3a654bbaafba77ed3875618fbd4e5d4ab83c1d981be6a2b02d74",
+          "scope_sha256": "bd7bf787fd4e2b8577e30a14edbba9cbedbc716dc5ba3bec6a57814fbf857ea9"
+        }
+      },
+      "records": [
+        {
+          "application_event_id": "3704d202-3497-4dce-9b88-e059bf7e5143",
+          "run_id": "real-complete-20261010",
+          "session_id": "f4e80ee0-437e-439a-88e1-a8b8652c5501",
+          "agent_id": "agent_a",
+          "step_id": "native-tool:call_00_jVFhWOBJRo0Jcx5e4cfA8972",
+          "tool_call_id": "call_00_jVFhWOBJRo0Jcx5e4cfA8972",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612379786-sse-processor-341-949-call_00_jVFhWOBJRo0Jcx5e4cfA8972",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612379786-sse-processor-341-949-call_00_jVFhWOBJRo0Jcx5e4cfA8972"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/parsed/application-events.jsonl#line=3",
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612379786-sse-processor-341-949-call_00_jVFhWOBJRo0Jcx5e4cfA8972",
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#llm_calls/llm-canon-event-1791612377714-http-parser-341-902",
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#llm_calls/llm-canon-event-1791612379921-http-parser-341-966"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 341
+        },
+        {
+          "application_event_id": "a1870ebb-a0ec-444d-a0ba-4a3dd19c08ce",
+          "run_id": "real-complete-20261010",
+          "session_id": "0f849550-7f03-4805-9d64-edc030b05a24",
+          "agent_id": "agent_b",
+          "step_id": "native-tool:call_00_NGarV3zIFU9lSCjffruH0511",
+          "tool_call_id": "call_00_NGarV3zIFU9lSCjffruH0511",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612409510-sse-processor-405-1915-call_00_NGarV3zIFU9lSCjffruH0511",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612409510-sse-processor-405-1915-call_00_NGarV3zIFU9lSCjffruH0511"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/parsed/application-events.jsonl#line=9",
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612409510-sse-processor-405-1915-call_00_NGarV3zIFU9lSCjffruH0511",
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#llm_calls/llm-canon-event-1791612407242-http-parser-405-1850"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 405
+        },
+        {
+          "application_event_id": "0002a6e8-1998-4b04-8c03-1d454fc042ed",
+          "run_id": "real-complete-20261010",
+          "session_id": "0f849550-7f03-4805-9d64-edc030b05a24",
+          "agent_id": "agent_b",
+          "step_id": "native-tool:call_00_GXgF7rcoDdIAwKAnKITN5777",
+          "tool_call_id": "call_00_GXgF7rcoDdIAwKAnKITN5777",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612412744-sse-processor-405-2838-call_00_GXgF7rcoDdIAwKAnKITN5777",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612412744-sse-processor-405-2838-call_00_GXgF7rcoDdIAwKAnKITN5777"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/parsed/application-events.jsonl#line=13",
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791612412744-sse-processor-405-2838-call_00_GXgF7rcoDdIAwKAnKITN5777",
+            "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/session.db#llm_calls/llm-canon-event-1791612407242-http-parser-405-1850"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 405
+        }
+      ]
+    },
+    {
+      "run_id": "real-error-propagation-20261010",
+      "report": {
+        "run_id": "real-error-propagation-20261010",
+        "evidence_kind": "runtime_observed",
+        "event_count": 20,
+        "session_count": 2,
+        "all_sessions_closed": true,
+        "tool_alignment_count": 4,
+        "status_counts": {
+          "abstain": 1,
+          "accepted": 3
+        },
+        "identity_mode": "session-and-tool",
+        "tool_identity_gate_passed": false,
+        "scope": "tool.start events only; not all steps or causal responsibility",
+        "precision": null,
+        "recall": null,
+        "unified_trace_ready": false,
+        "responsibility_claim_made": false,
+        "input_audit": {
+          "manifest_sha256": "6dfeeab9746f74eabc4c5e56ac3c0a0cda7c60580238739d33f233f724140953",
+          "evidence_sha256": "36adb75114906378094aa40fdcbb02c30099ce2df6667e806a4e835dd19254cf",
+          "verified_sources": {
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db": "682e578264b02fb3a715d793702f3aff94c0c6138e19363c2b6e436eb9cfbf8b"
+          },
+          "excluded_records": {},
+          "validator_artifacts_read": false,
+          "derived_artifacts_read": false,
+          "boundary": "Hashes freeze local inputs; normalized field extraction is not independently certified.",
+          "application_sha256": "d89931b03de42f10d11f84881c0c4d8f8c1d0394c8ccd19afb5043e4704d3028",
+          "scope_sha256": "527abfd287fce822e67f58aabb3c9ddee93130e7a07b620970d623ef74347b88"
+        }
+      },
+      "records": [
+        {
+          "application_event_id": "8d7ed4f1-f7f2-4d56-89df-8aed0a098a1d",
+          "run_id": "real-error-propagation-20261010",
+          "session_id": "c9ae8af8-673d-4635-a4db-1a8e9e3c959b",
+          "agent_id": "agent_a",
+          "step_id": "native-tool:call_00_B2x2zSqmhCs9Jj9wNnHU1343",
+          "tool_call_id": "call_00_B2x2zSqmhCs9Jj9wNnHU1343",
+          "status": "abstain",
+          "reason": "shared_tool_id_not_observed",
+          "target_ref": null,
+          "candidate_refs": [],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/parsed/application-events.jsonl#line=3"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode"
+        },
+        {
+          "application_event_id": "d17f0574-927c-4693-a03e-8d9c1e54fdc3",
+          "run_id": "real-error-propagation-20261010",
+          "session_id": "c9ae8af8-673d-4635-a4db-1a8e9e3c959b",
+          "agent_id": "agent_a",
+          "step_id": "native-tool:call_00_lfAg35PfrUCMh1QuorAd1959",
+          "tool_call_id": "call_00_lfAg35PfrUCMh1QuorAd1959",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613252275-sse-processor-342-1942-call_00_lfAg35PfrUCMh1QuorAd1959",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613252275-sse-processor-342-1942-call_00_lfAg35PfrUCMh1QuorAd1959"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/parsed/application-events.jsonl#line=7",
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613252275-sse-processor-342-1942-call_00_lfAg35PfrUCMh1QuorAd1959",
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#llm_calls/llm-canon-event-1791613245071-http-parser-342-881"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 342
+        },
+        {
+          "application_event_id": "1f79d163-0544-4075-ba70-f6dc8527cace",
+          "run_id": "real-error-propagation-20261010",
+          "session_id": "f1aad580-6682-4967-9b08-9799d01f0f83",
+          "agent_id": "agent_b",
+          "step_id": "native-tool:call_00_dRgIAIZaAmKbD61mbO1w3250",
+          "tool_call_id": "call_00_dRgIAIZaAmKbD61mbO1w3250",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613282783-sse-processor-444-2910-call_00_dRgIAIZaAmKbD61mbO1w3250",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613282783-sse-processor-444-2910-call_00_dRgIAIZaAmKbD61mbO1w3250"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/parsed/application-events.jsonl#line=13",
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613282783-sse-processor-444-2910-call_00_dRgIAIZaAmKbD61mbO1w3250",
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#llm_calls/llm-canon-event-1791613279880-http-parser-444-2833"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 444
+        },
+        {
+          "application_event_id": "772c8c7e-2c1e-4bd2-96d2-67c8740e4c63",
+          "run_id": "real-error-propagation-20261010",
+          "session_id": "f1aad580-6682-4967-9b08-9799d01f0f83",
+          "agent_id": "agent_b",
+          "step_id": "native-tool:call_00_5Pzrt4gu77FT0n1EIUnw5128",
+          "tool_call_id": "call_00_5Pzrt4gu77FT0n1EIUnw5128",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613286424-sse-processor-444-3805-call_00_5Pzrt4gu77FT0n1EIUnw5128",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613286424-sse-processor-444-3805-call_00_5Pzrt4gu77FT0n1EIUnw5128"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/parsed/application-events.jsonl#line=17",
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613286424-sse-processor-444-3805-call_00_5Pzrt4gu77FT0n1EIUnw5128",
+            "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/session.db#llm_calls/llm-canon-event-1791613279880-http-parser-444-2833"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 444
+        }
+      ]
+    },
+    {
+      "run_id": "real-routing-error-20261010",
+      "report": {
+        "run_id": "real-routing-error-20261010",
+        "evidence_kind": "runtime_observed",
+        "event_count": 20,
+        "session_count": 2,
+        "all_sessions_closed": true,
+        "tool_alignment_count": 4,
+        "status_counts": {
+          "accepted": 3,
+          "abstain": 1
+        },
+        "identity_mode": "session-and-tool",
+        "tool_identity_gate_passed": false,
+        "scope": "tool.start events only; not all steps or causal responsibility",
+        "precision": null,
+        "recall": null,
+        "unified_trace_ready": false,
+        "responsibility_claim_made": false,
+        "input_audit": {
+          "manifest_sha256": "a97f13ed4fd93d13442ed3febf88ee8b99c238ee8a496c9f47e54a0ff17b0be4",
+          "evidence_sha256": "bd84ffaff554c61e3f7967707155bfef3eabb6add3c5b8a69ad3d2bdff1eb7e0",
+          "verified_sources": {
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db": "315755e6241b83577c66502538d2ba478ad222ea1e0bbd0de9ad60799b4fd46d"
+          },
+          "excluded_records": {},
+          "validator_artifacts_read": false,
+          "derived_artifacts_read": false,
+          "boundary": "Hashes freeze local inputs; normalized field extraction is not independently certified.",
+          "application_sha256": "b7994a18829d6b0a41235cad42ae0a6bcdfe60c4e83ca735958c81e5893b6ea8",
+          "scope_sha256": "1605dfb09c8c153c456d13317c367825517685fce0278e896dc05a8429eb28a6"
+        }
+      },
+      "records": [
+        {
+          "application_event_id": "7406c67f-581c-4d99-b65d-cffa6af5b059",
+          "run_id": "real-routing-error-20261010",
+          "session_id": "317c042f-8461-4b4a-9063-e3db3d5cbaff",
+          "agent_id": "agent_a",
+          "step_id": "native-tool:call_00_BiLnYMLjQ2UX6FM4c54F4765",
+          "tool_call_id": "call_00_BiLnYMLjQ2UX6FM4c54F4765",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613345191-sse-processor-679-955-call_00_BiLnYMLjQ2UX6FM4c54F4765",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613345191-sse-processor-679-955-call_00_BiLnYMLjQ2UX6FM4c54F4765"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/parsed/application-events.jsonl#line=3",
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613345191-sse-processor-679-955-call_00_BiLnYMLjQ2UX6FM4c54F4765",
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#llm_calls/llm-canon-event-1791613342537-http-parser-679-882"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 679
+        },
+        {
+          "application_event_id": "e387d25d-27ca-4b5d-abed-56bc997b87ef",
+          "run_id": "real-routing-error-20261010",
+          "session_id": "317c042f-8461-4b4a-9063-e3db3d5cbaff",
+          "agent_id": "agent_a",
+          "step_id": "native-tool:call_00_eAEffWUcG8tFHluvRR7q4240",
+          "tool_call_id": "call_00_eAEffWUcG8tFHluvRR7q4240",
+          "status": "abstain",
+          "reason": "shared_tool_id_not_observed",
+          "target_ref": null,
+          "candidate_refs": [],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/parsed/application-events.jsonl#line=7"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode"
+        },
+        {
+          "application_event_id": "57ff64ce-9fb9-4ab2-b39c-603f9879fa7c",
+          "run_id": "real-routing-error-20261010",
+          "session_id": "a6be45e9-1eb0-46f6-90b2-ad09e1f34ec0",
+          "agent_id": "agent_b",
+          "step_id": "native-tool:call_00_iSzR5vRYiqFaEcO6OH6W3100",
+          "tool_call_id": "call_00_iSzR5vRYiqFaEcO6OH6W3100",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613380763-sse-processor-770-2887-call_00_iSzR5vRYiqFaEcO6OH6W3100",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613380763-sse-processor-770-2887-call_00_iSzR5vRYiqFaEcO6OH6W3100"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/parsed/application-events.jsonl#line=13",
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613380763-sse-processor-770-2887-call_00_iSzR5vRYiqFaEcO6OH6W3100",
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#llm_calls/llm-canon-event-1791613377461-http-parser-770-2820"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 770
+        },
+        {
+          "application_event_id": "7ba69d87-f818-4cd5-9598-e97423bb93f1",
+          "run_id": "real-routing-error-20261010",
+          "session_id": "a6be45e9-1eb0-46f6-90b2-ad09e1f34ec0",
+          "agent_id": "agent_b",
+          "step_id": "native-tool:call_00_BU6XpRL0e42M6upa9Sti4140",
+          "tool_call_id": "call_00_BU6XpRL0e42M6upa9Sti4140",
+          "status": "accepted",
+          "reason": "shared_application_session_and_unique_tool_id",
+          "target_ref": "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613384717-sse-processor-770-3790-call_00_BU6XpRL0e42M6upa9Sti4140",
+          "candidate_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613384717-sse-processor-770-3790-call_00_BU6XpRL0e42M6upa9Sti4140"
+          ],
+          "evidence_refs": [
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/parsed/application-events.jsonl#line=17",
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#tool_calls/tool-llm-orphan-canon-event-1791613384717-sse-processor-770-3790-call_00_BU6XpRL0e42M6upa9Sti4140",
+            "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/session.db#llm_calls/llm-canon-event-1791613377461-http-parser-770-2820"
+          ],
+          "identity_source": "explicit_application_event",
+          "confidence": null,
+          "responsibility_claim": false,
+          "evidence_kind": "runtime_observed",
+          "process_alignment_status": "not_evaluated_in_shared_id_mode",
+          "clock_alignment_status": "not_evaluated_in_shared_id_mode",
+          "session_system_pid": 770
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "path": "my_paper_coding/trace_adapter/real_application_runs/real-complete-20261010/alignment-session-and-tool/application-alignments.jsonl",
+      "sha256": "249b7ded709455ced2daaa9242ee4137e4518bde18175035d6ec51a4d648d17a"
+    },
+    {
+      "path": "my_paper_coding/trace_adapter/real_application_runs/real-error-propagation-20261010/alignment-session-and-tool/application-alignments.jsonl",
+      "sha256": "550f8b0b0d00a1c37268383af77c21509e6f1fb24fb78fa752efee97570270b6"
+    },
+    {
+      "path": "my_paper_coding/trace_adapter/real_application_runs/real-routing-error-20261010/alignment-session-and-tool/application-alignments.jsonl",
+      "sha256": "579355969e234adf78d1eb65ffb0bad0fb9e0387b262ff21d74257d9e5e5e970"
+    }
+  ],
+  "v02_real_event_stream": [
+    {
+      "agent_id": "claude-code-main",
+      "clock": {
+        "application_boottime_ns": 131124355539,
+        "application_monotonic_ns": 131124353939,
+        "application_realtime_interval_ns": [
+          1791785496874817239,
+          1791785496874820739
+        ],
+        "application_realtime_ns": 1791785496874818989,
+        "application_uncertainty_ns": 1750,
+        "conversion": null,
+        "correction_ns": null,
+        "observer_anchor_uncertainty_ns": null,
+        "observer_boot_epoch_ns": null,
+        "observer_epoch_ms": null,
+        "observer_raw_boot_ns": null
+      },
+      "event_id": "05220de0-e74f-453d-8575-cf1e909fa37d",
+      "event_type": "session.start",
+      "evidence_kind": "runtime_observed",
+      "process": {
+        "boot_id": "7f9fd3cf-4235-4adc-9086-4dab7868b898",
+        "host_id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a",
+        "local_pid": 81,
+        "local_pid_namespace": "pid:[4026532214]",
+        "mapping_evidence": [
+          "capture-summary.session_id",
+          "process_nodes.comm=claude",
+          "analysis.process_start_in_launch_interval=true",
+          "tool_calls.tool_call_id=framework.tool_use.id"
+        ],
+        "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
+        "mapping_status": "inferred",
+        "observer_pid": 1758,
+        "observer_pid_namespace": "linux-initial-pid-namespace",
+        "observer_start_epoch_ms": 1791785496876,
+        "start_realtime_interval_ns": [
+          1791785496874817239,
+          1791785496876430239
+        ]
+      },
+      "run_id": "experiment_20261012_14",
+      "schema_version": "agentops-application-event-v0.2",
+      "sequence": 0,
+      "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+      "step_id": null,
+      "tool_call_id": null
+    },
+    {
+      "agent_id": "claude-code-main",
+      "clock": {
+        "application_boottime_ns": 154510303158,
+        "application_monotonic_ns": 154510300358,
+        "application_realtime_interval_ns": [
+          1791785520260763358,
+          1791785520260768658
+        ],
+        "application_realtime_ns": 1791785520260766008,
+        "application_uncertainty_ns": 2650,
+        "conversion": null,
+        "correction_ns": null,
+        "observer_anchor_uncertainty_ns": null,
+        "observer_boot_epoch_ns": null,
+        "observer_epoch_ms": null,
+        "observer_raw_boot_ns": null
+      },
+      "event_id": "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+      "event_type": "step.start",
+      "evidence_kind": "runtime_observed",
+      "process": {
+        "boot_id": "7f9fd3cf-4235-4adc-9086-4dab7868b898",
+        "host_id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a",
+        "local_pid": 81,
+        "local_pid_namespace": "pid:[4026532214]",
+        "mapping_evidence": [
+          "capture-summary.session_id",
+          "process_nodes.comm=claude",
+          "analysis.process_start_in_launch_interval=true",
+          "tool_calls.tool_call_id=framework.tool_use.id"
+        ],
+        "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
+        "mapping_status": "inferred",
+        "observer_pid": 1758,
+        "observer_pid_namespace": "linux-initial-pid-namespace",
+        "observer_start_epoch_ms": 1791785496876,
+        "start_realtime_interval_ns": [
+          1791785496874817239,
+          1791785496876430239
+        ]
+      },
+      "run_id": "experiment_20261012_14",
+      "schema_version": "agentops-application-event-v0.2",
+      "sequence": 1,
+      "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+      "step_id": "step-native-bash-1",
+      "tool_call_id": null
+    },
+    {
+      "agent_id": "claude-code-main",
+      "clock": {
+        "application_boottime_ns": 154510303158,
+        "application_monotonic_ns": 154510300358,
+        "application_realtime_interval_ns": [
+          1791785520260763358,
+          1791785520260768658
+        ],
+        "application_realtime_ns": 1791785520260766008,
+        "application_uncertainty_ns": 2650,
+        "conversion": "boot_epoch_ns_plus_bpf_ktime_ns",
+        "correction_ns": 0,
+        "observer_anchor_uncertainty_ns": 0,
+        "observer_boot_epoch_ns": 1791785365750464700,
+        "observer_epoch_ms": 1791785520250,
+        "observer_raw_boot_ns": 154499649757
+      },
+      "event_id": "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+      "event_type": "tool.start",
+      "evidence_kind": "runtime_observed",
+      "process": {
+        "boot_id": "7f9fd3cf-4235-4adc-9086-4dab7868b898",
+        "host_id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a",
+        "local_pid": 81,
+        "local_pid_namespace": "pid:[4026532214]",
+        "mapping_evidence": [
+          "capture-summary.session_id",
+          "process_nodes.comm=claude",
+          "analysis.process_start_in_launch_interval=true",
+          "tool_calls.tool_call_id=framework.tool_use.id"
+        ],
+        "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
+        "mapping_status": "inferred",
+        "observer_pid": 1758,
+        "observer_pid_namespace": "linux-initial-pid-namespace",
+        "observer_start_epoch_ms": 1791785496876,
+        "start_realtime_interval_ns": [
+          1791785496874817239,
+          1791785496876430239
+        ]
+      },
+      "run_id": "experiment_20261012_14",
+      "schema_version": "agentops-application-event-v0.2",
+      "sequence": 2,
+      "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+      "step_id": "step-native-bash-1",
+      "tool_call_id": "call_00_Da4rghUlpsbWGEyZMdqF5028"
+    },
+    {
+      "agent_id": "claude-code-main",
+      "clock": {
+        "application_boottime_ns": 155615330211,
+        "application_monotonic_ns": 155615328211,
+        "application_realtime_interval_ns": [
+          1791785521365791411,
+          1791785521365795411
+        ],
+        "application_realtime_ns": 1791785521365793411,
+        "application_uncertainty_ns": 2000,
+        "conversion": null,
+        "correction_ns": null,
+        "observer_anchor_uncertainty_ns": null,
+        "observer_boot_epoch_ns": null,
+        "observer_epoch_ms": null,
+        "observer_raw_boot_ns": null
+      },
+      "event_id": "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+      "event_type": "tool.end",
+      "evidence_kind": "runtime_observed",
+      "process": {
+        "boot_id": "7f9fd3cf-4235-4adc-9086-4dab7868b898",
+        "host_id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a",
+        "local_pid": 81,
+        "local_pid_namespace": "pid:[4026532214]",
+        "mapping_evidence": [
+          "capture-summary.session_id",
+          "process_nodes.comm=claude",
+          "analysis.process_start_in_launch_interval=true",
+          "tool_calls.tool_call_id=framework.tool_use.id"
+        ],
+        "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
+        "mapping_status": "inferred",
+        "observer_pid": 1758,
+        "observer_pid_namespace": "linux-initial-pid-namespace",
+        "observer_start_epoch_ms": 1791785496876,
+        "start_realtime_interval_ns": [
+          1791785496874817239,
+          1791785496876430239
+        ]
+      },
+      "run_id": "experiment_20261012_14",
+      "schema_version": "agentops-application-event-v0.2",
+      "sequence": 3,
+      "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+      "step_id": "step-native-bash-1",
+      "tool_call_id": "call_00_Da4rghUlpsbWGEyZMdqF5028"
+    },
+    {
+      "agent_id": "claude-code-main",
+      "clock": {
+        "application_boottime_ns": 155615330211,
+        "application_monotonic_ns": 155615328211,
+        "application_realtime_interval_ns": [
+          1791785521365791411,
+          1791785521365795411
+        ],
+        "application_realtime_ns": 1791785521365793411,
+        "application_uncertainty_ns": 2000,
+        "conversion": null,
+        "correction_ns": null,
+        "observer_anchor_uncertainty_ns": null,
+        "observer_boot_epoch_ns": null,
+        "observer_epoch_ms": null,
+        "observer_raw_boot_ns": null
+      },
+      "event_id": "bda1e076-e5e5-40f1-9b55-40c4ee097b7e",
+      "event_type": "step.end",
+      "evidence_kind": "runtime_observed",
+      "process": {
+        "boot_id": "7f9fd3cf-4235-4adc-9086-4dab7868b898",
+        "host_id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a",
+        "local_pid": 81,
+        "local_pid_namespace": "pid:[4026532214]",
+        "mapping_evidence": [
+          "capture-summary.session_id",
+          "process_nodes.comm=claude",
+          "analysis.process_start_in_launch_interval=true",
+          "tool_calls.tool_call_id=framework.tool_use.id"
+        ],
+        "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
+        "mapping_status": "inferred",
+        "observer_pid": 1758,
+        "observer_pid_namespace": "linux-initial-pid-namespace",
+        "observer_start_epoch_ms": 1791785496876,
+        "start_realtime_interval_ns": [
+          1791785496874817239,
+          1791785496876430239
+        ]
+      },
+      "run_id": "experiment_20261012_14",
+      "schema_version": "agentops-application-event-v0.2",
+      "sequence": 4,
+      "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+      "step_id": "step-native-bash-1",
+      "tool_call_id": null
+    },
+    {
+      "agent_id": "claude-code-main",
+      "clock": {
+        "application_boottime_ns": 157026570178,
+        "application_monotonic_ns": 157026568178,
+        "application_realtime_interval_ns": [
+          1791785522777031278,
+          1791785522777035578
+        ],
+        "application_realtime_ns": 1791785522777033428,
+        "application_uncertainty_ns": 2150,
+        "conversion": null,
+        "correction_ns": null,
+        "observer_anchor_uncertainty_ns": null,
+        "observer_boot_epoch_ns": null,
+        "observer_epoch_ms": null,
+        "observer_raw_boot_ns": null
+      },
+      "event_id": "2185bfc9-c148-4439-a9e8-71523be662cb",
+      "event_type": "session.end",
+      "evidence_kind": "runtime_observed",
+      "process": {
+        "boot_id": "7f9fd3cf-4235-4adc-9086-4dab7868b898",
+        "host_id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a",
+        "local_pid": 81,
+        "local_pid_namespace": "pid:[4026532214]",
+        "mapping_evidence": [
+          "capture-summary.session_id",
+          "process_nodes.comm=claude",
+          "analysis.process_start_in_launch_interval=true",
+          "tool_calls.tool_call_id=framework.tool_use.id"
+        ],
+        "mapping_method": "session+comm+launch_interval+shared_tool_call_id",
+        "mapping_status": "inferred",
+        "observer_pid": 1758,
+        "observer_pid_namespace": "linux-initial-pid-namespace",
+        "observer_start_epoch_ms": 1791785496876,
+        "start_realtime_interval_ns": [
+          1791785496874817239,
+          1791785496876430239
+        ]
+      },
+      "run_id": "experiment_20261012_14",
+      "schema_version": "agentops-application-event-v0.2",
+      "sequence": 5,
+      "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+      "step_id": null,
+      "tool_call_id": null
+    }
+  ],
+  "pre_attribution_evidence_package": {
+    "schema_version": "agentops-pre-attribution-evidence-v0.1",
+    "stream": {
+      "run_id": "experiment_20261012_14",
+      "evidence_kind": "runtime_observed",
+      "event_count": 6,
+      "session_count": 1,
+      "all_sessions_closed": true
+    },
+    "canonical_event_stream_sha256": "cef522bf34ae6ed2a19d2cc5580e43ddcfa6499dc1650dae52f402176feebcb4",
+    "design_sources": {
+      "RCACopilot": "composable evidence channels",
+      "OpenRCA": "programmatic exact-match telemetry queries",
+      "Watson": "explicit readiness check before post-hoc reasoning reconstruction",
+      "OpenRCA_2.0": "claim-level evidence receipts and replay verification"
+    },
+    "collection_handlers": [
+      {
+        "handler_id": "application_lifecycle_v0.2",
+        "channel": "framework_lifecycle",
+        "status": "available",
+        "evidence_kind": "runtime_observed",
+        "event_count": 6
+      },
+      {
+        "handler_id": "process_mapping_v0.2",
+        "channel": "process_identity",
+        "status": "available_with_inference",
+        "process_view_count": 1
+      },
+      {
+        "handler_id": "observer_clock_v0.2",
+        "channel": "observer_clock",
+        "status": "available_without_strict_bound",
+        "observer_clock_event_count": 1
+      },
+      {
+        "handler_id": "model_invocation_context_v0.1",
+        "channel": "reasoning_reconstruction_inputs",
+        "status": "unavailable",
+        "context_count": 0,
+        "missing_fields": [
+          "model_id",
+          "model_version",
+          "sampling_temperature",
+          "sampling_top_p",
+          "system_prompt_sha256",
+          "tool_schema_sha256",
+          "request_id",
+          "response_id",
+          "pairing_method",
+          "pairing_evidence"
+        ]
+      }
+    ],
+    "queries": [
+      {
+        "query_id": "q-041c7c7f9a10bc26",
+        "purpose": "replay complete session lifecycle",
+        "operation": "select_events_exact",
+        "selector": {
+          "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760"
+        },
+        "result_count": 6,
+        "result_event_ids": [
+          "05220de0-e74f-453d-8575-cf1e909fa37d",
+          "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+          "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+          "bda1e076-e5e5-40f1-9b55-40c4ee097b7e",
+          "2185bfc9-c148-4439-a9e8-71523be662cb"
+        ],
+        "result_sha256": "cef522bf34ae6ed2a19d2cc5580e43ddcfa6499dc1650dae52f402176feebcb4"
+      },
+      {
+        "query_id": "q-873c9f0410539790",
+        "purpose": "replay session events with the observed process mapping",
+        "operation": "select_events_exact",
+        "selector": {
+          "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+          "process.mapping_status": "inferred"
+        },
+        "result_count": 6,
+        "result_event_ids": [
+          "05220de0-e74f-453d-8575-cf1e909fa37d",
+          "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+          "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+          "bda1e076-e5e5-40f1-9b55-40c4ee097b7e",
+          "2185bfc9-c148-4439-a9e8-71523be662cb"
+        ],
+        "result_sha256": "cef522bf34ae6ed2a19d2cc5580e43ddcfa6499dc1650dae52f402176feebcb4"
+      },
+      {
+        "query_id": "q-d9b74f47bd62d06c",
+        "purpose": "replay events for one framework step",
+        "operation": "select_events_exact",
+        "selector": {
+          "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+          "step_id": "step-native-bash-1"
+        },
+        "result_count": 4,
+        "result_event_ids": [
+          "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+          "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+          "bda1e076-e5e5-40f1-9b55-40c4ee097b7e"
+        ],
+        "result_sha256": "c977c61e88679d00f99d7c57d50085439c88c13e815bae46067d63040cb23594"
+      },
+      {
+        "query_id": "q-d4a715969369c82f",
+        "purpose": "replay one framework tool lifecycle",
+        "operation": "select_events_exact",
+        "selector": {
+          "session_id": "48174557-6d35-42b7-aecd-4ab4fcac8760",
+          "step_id": "step-native-bash-1",
+          "tool_call_id": "call_00_Da4rghUlpsbWGEyZMdqF5028"
+        },
+        "result_count": 2,
+        "result_event_ids": [
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+          "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e"
+        ],
+        "result_sha256": "721a7d796b398bf1dedfdee965e93d86d1be368216213e82a6b9ca5235f75d95"
+      },
+      {
+        "query_id": "q-758fa5023b16f5e6",
+        "purpose": "replay one event containing observer-side clock evidence",
+        "operation": "select_events_exact",
+        "selector": {
+          "event_id": "4021bac3-5995-4e9b-865f-3773cfaa16f0"
+        },
+        "result_count": 1,
+        "result_event_ids": [
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0"
+        ],
+        "result_sha256": "41b2e05256b0644ba540ec240e88a1bc8333b81f4c92173c990d988305a50d98"
+      }
+    ],
+    "observed_relations": [
+      {
+        "relation_id": "r-50cb76753e10ec1c",
+        "relation_type": "session_observed_in_process",
+        "source": {
+          "kind": "session",
+          "id": "48174557-6d35-42b7-aecd-4ab4fcac8760"
+        },
+        "target": {
+          "kind": "process_view",
+          "id": "4d1e0455eaebf6cc8ce741dcd3300ce09b6a9d0ace8c72f2cf4ddba23af9998a:7f9fd3cf-4235-4adc-9086-4dab7868b898:pid:[4026532214]:81"
+        },
+        "evidence_status": "inferred",
+        "evidence_event_ids": [
+          "05220de0-e74f-453d-8575-cf1e909fa37d",
+          "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+          "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+          "bda1e076-e5e5-40f1-9b55-40c4ee097b7e",
+          "2185bfc9-c148-4439-a9e8-71523be662cb"
+        ],
+        "query_ids": [
+          "q-873c9f0410539790"
+        ],
+        "time_relation": "not_applicable",
+        "causal_claim": false,
+        "responsibility_claim": false
+      },
+      {
+        "relation_id": "r-767c84768ef2ed73",
+        "relation_type": "session_contains_step",
+        "source": {
+          "kind": "session",
+          "id": "48174557-6d35-42b7-aecd-4ab4fcac8760"
+        },
+        "target": {
+          "kind": "step",
+          "id": "step-native-bash-1"
+        },
+        "evidence_status": "direct",
+        "evidence_event_ids": [
+          "122f5ca7-ef0d-4cd7-b261-17cf6283373c",
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+          "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e",
+          "bda1e076-e5e5-40f1-9b55-40c4ee097b7e"
+        ],
+        "query_ids": [
+          "q-041c7c7f9a10bc26",
+          "q-d9b74f47bd62d06c"
+        ],
+        "time_relation": "sequence_only",
+        "causal_claim": false,
+        "responsibility_claim": false
+      },
+      {
+        "relation_id": "r-09132d6737c1f8db",
+        "relation_type": "step_invokes_tool",
+        "source": {
+          "kind": "step",
+          "id": "step-native-bash-1"
+        },
+        "target": {
+          "kind": "tool_call",
+          "id": "call_00_Da4rghUlpsbWGEyZMdqF5028"
+        },
+        "evidence_status": "direct",
+        "evidence_event_ids": [
+          "4021bac3-5995-4e9b-865f-3773cfaa16f0",
+          "d752b8dd-b67b-4a52-a3cb-b9a5dc98d00e"
+        ],
+        "query_ids": [
+          "q-d4a715969369c82f"
+        ],
+        "time_relation": "sequence_only_unbounded",
+        "lifecycle_closed": true,
+        "causal_claim": false,
+        "responsibility_claim": false
+      }
+    ],
+    "mirror_readiness": {
+      "status": "NOT_READY",
+      "method": "watson_style_post_hoc_reconstruction",
+      "missing_fields": [
+        "model_id",
+        "model_version",
+        "sampling_temperature",
+        "sampling_top_p",
+        "system_prompt_sha256",
+        "tool_schema_sha256",
+        "request_id",
+        "response_id",
+        "pairing_method",
+        "pairing_evidence"
+      ],
+      "context_summary": {
+        "context_count": 0,
+        "covered_session_count": 0,
+        "all_sessions_covered": false
+      },
+      "default_values_invented": false,
+      "reconstruction_attempted": false
+    },
+    "readiness": {
+      "queryable_evidence_package": true,
+      "identity_and_tool_relations": true,
+      "bounded_temporal_relations": false,
+      "reasoning_reconstruction": false,
+      "causal_attribution": false
+    },
+    "claims": {
+      "root_cause_generated": false,
+      "responsibility_generated": false,
+      "causal_path_generated": false
+    },
+    "boundaries": [
+      "Observed relations are structural evidence, not causal edges.",
+      "Sequence order is not promoted to a strict cross-layer time order when the clock gate is closed.",
+      "Inferred PID mapping remains inferred until direct namespace ground truth is observed.",
+      "Watson-style reconstruction is disabled until all required invocation context is captured."
+    ],
+    "network_calls": 0,
+    "input_sha256": {
+      "events": "f9fb7a628866c127f27749d95b582e4697cd3ce133f7eade7a16aa572a5c47b0",
+      "pre_attribution_gate": "ac8926cdc6ba1edae0a68eec3e4ac9d53ddebadc1f71ced7ae292289b05ef7f9"
+    }
+  }
+}

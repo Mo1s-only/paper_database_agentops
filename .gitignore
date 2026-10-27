@@ -20,6 +20,8 @@ __pycache__/
 venv/
 node_modules/
 .pnpm-store/
+# Local deployment bundle contains machine-specific .openai hosting configuration.
+web_coding/agentops_thesis_observatory/agentops-thesis-observatory.tar.gz
 tmp/
 *.tsbuildinfo
 target/
